@@ -35,7 +35,8 @@ function print_form($db){
 $q = get_stations($db);
 
 print <<<HERE
-<center><h2>Internet Radio Stations</h2>
+<div class='grandparent'>
+<h2>Internet Radio Stations</h2>
 
 <table border=0 width=100%>
 <tr>
@@ -73,6 +74,7 @@ print <<<HERE
 </tr>
 </table>
 
+
 <table class='mine' border = '1'>
 
 HERE;
@@ -95,80 +97,17 @@ HERE;
 
 mysqli_free_result($q);
 
-/*
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="kcrwsimulcast.pls">
-    <td><center><img src="kcrw.png" alt="KCRW Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>KCRW Los Angles</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://current.stream.publicradio.org/kcmp.mp3">
-    <td><center><img src="the_current.png" alt="The Current Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>The Current<br>Minnesota Public Radio</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://playerservices.streamtheworld.com/pls/CBC_R1_TOR_L.pls">
-    <td><center><img src="cbc.png" alt="CBC Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>CBC Radio One Toronto</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://193.42.152.215:8000/listen.pls">
-    <td><center><img src="wrn.png" alt="WRN Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>WRN English North America</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://193.42.152.215:8026/listen.pls">
-    <td><center><img src="wrn.png" alt="WRN Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>WRN English Europe</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://193.42.152.215:8012/listen.pls">
-    <td><center><img src="wrn.png" alt="WRN Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>WRN English Africa & Asia Pacific</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-<tr>
-    <FORM action="radio.php" method="POST">
-    <input type="hidden" name="stopPlayer" value="Yes">
-    <input type="hidden" name="stationUrl" value="http://www.abc.net.AU/res/streaming/audio/windows/radio_australia_eng_asia.asx">
-    <td><center><img src="abc_ra.png" alt="ABC Radio Australia Logo" width="100" height="100"><center></td>
-    <td><center><h3><center>ABC Radio Australia</center></h3></td>
-    <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
-    </FORM>
-</tr>
-*/
-
 print <<<HERE
 </table>
-</center>
-<div align='right'>
+
+
+<div class='addStationButton'>
 <FORM action="addStation.php" method="POST">
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Add A Station">
 </FORM>
 </div>
+
+</div> 
 HERE;
 return 0;
 } // end function print_form()
@@ -216,11 +155,12 @@ if ("down" == $volumeAdjust){
     print_form($db);
 } else {
     // we're not adjusting the volume so move on
-    if (empty($_POST["stopPlayer"])){
+    if (NULL == $_POST["stopPlayer"]){
         $stopPlayer = "No";
     } else {
         $stopPlayer = $_POST["stopPlayer"];
     } // end else
+    
     $stationUrl = $_POST["stationUrl"];
 
     if (empty($stationUrl)) {

@@ -1,4 +1,19 @@
 @CHARSET "UTF-8";
+
+.grandparent {
+  position:relative;
+}
+
+.stationTable {
+  position:absolute;
+  left:150px;
+}
+
+.addStationButton {
+  position:absolute;
+  left:65%;
+}
+
 h2 {
 font-family: 'Reenie Beanie', arial, serif;
 font-size: 48px;
