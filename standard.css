@@ -14,7 +14,7 @@
   left:65%;
 }
 
-#nowPlaying { 
+table.nowPlaying { 
     font-family: 'Reenie Beanie', arial, serif; 
     font-size: 48px;
     margin: auto;
