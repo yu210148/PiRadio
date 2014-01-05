@@ -11,9 +11,8 @@
 </head>
 <body>
 
-<div id='now'>
-foo
-</div>
+
+<p>foo</p>
 
 <?php
 require_once 'settings.php';
