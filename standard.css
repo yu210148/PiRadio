@@ -37,9 +37,9 @@ table.mine {
 /*      border-collapse: separate; */
 }
 
-p {
-    font-family: 'Reenie Beanie', arial, serif;
-    font-size: 48px;
+p { 
+    font-family: ‘Metrophobic’, Arial, serif; 
+    font-weight: 400; 
 }
 
 /**************************************************************************************

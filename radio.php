@@ -4,16 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Internet Radio Stations</title>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
 </head>
 <body>
-
-
-<p>foo</p>
-
 <?php
 require_once 'settings.php';
 
@@ -105,10 +101,10 @@ if (NULL == $nowPlayingArray[0]){
     // print a centered table showing what's currently playing
     print <<<HERE
 
-<table class='now' border = '1'>
+<table border=0>
     <tr>
-        <td>Now Playing:</td>
-        <td><center>$nowPlayingArray[0]</center></td>
+        <td><center><p>Now Playing:</p></center></td>
+        <td><center><p>$nowPlayingArray[0]</p></center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
     </table>
