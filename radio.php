@@ -27,7 +27,7 @@ function get_stations($db){
 
 function get_now_playing($db){
     // a function that get's the Name & Logo File Name of the currently playing stations
-    $sql "SELECT stations.Name, stations.FileName FROM stations INNER JOIN NowPlaying on stations.StationID = NowPlaying.StationID";
+    $sql = "SELECT stations.Name, stations.FileName FROM stations INNER JOIN NowPlaying on stations.StationID = NowPlaying.StationID";
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $NowPlayingName = $row[0];
