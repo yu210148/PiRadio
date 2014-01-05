@@ -25,6 +25,20 @@ function get_stations($db){
     return $q;
 }
 
+function get_now_playing($db){
+    // a function that get's the Name & Logo File Name of the currently playing stations
+    $sql "SELECT stations.Name, stations.FileName FROM stations INNER JOIN NowPlaying on stations.StationID = NowPlaying.StationID";
+    $q = mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        $NowPlayingName = $row[0];
+        $NowPlayingFileName = $row[1];
+    } // end while
+    $NowPlayingArray = array();
+    $NowPlayingArray[] = $NowPlayingName;
+    $NowPlayingArray[] = $NowPlayingFileName;
+    return $NowPlayingArray;
+} // end function definition for get_now_playing()
+
 function print_form($db){
 //        $divFirstTime = "<div class='hideForm'>";
 //        $endDivFirstTime = "</div>";
@@ -33,6 +47,8 @@ function print_form($db){
 
 // database stuff here
 $q = get_stations($db);
+
+$nowPlayingArray = get_now_playing($db);
 
 print <<<HERE
 <div class='grandparent'>
@@ -73,7 +89,23 @@ print <<<HERE
     </center></td>
 </tr>
 </table>
+HERE;
 
+if (NULL == $nowPlayingArray){
+    // do nothing
+} else {
+    // print a centered table showing what's currently playing
+    print <<<HERE
+    <center>
+    <table border=0>
+    <tr>
+        <td><center>Now Playing:</center></td>
+        <td><center>$nowPlayingArray[0]</center></td>
+        <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
+HERE;
+}
+
+print <<<HERE
 
 <table class='mine' border = '1'>
 
@@ -87,7 +119,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <input type="hidden" name="stationUrl" value="$row[1]">
-        <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"><center></td>
+        <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
         <td><center><h3><center>$row[0]</center></h3></td>
         <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
         </FORM>
