@@ -100,7 +100,7 @@ if (NULL == $nowPlayingArray[0]){
 } else {
     // print a centered table showing what's currently playing
     print <<<HERE
-
+<center>
 <table border=0>
     <tr>
         <td><center><p>Now Playing:</p></center></td>
@@ -108,7 +108,7 @@ if (NULL == $nowPlayingArray[0]){
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
     </table>
-
+</center>
 HERE;
 }
 
