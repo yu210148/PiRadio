@@ -37,7 +37,7 @@ table.mine {
 /*      border-collapse: separate; */
 }
 
-table.now {
+.now {
     margin: auto;
     border-collapse: collapse;
     border-style:groove;
