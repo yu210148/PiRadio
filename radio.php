@@ -50,6 +50,9 @@ $q = get_stations($db);
 
 $nowPlayingArray = get_now_playing($db);
 
+//debug
+//var_dump($nowPlayingArray);
+
 print <<<HERE
 <div class='grandparent'>
 <h2>Internet Radio Stations</h2>
@@ -91,7 +94,7 @@ print <<<HERE
 </table>
 HERE;
 
-if (NULL == $nowPlayingArray){
+if (NULL == $nowPlayingArray[0]){
     // do nothing
 } else {
     // print a centered table showing what's currently playing
@@ -156,21 +159,21 @@ function lower_volume(){
     return 0;
 }
 
-function stop_player(){
+function stop_player($db){
     $command = "killall vlc";
-    
-    //debug
-    //var_dump($command);
-    
     exec($command);
+    $sql = "DELETE FROM NowPlaying";
+    mysqli_query($db, $sql);
     return 0;
 }
 
-function start_player($stationUrl){
+function start_player($stationUrl, $db){
     // stop the player in case it's running
-    stop_player();
+    stop_player($db);
     $command = "cvlc $stationUrl";
     exec($command . " > /dev/null &");
+    $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
+    mysqli_query($db, $sql);
     return 0;
 }
 
@@ -197,15 +200,15 @@ if ("down" == $volumeAdjust){
 
     if (empty($stationUrl)) {
         if ('Yes' == $stopPlayer){
-            stop_player();
+            stop_player($db);
         } // end if
         print_form($db);
     } else {
         if ('Yes' == $stopPlayer){
-            stop_player();
+            stop_player($db);
         } // end if
         print_form($db);
-        start_player($stationUrl);
+        start_player($stationUrl, $db);
     } // end else
 }
 
