@@ -103,7 +103,7 @@ if (NULL == $nowPlayingArray[0]){
     <center>
     <table border=0>
     <tr>
-        <td><center><div class="nowPlaying">Now Playing:</div></center></td>
+        <td><div class="nowPlaying">Now Playing:</div></td>
         <td><center>$nowPlayingArray[0]</center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
