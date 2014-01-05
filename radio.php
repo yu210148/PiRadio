@@ -10,6 +10,11 @@
 <link rel=StyleSheet href="standard.css" type="text/css">
 </head>
 <body>
+
+<div class='now'>
+foo
+</div>
+
 <?php
 require_once 'settings.php';
 
