@@ -207,8 +207,8 @@ if ("down" == $volumeAdjust){
         if ('Yes' == $stopPlayer){
             stop_player($db);
         } // end if
-        print_form($db);
         start_player($stationUrl, $db);
+        print_form($db);
     } // end else
 }
 
