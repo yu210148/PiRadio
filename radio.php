@@ -168,6 +168,8 @@ function lower_volume(){
 function stop_player($db){
     $command = "killall vlc";
     exec($command);
+    $command = "killall mplayer";
+    exec($command);
     $sql = "DELETE FROM NowPlaying";
     mysqli_query($db, $sql);
     return 0;
@@ -176,7 +178,8 @@ function stop_player($db){
 function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
-    $command = "cvlc $stationUrl";
+    //$command = "cvlc $stationUrl";
+    $command = "mplayer $stationUrl";
     exec($command . " > /dev/null &");
     $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
     mysqli_query($db, $sql);
