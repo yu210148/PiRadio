@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Internet Radio Stations</title>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Faster+One&subset=latin' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Faster+One' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
@@ -103,7 +103,7 @@ if (NULL == $nowPlayingArray[0]){
     <center>
     <table border=0>
     <tr>
-        <td><center><h3>Now Playing:</h3></center></td>
+        <td><center><div class="nowPlaying">Now Playing:</div></center></td>
         <td><center>$nowPlayingArray[0]</center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
