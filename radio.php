@@ -101,9 +101,9 @@ if (NULL == $nowPlayingArray[0]){
     // print a centered table showing what's currently playing
     print <<<HERE
 
-    <table border=0>
+    <table class=nowPlaying>
     <tr>
-        <td><div class="nowPlaying">Now Playing:</div></td>
+        <td>Now Playing:</td>
         <td><center>$nowPlayingArray[0]</center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
