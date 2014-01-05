@@ -14,12 +14,13 @@
   left:65%;
 }
 
-table.nowPlaying { 
+table.nowPlaying {
     margin: auto;
     border-collapse: collapse;
     border-style:groove;
     border-width:5px;
     text-align:left;
+    /*      border-collapse: separate; */
 }
 
 h2 {
