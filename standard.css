@@ -17,6 +17,11 @@
 .nowPlaying { 
     font-family: 'Reenie Beanie', arial, serif; 
     font-size: 48px;
+    margin: auto;
+    border-collapse: collapse;
+    border-style:groove;
+    border-width:5px;
+    text-align:left;
 }
 
 h2 {
