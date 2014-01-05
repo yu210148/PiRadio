@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class='now'>
+<div id='now'>
 foo
 </div>
 
