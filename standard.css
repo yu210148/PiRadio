@@ -15,8 +15,6 @@
 }
 
 table.nowPlaying { 
-    font-family: 'Reenie Beanie', arial, serif; 
-    font-size: 48px;
     margin: auto;
     border-collapse: collapse;
     border-style:groove;
