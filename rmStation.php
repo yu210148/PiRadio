@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Add an Internet Radio Station</title>
+<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<link rel=StyleSheet href="standard.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<?php
+
+require_once 'settings.php';
+
+function get_stations($db){
+    $sql="SELECT
+        stations.Name,
+        stations.StationURL,
+        stations.FileName,
+        stations.StationID
+        FROM
+        stations
+        ORDER BY
+        stations.StationID";
+    $q = mysqli_query($db, $sql);
+    return $q;
+}
+
+function print_form($db){
+    $q = get_stations($db);
+print <<<HERE
+    <center><h2>Remove an Internet Radio Station</h2>
+    <table class='mine' border = '1'>
+HERE;
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        print <<<HERE
+        <tr>
+            <FORM action="rmStation.php" method="POST">
+            <input type="hidden" name="StationID" value="$row[3]">
+            <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
+            <td><center><h3><center>$row[0]</center></h3></td>
+            <td><center><INPUT class="myButton" type="submit" name="Generate" value="Delete Station"></center></td>
+            </FORM>
+        </tr>
+HERE;
+    } // end while
+    mysqli_free_result($q);
+print <<<HERE
+    </table>
+HERE;
+    return 0;
+} // end print_form() function definition
+
+// HERE'S MAIN
+$db = mysqli_connect($dbServer, $user, $pass, $databaseName);
+$StationID = $_POST["StationID"];
+
+if (NULL == $StationID){
+    print_form();
+} else {
+    print_form();
+} // end else
+mysqli_close($db);
