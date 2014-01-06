@@ -4,9 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Add an Internet Radio Station</title>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
 <?php
@@ -85,7 +88,7 @@ function add_station($db, $stationName, $stationUrl, $files){
 // HERE'S MAIN
 $stationName = $_POST["stationName"];
 $stationUrl = $_POST["stationUrl"];
-$db = mysqli_connect($dbServer, "klucas", "8clock9", "radio");
+$db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 /* check connection */
 if (mysqli_connect_errno()) {

@@ -184,7 +184,7 @@ function start_player($stationUrl, $db){
 }
 
 // HERE'S MAIN
-$db = mysqli_connect($dbServer, "klucas", "8clock9", "radio");
+$db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 // are we adjusting the volume?
 $volumeAdjust = $_POST["volume"];
