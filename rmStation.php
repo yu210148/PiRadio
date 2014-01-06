@@ -55,6 +55,12 @@ HERE;
     return 0;
 } // end print_form() function definition
 
+function delete_station($db, $StationID){
+    $sql = "DELETE FROM stations WHERE stations.StationID = $StationID";
+    mysqli_query($db, $sql);
+    return 0;
+} // end delete_station() functino definition
+
 // HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 $StationID = $_POST["StationID"];
@@ -62,6 +68,7 @@ $StationID = $_POST["StationID"];
 if (NULL == $StationID){
     print_form($db);
 } else {
+    delete_station($db, $StationID);
     print_form($db);
 } // end else
 mysqli_close($db);
