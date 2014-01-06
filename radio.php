@@ -144,10 +144,10 @@ print <<<HERE
 
 <div class='addStationButton'>
 <FORM action="addStation.php" method="POST">
-<INPUT class="myGreenButton" type="submit" name="Generate" value="Add A Station">
+<INPUT class="myGreenButton" type="submit" name="Generate" value="Add a Station">
 </FORM>
 <FORM action="rmStation.php" method="POST">
-<INPUT class="myButton" type="submit" name="Generate" value="Remove A Station">
+<INPUT class="rmButton" type="submit" name="Generate" value="Remove a Station">
 </FORM>
 </div>
 

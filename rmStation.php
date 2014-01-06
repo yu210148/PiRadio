@@ -17,7 +17,7 @@
 require_once 'settings.php';
 
 function get_stations($db){
-    $sql="SELECT
+$sql="SELECT
         stations.Name,
         stations.StationURL,
         stations.FileName,
