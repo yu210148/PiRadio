@@ -60,8 +60,8 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 $StationID = $_POST["StationID"];
 
 if (NULL == $StationID){
-    print_form();
+    print_form($db);
 } else {
-    print_form();
+    print_form($db);
 } // end else
 mysqli_close($db);
