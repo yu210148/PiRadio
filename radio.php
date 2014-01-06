@@ -146,6 +146,9 @@ print <<<HERE
 <FORM action="addStation.php" method="POST">
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Add A Station">
 </FORM>
+<FORM action="rmStation.php" method="POST">
+<INPUT class="myButton" type="submit" name="Generate" value="Remove A Station">
+</FORM>
 </div>
 
 </div> 

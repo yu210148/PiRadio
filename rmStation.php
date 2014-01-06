@@ -51,6 +51,11 @@ HERE;
     mysqli_free_result($q);
 print <<<HERE
     </table>
+    <div align='right'>
+    <FORM action="radio.php" method="POST">
+    <INPUT class="myGreenButton" type="submit" name="Generate" value="Back to Main Menu">
+    </FORM>
+    </div>
 HERE;
     return 0;
 } // end print_form() function definition
