@@ -199,6 +199,12 @@ function stop_player($db){
 function check_if_temp_stream($db, $stationUrl){
     $stationUrl = urldecode($stationUrl);
     $sql = "SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'";
+    
+    //debug
+    print "<BR>";
+    var_dump($sql);
+    print "<br>";
+    
     mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         if ($row[0] > 0){
