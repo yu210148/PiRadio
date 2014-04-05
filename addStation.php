@@ -47,7 +47,7 @@ return 0;
 
 function sanitize_filename($filename){
     // a function to get rid of spaces and replace them with underscores in the filename
-    $newfilename = str_replace(" ", "_", $filename);
+    $newfilename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $filename);
     $command = "mv \"./uploads/$filename\" ./uploads/$newfilename";
     exec($command);
     return $newfilename;
@@ -89,6 +89,9 @@ function add_station($db, $stationName, $stationUrl, $files){
 $stationName = $_POST["stationName"];
 $stationUrl = $_POST["stationUrl"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
+
+//debug
+var_dump($_FILES);
 
 /* check connection */
 if (mysqli_connect_errno()) {
