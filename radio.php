@@ -28,6 +28,17 @@ function get_stations($db){
     return $q;
 }
 
+function check_if_now_playing_temp($db){
+    $sql = "SELECT NowPlaying.StationID FROM NowPlaying";
+    $q = mysql_query($db, $sql);
+    $row_count = mysqli_num_rows($q);
+    if (0 == $row_count){
+        return 0;
+    } else {
+        return 1;
+    } // end else
+}// end function definition
+
 function get_now_playing($db){
     // a function that get's the Name & Logo File Name of the currently playing stations
     $sql = "SELECT stations.Name, stations.FileName FROM stations INNER JOIN NowPlaying on stations.StationID = NowPlaying.StationID";
@@ -35,9 +46,15 @@ function get_now_playing($db){
     
     $row_count = mysqli_num_rows($q);
     if ($row_count == 0) {
-        // we're playing a temp station so manually load the array
-        $NowPlayingName = "Playing QuickStream";
-        $NowPlayingFileName = "generic_radio.png";
+        // we're either not playing or playing a temp stream
+        $areWePlayingTempStream = check_if_now_playing_temp($db);
+        if ($areWePlayingTempStream > 0){
+            // we're playing a temp stream
+            $NowPlayingName = "Quick Stream";
+            $NowPlayingFileName = "generic_radio.png";
+        } else {
+            // we're not playing anything
+        } // end else
     } else {
         while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
             $NowPlayingName = $row[0];
