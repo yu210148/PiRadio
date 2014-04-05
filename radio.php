@@ -217,7 +217,10 @@ if ("down" == $volumeAdjust){
     } // end else
     
     $stationUrl = $_POST["stationUrl"];
-
+    
+    //debug
+    var_dump($stationUrl);
+    
     if (empty($stationUrl)) {
         if ('Yes' == $stopPlayer){
             stop_player($db);
