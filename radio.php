@@ -144,7 +144,7 @@ print <<<HERE
     <FORM action="radio.php" method="POST">
     <input type="hidden" name="stopPlayer" value="Yes">
     <td colspan=2><center><h3>Play a URL</h3>
-    <input type="text" length=100 maxlength=300 name="stationURL"></td>
+    <input class="text" type="text" length=100 maxlength=300 name="stationURL"></td>
     <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
 </tr>
 HERE;
