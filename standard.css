@@ -25,7 +25,8 @@ input.radio {
 
 input.text {
     margin: auto;
-    
+    position: relative;
+    top: 4em;
 }
 h2 {
 	margin: auto;
