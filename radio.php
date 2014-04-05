@@ -146,6 +146,7 @@ print <<<HERE
     <td colspan=2><center><h3>Play URL</h3>
     <input class="text" type="text" length=100 maxlength=300 name="stationURL"></td>
     <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
+    </FORM>
 </tr>
 HERE;
 
