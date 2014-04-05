@@ -22,12 +22,16 @@ font-size: 48px;
 input.radio {
         display: inline;
 }
+ 
+.textbox { 
+    border: 3px outset #FFA5A5; 
+    outline:0; 
+    height:25px; 
+    width: 275px; 
+  } 
 
-input.text {
-    margin: auto;
-    position: relative;
-    top: 4em;
-}
+
+
 h2 {
 	margin: auto;
 	text-align: center;
