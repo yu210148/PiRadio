@@ -219,6 +219,11 @@ function start_player($stationUrl, $db){
     exec($command . " > /dev/null &");
     // check if it's a temp stream and if so write station id 0 to now playing
     $isTempStream = check_if_temp_stream($db, $stationUrl);
+    
+    //debug
+    var_dump($isTempStream);
+    
+    
     if ('false' == $isTempStream){ 
         $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
         mysqli_query($db, $sql);
