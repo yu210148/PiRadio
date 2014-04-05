@@ -234,12 +234,7 @@ function start_player($stationUrl, $db){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     $command = "cvlc $stationUrl";
-    
-    //debug
-    print "<br>";
-    var_dump($command);
-    print "<br>";
-    
+
     exec($command . " > /dev/null &");
     
     // check if it's a temp stream and if so write station id 0 to now playing
