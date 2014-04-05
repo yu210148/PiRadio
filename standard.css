@@ -23,7 +23,7 @@ input.radio {
         display: inline;
 }
  
-.textbox { 
+input.text { 
     border: 3px outset #FFA5A5; 
     outline:0; 
     height:25px; 
