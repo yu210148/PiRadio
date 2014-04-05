@@ -30,7 +30,7 @@ function get_stations($db){
 
 function check_if_now_playing_temp($db){
     $sql = "SELECT NowPlaying.StationID FROM NowPlaying";
-    $q = mysql_query($db, $sql);
+    $q = mysqli_query($db, $sql);
     $row_count = mysqli_num_rows($q);
     if (0 == $row_count){
         return 0;
@@ -239,9 +239,9 @@ function start_player($stationUrl, $db){
     $isTempStream = check_if_temp_stream($db, $stationUrl);
     
     //debug
-    print "<br>";
-    var_dump($isTempStream);
-    print "<br>";
+    //print "<br>";
+    //var_dump($isTempStream);
+    //print "<br>";
     
     if ('false' == $isTempStream){ 
         $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
