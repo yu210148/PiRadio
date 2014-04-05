@@ -144,7 +144,7 @@ print <<<HERE
     <FORM action="radio.php" method="POST">
     <input type="hidden" name="stopPlayer" value="Yes">
     <td colspan=2><center><h3>Play URL</h3>
-    <input class="text" type="text" length=100 maxlength=300 name="stationURL" value="foo"></td>
+    <input class="text" type="text" length=100 maxlength=300 name="stationURL"></td>
     <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
     </FORM>
 </tr>
@@ -220,7 +220,7 @@ if ("down" == $volumeAdjust){
     $stationUrl = $_POST["stationUrl"];
     
     //debug
-    var_dump($_POST["stationUrl"]);
+    var_dump($_REQUEST["stationUrl"]);
     
     if (empty($stationUrl)) {
         if ('Yes' == $stopPlayer){
