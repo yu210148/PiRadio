@@ -59,11 +59,13 @@ function deal_with_logo_file($files){
     $target_path = $target_path . basename($files['uploadedfile']['name']); 
     if(move_uploaded_file($files['uploadedfile']['tmp_name'], $target_path)) {
         //echo "The file " . basename( $_FILES['uploadedfile']['name']) . " has been uploaded";
+        $filename = $files['uploadedfile']['name'];
     } else {
-        echo "Something's not right the 'Move uploaded file' function has failed.";
+        echo "Something's not right I didn't get a logo file.  I'll use a generic one.";
+        $filename = 'generic_radio.png';
     } // end else
     
-    $filename = $files['uploadedfile']['name'];
+    
     $filename = sanitize_filename($filename);
     return $filename;
 }
