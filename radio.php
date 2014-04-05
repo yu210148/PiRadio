@@ -221,8 +221,9 @@ function start_player($stationUrl, $db){
     $isTempStream = check_if_temp_stream($db, $stationUrl);
     
     //debug
+    print "<br>";
     var_dump($isTempStream);
-    
+    print "<br>";
     
     if ('false' == $isTempStream){ 
         $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
