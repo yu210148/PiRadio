@@ -32,10 +32,18 @@ function get_now_playing($db){
     // a function that get's the Name & Logo File Name of the currently playing stations
     $sql = "SELECT stations.Name, stations.FileName FROM stations INNER JOIN NowPlaying on stations.StationID = NowPlaying.StationID";
     $q = mysqli_query($db, $sql);
-    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        $NowPlayingName = $row[0];
-        $NowPlayingFileName = $row[1];
-    } // end while
+    
+    $row_count = mysqli_num_rows($q);
+    if ($row_count == 0) {
+        // we're playing a temp station so manually load the array
+        $NowPlayingName = "Playing QuickStream";
+        $NowPlayingFileName = "generic_radio.png";
+    } else {
+        while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+            $NowPlayingName = $row[0];
+            $NowPlayingFileName = $row[1];
+        } // end while
+    } // end else
     $NowPlayingArray = array();
     $NowPlayingArray[] = $NowPlayingName;
     $NowPlayingArray[] = $NowPlayingFileName;
@@ -143,7 +151,7 @@ print <<<HERE
 <tr>
     <FORM action="radio.php" method="POST">
     <input type="hidden" name="stopPlayer" value="Yes">
-    <td colspan=2><center><h3>Play URL</h3>
+    <td colspan=2><center><h3>Play Quick URL</h3>
     <input class="text" type="text" length=100 maxlength=300 name="stationUrl"></td>
     <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
     </FORM>
@@ -188,13 +196,36 @@ function stop_player($db){
     return 0;
 }
 
+function check_if_temp_stream($db, $stationUrl){
+    $stationUrl = urldecode($stationUrl);
+    $sql = "SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'";
+    mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        if ($row[0] > 0){
+            // stream exists in db
+            return 'false';
+        } else {
+            // it is a temp stream
+            return 'true';
+        } // end else
+    } // end while
+} // end function definition
+
 function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
+    $stationUrl = urldecode($stationUrl);
     $command = "cvlc $stationUrl";
     exec($command . " > /dev/null &");
-    $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
-    mysqli_query($db, $sql);
+    // check if it's a temp stream and if so write station id 0 to now playing
+    $isTempStream = check_if_temp_stream($db, $stationUrl);
+    if ('false' == $isTempStream){ 
+        $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
+        mysqli_query($db, $sql);
+    } else {
+        $sql = "INSERT INTO NowPlaying Values (0)";
+        mysqli_query($db, $sql);
+    }
     return 0;
 }
 
@@ -217,7 +248,7 @@ if ("down" == $volumeAdjust){
         $stopPlayer = $_POST["stopPlayer"];
     } // end else
     
-    $stationUrl = $_POST["stationUrl"];
+    $stationUrl = urlencode($_POST["stationUrl"]);
     
     //debug
     var_dump($_REQUEST["stationUrl"]);
