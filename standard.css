@@ -23,6 +23,10 @@ input.radio {
         display: inline;
 }
 
+input.text {
+    margin: auto;
+    
+}
 h2 {
 	margin: auto;
 	text-align: center;
