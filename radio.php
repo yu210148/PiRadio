@@ -234,15 +234,17 @@ function start_player($stationUrl, $db){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     $command = "cvlc $stationUrl";
-    exec($command . " > /dev/null &");
-    // check if it's a temp stream and if so write station id 0 to now playing
-    $isTempStream = check_if_temp_stream($db, $stationUrl);
     
     //debug
-    //print "<br>";
-    //var_dump($isTempStream);
-    //print "<br>";
+    print "<br>";
+    var_dump($command);
+    print "<br>";
     
+    exec($command . " > /dev/null &");
+    
+    // check if it's a temp stream and if so write station id 0 to now playing
+    $isTempStream = check_if_temp_stream($db, $stationUrl);
+
     if ('false' == $isTempStream){ 
         $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
         mysqli_query($db, $sql);
@@ -275,7 +277,7 @@ if ("down" == $volumeAdjust){
     $stationUrl = urlencode($_POST["stationUrl"]);
     
     //debug
-    var_dump($_REQUEST["stationUrl"]);
+    //var_dump($_REQUEST["stationUrl"]);
     
     if (empty($stationUrl)) {
         if ('Yes' == $stopPlayer){
