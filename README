@@ -1,5 +1,13 @@
 This is an early version of this.  
 
+To use it get a Raspberry Pi (or any other computer) running a LAMP stack,
+plug speakers into it.  Then stick these files in a directory on the web host.
+Finally, set up a mysql database called radio and import radio.sql and change 
+the username and password in settings.php to allow access to your database.
+
+Then point a web browser at the host and control your radio from any web enabled
+deivce on your local network.
+
 TODO: 
 -write an installer
 -change the buttons to call individual php scripts in the background
