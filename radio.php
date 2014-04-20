@@ -216,18 +216,21 @@ return 0;
 
 function raise_volume(){
     $command = "amixer set PCM 2dB+";
+    $command = escapeshellcmd($command);
     exec($command);
     return 0;
 }
 
 function lower_volume(){
     $command = "amixer set PCM 2dB-";
+    $command = escapeshellcmd($command);
     exec($command);
     return 0;
 }
 
 function stop_player($db){
     $command = "killall vlc";
+    $command = escapeshellcmd($command);
     exec($command);
     $sql = "DELETE FROM NowPlaying";
     mysqli_query($db, $sql);
@@ -255,7 +258,7 @@ function start_player($stationUrl, $db){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     $command = "cvlc $stationUrl";
-
+    $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
     // check if it's a temp stream and if so write station id 0 to now playing
