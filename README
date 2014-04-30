@@ -1,7 +1,8 @@
 This is an early version of this.  
 
-To use it get a Raspberry Pi (or any other computer) running a LAMP stack,
-plug speakers into it.  Then stick these files in a directory on the web host.
+To use it get a Raspberry Pi (or any other computer) running a LAMP stack, 
+install cvlc (e.g., sudo apt-get install cvlc on Ubuntu or Debian), plug speakers 
+into it.  Then stick these files in a directory on the web host.
 Finally, set up a mysql database called radio and import radio.sql and change 
 the username and password in settings.php to allow access to your database.
 
