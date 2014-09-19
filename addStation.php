@@ -39,7 +39,7 @@ function print_form(){
 print <<<HERE
 <center><h2>Add an Internet Radio Station</h2>
 <form enctype="multipart/form-data" action="addStation.php" method="POST">
-<input type="hidden" name="MAX_FILE_SIZE" value="200000" />
+<input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
 <table class='mine' border = '1'>
 <tr>
     <th><center>Station Name</center></th>
@@ -112,7 +112,7 @@ $stationUrl = $_POST["stationUrl"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
-var_dump($_FILES);
+//var_dump($_FILES);
 
 /* check connection */
 if (mysqli_connect_errno()) {
