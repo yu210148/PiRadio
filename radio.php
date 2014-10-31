@@ -209,6 +209,11 @@ print <<<HERE
 </FORM>
 </div>
 
+<div class='setAlarmButton'>
+<FORM action="setAlarm.php" method="POST">
+<INPUT class="myGreenButton" type="submit" name="Generate" value="Set Alarm">
+</FORM>
+</div>
 </div> 
 HERE;
 return 0;
