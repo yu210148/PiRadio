@@ -102,7 +102,7 @@ function set_alarm($db, $stationName, $date, $time){
   
 	 $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-      $stationURL = $row[0];
+      $stationUrl = $row[0];
     } // end while
 
     $command = "at $date $time cvlc $stationUrl";
