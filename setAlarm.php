@@ -97,7 +97,12 @@ function set_alarm($db, $stationName, $date, $time){
 
     // get station ID
     $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
-    
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+      $stationURL = $row[0];
+    } // end while
+  
+  //debug
+  var_dump($stationURL);
 
     $command = "at $date $time cvlc $stationUrl";
     return 0;
@@ -124,7 +129,7 @@ if (empty($time)){
     print_form($db);
 } else {
     print_form($db);
-    //set_alarm($db, $time, $date, $stationName);
+    set_alarm($db, $time, $date, $stationName);
     //print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
 
