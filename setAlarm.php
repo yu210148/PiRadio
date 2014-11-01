@@ -134,7 +134,7 @@ if (empty($time)){
     print_form($db);
 } else {
     print_form($db);
-    set_alarm($db, $time, $date, $stationName);
+    set_alarm($db, $stationName, $date, $time);
     //print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
 
