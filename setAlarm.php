@@ -104,6 +104,9 @@ function set_alarm($db, $stationName, $date, $time){
     } // end while
 
     $command = "at $date $time cvlc $stationUrl";
+  
+  //debug 
+  var_dump($command);
     return 0;
 }
 
