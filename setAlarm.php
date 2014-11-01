@@ -97,6 +97,7 @@ function set_alarm($db, $stationName, $date, $time){
 
     // get station ID
     $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
+	 $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
       $stationURL = $row[0];
     } // end while
