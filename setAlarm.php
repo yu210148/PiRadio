@@ -7,11 +7,22 @@
 <link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script src="js/msdropdown/jquery.dd.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
 <link rel=StyleSheet href="standard.css" type="text/css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
+  <script language="javascript">
+$(document).ready(function(e) {
+try {
+$("body select").msDropDown();
+} catch(e) {
+alert(e.message);
+}
+});
+</script>
 <?php
 /*
     PiRadio Plays an assortment of radio stations on a webhost (I've got a
@@ -35,7 +46,16 @@
 
 require_once 'settings.php';
 
-function print_form(){
+function print_form($db){
+// get the time and date today for use in setting minimum's 
+date_default_timezone_set('America/Toronto');
+$today = date('Y-m-d');
+$now = date('H:i');
+
+// get a list of stations from the databaseName
+$sql = "SELECT stations.Name, stations.StationID, stations.FileName FROM stations";
+$q = mysqli_query($db, $sql);
+
 print <<<HERE
 <center><h2>Set Alarm (Not Yet Implemented)</h2>
 <form action="setAlarm.php" method="POST">
@@ -43,12 +63,21 @@ print <<<HERE
 <tr>
     <th><center>Time</center></th>
     <th><center>Date</center></th>
+    <th><center>Station</center></th>
 </tr>
 <tr>
-    <td><center>placeholder</center></td>
-    <td><center>placeholder</center></td>
-</tr>
+    <td><center><input type="time" name="time" autocomplete="on" value="$now" autofocus required></center></td>
+    <td><center><input type="date" name="date" autocomplete="on" min="$today" value="$today" required></center></td>
+    <td><center><select style="width:200px" class="station" name="station" id="station" required onchange="showValue(this)">
+HERE;
+while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+    print "<option data-image=\"uploads/$row[2]\">$row[0]</option>";
+} // end while
 
+
+print <<<HERE
+    </select></center></td>
+</tr>
 </table>
 <center><INPUT class="myButton" type="submit" name="Generate" value="Set Alarm"></center>
 </form>
@@ -61,14 +90,23 @@ HERE;
 return 0;
 } // end function definition for print_form()
 
+function set_alarm($db, $stationID, $date, $time){
+    // a function to set an at job to start the radio playing at a specificed time
+    // TODO: Implement this with a recurring option that sets a cron job rather than 
+    // an at job
+    return 0;
+}
 
 // HERE'S MAIN
-$time = $_POST["Time"];
-$date = $_POST["Date"];
+$time = $_POST["time"];
+$date = $_POST["date"];
+$station = $_POST["station"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
-//var_dump($_FILES);
+var_dump($date);
+var_dump($time);
+var_dump($station);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -77,9 +115,9 @@ if (mysqli_connect_errno()) {
 }
 
 if (empty($time)){
-    print_form();
+    print_form($db);
 } else {
-    print_form();
+    print_form($db);
     //set_alarm($db, $time, $date, $stationID);
     //print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
