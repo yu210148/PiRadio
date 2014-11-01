@@ -90,23 +90,29 @@ HERE;
 return 0;
 } // end function definition for print_form()
 
-function set_alarm($db, $stationID, $date, $time){
+function set_alarm($db, $stationName, $date, $time){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
     // an at job
+
+    // get station ID
+    $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
+    
+
+    $command = "at $date $time cvlc $stationUrl";
     return 0;
 }
 
 // HERE'S MAIN
 $time = $_POST["time"];
 $date = $_POST["date"];
-$station = $_POST["station"];
+$stationName = $_POST["station"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
 var_dump($date);
 var_dump($time);
-var_dump($station);
+var_dump($stationName);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -118,7 +124,7 @@ if (empty($time)){
     print_form($db);
 } else {
     print_form($db);
-    //set_alarm($db, $time, $date, $stationID);
+    //set_alarm($db, $time, $date, $stationName);
     //print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
 
