@@ -110,9 +110,9 @@ $stationName = $_POST["station"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
-var_dump($date);
-var_dump($time);
-var_dump($stationName);
+//var_dump($date);
+//var_dump($time);
+//var_dump($stationName);
 
 /* check connection */
 if (mysqli_connect_errno()) {
