@@ -68,10 +68,10 @@ print <<<HERE
 <tr>
     <td><center><input type="time" name="time" autocomplete="on" value="$now" autofocus required></center></td>
     <td><center><input type="date" name="date" autocomplete="on" min="$today" value="$today" required></center></td>
-    <td><center><select style="width:200px" class="station" name="station" id="station" required onchange="showValue(this)">
+    <td><center><select class="station" name="station" id="station" required onchange="showValue(this)">
 HERE;
 while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-    print "<option data-image=\"uploads/$row[2]\">$row[0]</option>";
+    print "<option data-image=\"uploads/25x25_$row[2]\">$row[0]</option>";
 } // end while
 
 

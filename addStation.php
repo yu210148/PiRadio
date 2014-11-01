@@ -89,9 +89,17 @@ function deal_with_logo_file($files){
     return $filename;
 }
 
+function create_thumbnail($filename){
+    // a function to create a 25px x 25px thumbnail of the logo file for display in the setAlarm drop-down
+    $command = "convert uploads/$filename -resize 25x25! uploads/25x25_$filename";
+    exec($command);
+    return 0;
+}
+
 function add_station($db, $stationName, $stationUrl, $files){
     // a function to add the entered station info to the database
     $filename = deal_with_logo_file($files);
+    create_thumbnail($filename);
     $stationName = mysqli_real_escape_string($db, $stationName);
     $stationUrl = mysqli_real_escape_string($db, $stationUrl);
     $filename = mysqli_real_escape_string($db, $filename);
