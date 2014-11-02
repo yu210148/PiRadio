@@ -130,7 +130,7 @@ function stop_player($db){
     return 0;
 }
 
-function set_alarm($db, $stationName, $date, $time){
+function set_alarm($db, $stationName, $date, $time, $user, $pass){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
     // an at job
@@ -170,7 +170,7 @@ if (empty($time)){
     print_form($db);
 } else {
     print_form($db);
-    set_alarm($db, $stationName, $date, $time);
+    set_alarm($db, $stationName, $date, $time, $user, $pass);
     print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
 
