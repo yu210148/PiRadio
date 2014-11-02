@@ -109,7 +109,7 @@ function set_alarm($db, $stationName, $date, $time){
   exec($command);
   
   //debug 
-  //var_dump($command);
+  var_dump($command);
     return 0;
 }
 
