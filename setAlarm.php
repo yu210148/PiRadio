@@ -64,11 +64,13 @@ print <<<HERE
     <th><center>Time</center></th>
     <th><center>Date</center></th>
     <th><center>Station</center></th>
+    <th><center>Recurring</center></th>
 </tr>
 <tr>
     <td><center><input type="time" name="time" autocomplete="on" value="$now" autofocus required></center></td>
     <td><center><input type="date" name="date" autocomplete="on" min="$today" value="$today" required></center></td>
     <td><center><select class="station" name="station" id="station" required onchange="showValue(this)">
+    <td><center><input type="checkbox" name="recurring"> (not yet implemented)</center></td>
 HERE;
 while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     print "<option data-image=\"uploads/25x25_$row[2]\">$row[0]</option>";
