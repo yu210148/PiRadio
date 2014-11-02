@@ -110,10 +110,7 @@ function write_shell_script($command){
     // write the command to the file
     $line = "$command";
     fwrite($handle, $line);
-    
-    // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
-    // turns on
-    
+
     // close the handle
     fclose($handle);
     
@@ -145,6 +142,10 @@ function set_alarm($db, $stationName, $date, $time){
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $stationUrl = $row[0];
     } // end while
+    
+    // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
+    // turns on
+    
     $command = "at $time $date <<< '/usr/bin/killall vlc; /usr/bin/cvlc $stationUrl'";
     write_shell_script($command);
     $command = "./uploads/alarm_script.sh";
