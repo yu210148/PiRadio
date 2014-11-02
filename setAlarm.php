@@ -57,7 +57,7 @@ $sql = "SELECT stations.Name, stations.StationID, stations.FileName FROM station
 $q = mysqli_query($db, $sql);
 
 print <<<HERE
-<center><h2>Set Alarm (Not Yet Implemented)</h2>
+<center><h2>Set Alarm</h2>
 <form action="setAlarm.php" method="POST">
 <table class='mine' border = '1'>
 <tr>
