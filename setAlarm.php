@@ -90,6 +90,36 @@ HERE;
 return 0;
 } // end function definition for print_form()
 
+function write_shell_script($command){
+    // a function to write a quick shell script 
+    // this is needed because php is executing my at
+    // command in /bin/sh rather than /bin/bash
+    // which doesn't have the <<< construct used in the
+    // command
+    
+    // remove existing file if it exists
+    ulink(alarm_script.sh);
+    
+    // open file for writing
+    $handle = fopen('alarm_script.sh', w);
+    
+    // write the hash bang line
+    $line = "#!/bin/bash";
+    fwrite($handle, $line);
+    
+    // write the command to the file
+    $line = "$command";
+    fwrite($handle, $line);
+    
+    // close the handle
+    fclose($handle);
+    
+    // make the file executable
+    $command = "chmod u+x alarm_script.sh";
+    shell_exec($command);
+    return 0;
+}
+
 function set_alarm($db, $stationName, $date, $time){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
@@ -107,8 +137,13 @@ function set_alarm($db, $stationName, $date, $time){
 
     $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl'";
     //$output = shell_exec($command);
-  
-    //debug 
+    
+    write_shell_script($command);
+    
+    $command = "./alarm_script.sh";
+    $output = shell_exec($command);
+    
+    //debug
     var_dump($command);
     var_dump($output);
     
