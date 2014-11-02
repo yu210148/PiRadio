@@ -102,19 +102,13 @@ function set_alarm($db, $stationName, $date, $time){
   
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-      $stationUrl = $row[0];
+        $stationUrl = $row[0];
     } // end while
 
     $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl'";
-    $command = "/bin/bash | echo $0";
-    $output = shell_exec($command);
+    //$output = shell_exec($command);
   
     //debug 
-    var_dump($command);
-    var_dump($output);
-    
-    $command = "whoami";
-    $output = shell_exec($command);
     var_dump($command);
     var_dump($output);
     
