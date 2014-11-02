@@ -108,7 +108,7 @@ function write_shell_script($command){
     fwrite($handle, $line);
     
     // write command to stop player if playing to file
-    $line = "killall vlc";
+    $line = "killall vlc\n";
     fwrite ($handle, $line);
     
     // write the command to the file
