@@ -97,19 +97,19 @@ function set_alarm($db, $stationName, $date, $time){
 
     // get station ID
     $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
-  //debug
-  //var_dump($sql);
+    //debug
+    //var_dump($sql);
   
-	 $q = mysqli_query($db, $sql);
+    $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
       $stationUrl = $row[0];
     } // end while
 
     $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl''";
-  exec($command);
+    //exec($command);
   
-  //debug 
-  var_dump($command);
+    //debug 
+    var_dump($command);
     return 0;
 }
 
