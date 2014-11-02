@@ -101,7 +101,7 @@ function write_shell_script($command){
     unlink(alarm_script.sh);
     
     // open file for writing
-    $handle = fopen('alarm_script.sh', w);
+    $handle = fopen('alarm_script.sh', "w");
     
     // write the hash bang line
     $line = "#!/bin/bash";
