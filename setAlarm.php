@@ -98,10 +98,10 @@ function write_shell_script($command){
     // command
     
     // remove existing file if it exists
-    unlink('uploads/alarm_script.sh');
+    unlink('./uploads/alarm_script.sh');
     
     // open file for writing
-    $handle = fopen('uploads/alarm_script.sh', "w");
+    $handle = fopen('./uploads/alarm_script.sh', "w");
     
     // write the hash bang line
     $line = "#!/bin/bash";
@@ -115,7 +115,7 @@ function write_shell_script($command){
     fclose($handle);
     
     // make the file executable
-    $command = "chmod u+x uploads/alarm_script.sh";
+    $command = "chmod u+x ./uploads/alarm_script.sh";
     shell_exec($command);
     return 0;
 }
@@ -140,7 +140,7 @@ function set_alarm($db, $stationName, $date, $time){
     
     write_shell_script($command);
     
-    $command = "uploads/alarm_script.sh";
+    $command = "./uploads/alarm_script.sh";
     $output = shell_exec($command);
     
     //debug
