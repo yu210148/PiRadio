@@ -105,7 +105,7 @@ function set_alarm($db, $stationName, $date, $time){
       $stationUrl = $row[0];
     } // end while
 
-    $command = "at $time $date <<< /usr/bin/cvlc $stationUrl";
+    $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl''";
   exec($command);
   
   //debug 
