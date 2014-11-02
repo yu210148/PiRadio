@@ -101,10 +101,10 @@ function write_shell_script($command){
     unlink('./uploads/alarm_script.sh');
     
     // open file for writing
-    $handle = fopen('./uploads/alarm_script.sh', "w");
+    $handle = fopen('./uploads/alarm_script.sh', "w");  // generates permission denied error
     
     // write the hash bang line
-    $line = "#!/bin/bash";
+    $line = "#!/bin/bash\n";
     fwrite($handle, $line);
     
     // write the command to the file
