@@ -107,16 +107,33 @@ function write_shell_script($command){
     $line = "#!/bin/bash\n";
     fwrite($handle, $line);
     
+    // write command to stop player if playing to file
+    $line = "killall vlc";
+    fwrite ($handle, $line);
+    
     // write the command to the file
     $line = "$command";
     fwrite($handle, $line);
+    
+    // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
+    // turns on
     
     // close the handle
     fclose($handle);
     
     // make the file executable
     $command = "chmod u+x ./uploads/alarm_script.sh";
+    $command = escapeshellcmd($command);
     shell_exec($command);
+    return 0;
+}
+
+function stop_player($db){
+    $command = "killall vlc";
+    $command = escapeshellcmd($command);
+    exec($command);
+    $sql = "DELETE FROM NowPlaying";
+    mysqli_query($db, $sql);
     return 0;
 }
 
@@ -127,26 +144,16 @@ function set_alarm($db, $stationName, $date, $time){
 
     // get station ID
     $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
-    //debug
-    //var_dump($sql);
   
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $stationUrl = $row[0];
     } // end while
-
     $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl'";
-    //$output = shell_exec($command);
-    
     write_shell_script($command);
-    
     $command = "./uploads/alarm_script.sh";
+    $command = escapeshellcmd($command);
     $output = shell_exec($command);
-    
-    //debug
-    var_dump($command);
-    var_dump($output);
-    
     return 0;
 }
 
@@ -167,7 +174,7 @@ if (empty($time)){
 } else {
     print_form($db);
     set_alarm($db, $stationName, $date, $time);
-    //print "<h3>DONE! Alarm Set.</h3>";
+    print "<h3>DONE! Alarm Set.</h3>";
 } // end the grand else
 
 mysqli_close($db);
