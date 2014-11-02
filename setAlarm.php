@@ -106,11 +106,18 @@ function set_alarm($db, $stationName, $date, $time){
     } // end while
 
     $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl'";
+    $command = "echo $0";
     $output = shell_exec($command);
   
     //debug 
     var_dump($command);
     var_dump($output);
+    
+    $command = "whoami";
+    $output = shell_exec($command);
+    var_dump($command);
+    var_dump($output);
+    
     return 0;
 }
 
