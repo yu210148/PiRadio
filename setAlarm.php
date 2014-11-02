@@ -98,7 +98,7 @@ function write_shell_script($command){
     // command
     
     // remove existing file if it exists
-    ulink(alarm_script.sh);
+    unlink(alarm_script.sh);
     
     // open file for writing
     $handle = fopen('alarm_script.sh', w);
