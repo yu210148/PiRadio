@@ -144,9 +144,6 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
         $stationID = $row[1];
     } // end while
     
-    // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
-    // turns on
-    
     $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
     write_shell_script($command);
     $command = "./uploads/alarm_script.sh";
