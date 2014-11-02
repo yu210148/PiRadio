@@ -158,6 +158,11 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
 $time = $_POST["time"];
 $date = $_POST["date"];
 $stationName = $_POST["station"];
+$recurring = $_POST["recurring"];
+
+//debug
+var_dump($recurring);
+
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 /* check connection */
