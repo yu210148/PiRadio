@@ -107,13 +107,9 @@ function write_shell_script($command){
     $line = "#!/bin/bash\n";
     fwrite($handle, $line);
     
-    // write command to stop player if playing to file
-    $line = "killall vlc\n";
-    fwrite ($handle, $line);
-    
     // write the command to the file
     $line = "$command";
-    //fwrite($handle, $line); // taking this line out for debugging
+    fwrite($handle, $line);
     
     // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
     // turns on
@@ -149,7 +145,7 @@ function set_alarm($db, $stationName, $date, $time){
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $stationUrl = $row[0];
     } // end while
-    $command = "at $time $date <<< '/usr/bin/cvlc $stationUrl'";
+    $command = "at $time $date <<< '/usr/bin/killall vlc; /usr/bin/cvlc $stationUrl'";
     write_shell_script($command);
     $command = "./uploads/alarm_script.sh";
     $command = escapeshellcmd($command);
