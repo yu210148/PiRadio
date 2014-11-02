@@ -113,7 +113,7 @@ function write_shell_script($command){
     
     // write the command to the file
     $line = "$command";
-    fwrite($handle, $line);
+    //fwrite($handle, $line); // taking this line out for debugging
     
     // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
     // turns on
