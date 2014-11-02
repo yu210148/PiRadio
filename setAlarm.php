@@ -136,17 +136,18 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
     // an at job
 
     // get station ID
-    $sql = "SELECT stations.StationURL FROM stations WHERE stations.Name = '$stationName'";
+    $sql = "SELECT stations.StationURL, stations.StationID FROM stations WHERE stations.Name = '$stationName'";
   
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $stationUrl = $row[0];
+        $stationID = $row[1];
     } // end while
     
     // TODO: HAVE THIS SCRIPT WRITE TO THE NowPlaying table in the database when the alarm 
     // turns on
     
-    $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; /usr/bin/cvlc $stationUrl'";
+    $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
     write_shell_script($command);
     $command = "./uploads/alarm_script.sh";
     $command = escapeshellcmd($command);
