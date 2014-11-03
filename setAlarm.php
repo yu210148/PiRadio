@@ -153,6 +153,10 @@ HERE;
         //print "<tr><td>$line</td></tr>";
         print "<tr>";
         $elementArray = explode(" ", $line);
+        
+        //deubg
+        var_dump($elementArray);
+        
         foreach ($elementArray as $key=>$val){
             if ($key == 1 || $key == 2 || $key == 3 || $key == 4 || $key == 5){
                 print "<td>$val</td>";
