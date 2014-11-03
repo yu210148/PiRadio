@@ -47,6 +47,10 @@ INSERT INTO `stations` (`StationID`, `Name`, `StationURL`, `FileName`) VALUES
 (6, 'WRN English Africa & Asia Pacific', 'http://193.42.152.215:8012/listen.pls', 'wrn.png'),
 (7, 'ABC Radio Australia', 'http://www.abc.net.AU/res/streaming/audio/windows/radio_australia_eng_asia.asx', 'abc_ra.png');
 
+CREATE TABLE IF NOT EXISTS `NowPlaying` (
+    `StationID` int(11)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=0 ;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
