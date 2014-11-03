@@ -147,7 +147,7 @@ function show_set_alarms(){
 print <<<HERE
 <BR>
 The following alarms are set<BR>
-<table class='mine' border='1'>
+<table class='mine'>
 HERE;
     foreach ($outputArray as $line){
         //print "<tr><td>$line</td></tr>";
