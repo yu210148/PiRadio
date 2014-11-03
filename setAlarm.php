@@ -139,7 +139,7 @@ function show_set_alarms(){
     exec($command, $outputArray);
     
     //debug
-    var_dump($outputArray);
+    //var_dump($outputArray);
     
     if ($outputArray != NULL){
         
@@ -155,7 +155,7 @@ HERE;
         $elementArray = preg_split('/\s+/', $line);
         
         //deubg
-        var_dump($elementArray);
+        //var_dump($elementArray);
         
         foreach ($elementArray as $key=>$val){
             if ($key == 1 || $key == 2 || $key == 3 || $key == 4 || $key == 5){
