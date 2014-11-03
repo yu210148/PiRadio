@@ -132,6 +132,21 @@ function stop_player($db){
     return 0;
 }
 
+function show_set_alarms(){
+    // a function to retreive alamrs already set and display them on the screen
+    $command = "atx";
+    $command = escapeshellcmd($command);
+    $output = shell_exec($command);
+    if ($output != NULL){
+print <<<HERE
+<BR>
+The following alarms are set<BR>
+$output<BR>
+HERE;
+} // end if
+return 0;
+}
+
 function set_alarm($db, $stationName, $date, $time, $user, $pass){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
@@ -173,10 +188,12 @@ if (mysqli_connect_errno()) {
 
 if (empty($time)){
     print_form($db);
+    show_set_alarms();
 } else {
     print_form($db);
     set_alarm($db, $stationName, $date, $time, $user, $pass);
     print "<h3>DONE! Alarm Set.</h3>";
+    show_set_alarms();
 } // end the grand else
 
 mysqli_close($db);
