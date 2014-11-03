@@ -134,7 +134,7 @@ function stop_player($db){
 
 function show_set_alarms(){
     // a function to retreive alamrs already set and display them on the screen
-    $command = "atx";
+    $command = "atq";
     $command = escapeshellcmd($command);
     $output = shell_exec($command);
     if ($output != NULL){
