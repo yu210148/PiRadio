@@ -64,7 +64,7 @@ print <<<HERE
     <th><center>Time</center></th>
     <th><center>Date</center></th>
     <th><center>Station</center></th>
-    <th><center>Recurring</center></th>
+    <!-- <th><center>Recurring</center></th> -->
 </tr>
 <tr>
     <td><center><input type="time" name="time" autocomplete="on" value="$now" autofocus required></center></td>
@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
 
 print <<<HERE
     </select></center></td>
-    <td><center><input type="checkbox" name="recurring"> (not yet implemented)</center></td>
+    <!-- <td><center><input type="checkbox" name="recurring"> (not yet implemented)</center></td> -->
 </tr>
 </table>
 <center><INPUT class="myButton" type="submit" name="Generate" value="Set Alarm"></center>
@@ -161,7 +161,7 @@ $stationName = $_POST["station"];
 $recurring = $_POST["recurring"];
 
 //debug
-var_dump($recurring);
+//var_dump($recurring);
 
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
