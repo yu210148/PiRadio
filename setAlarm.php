@@ -139,15 +139,15 @@ function show_set_alarms(){
     exec($command, $outputArray);
     
     //debug
-    var_dump($output);
+    var_dump($outputArray);
     
-    if ($output != NULL){
+    if ($outputArray != NULL){
         
     
 print <<<HERE
 <BR>
 The following alarms are set<BR>
-$output<BR>
+$outputArray<BR>
 HERE;
 } // end if
 return 0;
