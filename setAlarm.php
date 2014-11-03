@@ -147,8 +147,12 @@ function show_set_alarms(){
 print <<<HERE
 <BR>
 The following alarms are set<BR>
-$outputArray<BR>
+<table class='mine'>
 HERE;
+    foreach ($outputArray as $line){
+        print "<tr><td>$line</td></tr>";
+    } // end foreach
+    print "</table>";
 } // end if
 return 0;
 }
