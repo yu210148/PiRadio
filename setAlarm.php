@@ -158,6 +158,7 @@ HERE;
         //var_dump($elementArray);
         
         foreach ($elementArray as $key=>$val){
+            // the job number's in $elementArray[0]
             if ($key == 1 || $key == 2 || $key == 3 || $key == 4 || $key == 5){
                 print "<td>$val</td>";
             } // end if
