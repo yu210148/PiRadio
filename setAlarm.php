@@ -147,10 +147,18 @@ function show_set_alarms(){
 print <<<HERE
 <BR>
 The following alarms are set<BR>
-<table class='mine'>
+<table class='mine' border='1'>
 HERE;
     foreach ($outputArray as $line){
-        print "<tr><td>$line</td></tr>";
+        //print "<tr><td>$line</td></tr>";
+        print "<tr>";
+        $elementArray = explode(" ", $line);
+        foreach ($elementArray as $key=>$val){
+            if ($key == 1 || $key == 2 || $key == 3 || $key == 4 || $key == 5){
+                print "<td>$val</td>";
+            } // end if
+        } // end foreach
+        print "</tr>";
     } // end foreach
     print "</table>";
 } // end if
