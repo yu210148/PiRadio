@@ -137,6 +137,10 @@ function show_set_alarms(){
     $command = "atq";
     $command = escapeshellcmd($command);
     $output = shell_exec($command);
+    
+    //debug
+    var_dump($output);
+    
     if ($output != NULL){
 print <<<HERE
 <BR>
