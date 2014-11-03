@@ -139,9 +139,11 @@ function show_set_alarms(){
     $output = shell_exec($command);
     
     //debug
-    //var_dump($output);
+    var_dump($output);
     
     if ($output != NULL){
+        
+    
 print <<<HERE
 <BR>
 The following alarms are set<BR>
