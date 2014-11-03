@@ -136,7 +136,7 @@ function show_set_alarms(){
     // a function to retreive alamrs already set and display them on the screen
     $command = "atq";
     $command = escapeshellcmd($command);
-    $output[] = exec($command);
+    exec($command, $outputArray);
     
     //debug
     var_dump($output);
