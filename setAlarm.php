@@ -152,7 +152,7 @@ HERE;
     foreach ($outputArray as $line){
         //print "<tr><td>$line</td></tr>";
         print "<tr>";
-        $elementArray = reg_split('/\s+/', $line);
+        $elementArray = preg_split('/\s+/', $line);
         
         //deubg
         var_dump($elementArray);
