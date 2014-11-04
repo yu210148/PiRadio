@@ -161,6 +161,14 @@ HERE;
 return 0;
 }
 
+function write_alarm_meta_info_to_db($db, $stationID, $date, $time){
+    // a function to write info about the alarm being set to a table in the db
+    // TODO: add in a db table and fill out this function
+    // going to add in the values for the above variables then use this 
+    // rather than the output of atq to show scheduled alarm info
+    return 0;
+}
+
 function set_alarm($db, $stationName, $date, $time, $user, $pass){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
@@ -180,6 +188,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
     $command = "./uploads/alarm_script.sh";
     $command = escapeshellcmd($command);
     $output = shell_exec($command);
+    write_alarm_meta_info_to_db($db, $stationID, $date, $time);
     return 0;
 }
 
