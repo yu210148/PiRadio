@@ -123,15 +123,6 @@ function write_shell_script($command){
     return 0;
 }
 
-function stop_player($db){
-    $command = "killall vlc";
-    $command = escapeshellcmd($command);
-    exec($command);
-    $sql = "DELETE FROM NowPlaying";
-    mysqli_query($db, $sql);
-    return 0;
-}
-
 function show_set_alarms(){
     // a function to retreive alamrs already set and display them on the screen
     $command = "atq";
