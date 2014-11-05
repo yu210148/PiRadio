@@ -171,7 +171,7 @@ function write_alarm_meta_info_to_db($db, $stationID, $date, $time){
     //mysqli_query($db, $sql);
     
     //debug
-    // var_dump($sql);
+    var_dump($sql);
     return 0;
 }
 
