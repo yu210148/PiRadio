@@ -166,6 +166,9 @@ function write_alarm_meta_info_to_db($db, $stationID, $date, $time){
     // TODO: add in a db table and fill out this function
     // going to add in the values for the above variables then use this 
     // rather than the output of atq to show scheduled alarm info
+    $sql = "INSERT INTO alarms VALUES ('NULL', '$stationID', '$date', '$time')";
+    $sql = mysqli_real_escape_string($db, $sql);
+    mysqli_query($db, $sql);
     return 0;
 }
 
