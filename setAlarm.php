@@ -137,9 +137,9 @@ function show_set_alarms($db){
     //exec($command, $outputArray);
     
     //debug
-    //var_dump($q);
+    var_dump($q->num_rows);
     
-    if ($q != NULL){
+    if ($q->num_rows != NULL){
         
     
 print <<<HERE
