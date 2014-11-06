@@ -216,7 +216,7 @@ if (mysqli_connect_errno()) {
 
 if (empty($time)){
     print_form($db);
-    show_set_alarms();
+    show_set_alarms($db);
 } else {
     print_form($db);
     set_alarm($db, $stationName, $date, $time, $user, $pass);
