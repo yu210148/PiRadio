@@ -145,7 +145,7 @@ function show_set_alarms($db){
 print <<<HERE
 <BR>
 The following alarms are set<BR>
-<table class='mine' border='1'>
+<table class='mine'>
 HERE;
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         print "<tr>";
