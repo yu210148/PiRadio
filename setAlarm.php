@@ -137,7 +137,7 @@ function show_set_alarms($db){
     //exec($command, $outputArray);
     
     //debug
-    //var_dump($outputArray);
+    var_dump($q);
     
     if ($q != NULL){
         
