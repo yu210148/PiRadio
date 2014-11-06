@@ -134,7 +134,8 @@ function show_set_alarms($db){
     } // end while
     
     //debug
-    //var_dump($dbOutputArray);
+    var_dump($dbOutputArray);
+    //<td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
     
     
     $command = "atq";
