@@ -136,7 +136,7 @@ function show_set_alarms($db){
     } // end while
     
     //debug
-    var_dump($dbOutputArray);
+    //var_dump($dbOutputArray);
     
     
     $command = "atq";
