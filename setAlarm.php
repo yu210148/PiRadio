@@ -132,14 +132,14 @@ function show_set_alarms($db){
     //var_dump($dbOutputArray);
     //<td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
     
-    $command = "atq";
-    $command = escapeshellcmd($command);
-    exec($command, $outputArray);
+    //$command = "atq";
+    //$command = escapeshellcmd($command);
+    //exec($command, $outputArray);
     
     //debug
     //var_dump($outputArray);
     
-    if ($outputArray != NULL){
+    if ($q != NULL){
         
     
 print <<<HERE
