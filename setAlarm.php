@@ -128,11 +128,9 @@ function show_set_alarms($db){
     $sql = "SELECT stations.Name, alarms.Date, alarms.Time, stations.FileName, alarms.AlarmID FROM alarms INNER JOIN stations ON alarms.StationID = stations.StationID";
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        $dbOutputArray[] = $row[0];
-        $dbOutputArray[] = $row[1];
-        $dbOutputArray[] = $row[2];
-        $dbOutputArray[] = $row[3];
-        $dbOutputArray[] = $row[4];
+        foreach ($row as $val){
+            $dbOutputArray[] = $val;
+        } // end foreach
     } // end while
     
     //debug
