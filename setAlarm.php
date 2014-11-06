@@ -123,8 +123,22 @@ function write_shell_script($command){
     return 0;
 }
 
-function show_set_alarms(){
+function show_set_alarms($db){
     // a function to retreive alamrs already set and display them on the screen
+    $sql = "SELECT stations.Name, alarms.Date, alarms.Time, stations.FileName, alarms.AlarmID FROM alarms INNER JOIN stations ON alarms.StationID = stations.StationID";
+    $q = mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        $dbOutputArray[] = $row[0];
+        $dbOutputArray[] = $row[1];
+        $dbOutputArray[] = $row[2];
+        $dbOutputArray[] = $row[3];
+        $dbOutputArray[] = $row[4];
+    } // end while
+    
+    //debug
+    var_dump($dbOutputArray);
+    
+    
     $command = "atq";
     $command = escapeshellcmd($command);
     exec($command, $outputArray);
@@ -222,7 +236,7 @@ if (empty($time)){
     print_form($db);
     set_alarm($db, $stationName, $date, $time, $user, $pass);
     print "<h3>DONE! Alarm Set.</h3>";
-    show_set_alarms();
+    show_set_alarms($db);
 } // end the grand else
 
 mysqli_close($db);
