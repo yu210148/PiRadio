@@ -127,16 +127,10 @@ function show_set_alarms($db){
     // a function to retreive alamrs already set and display them on the screen
     $sql = "SELECT stations.Name, alarms.Date, alarms.Time, stations.FileName, alarms.AlarmID FROM alarms INNER JOIN stations ON alarms.StationID = stations.StationID";
     $q = mysqli_query($db, $sql);
-    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        foreach ($row as $val){
-            $dbOutputArray[] = $val;
-        } // end foreach
-    } // end while
     
     //debug
-    var_dump($dbOutputArray);
+    //var_dump($dbOutputArray);
     //<td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
-    
     
     $command = "atq";
     $command = escapeshellcmd($command);
@@ -153,22 +147,14 @@ print <<<HERE
 The following alarms are set<BR>
 <table class='mine'>
 HERE;
-    foreach ($outputArray as $line){
-        //print "<tr><td>$line</td></tr>";
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         print "<tr>";
-        $elementArray = preg_split('/\s+/', $line);
-        
-        //deubg
-        //var_dump($elementArray);
-        
-        foreach ($elementArray as $key=>$val){
-            // the job number's in $elementArray[0]
-            if ($key == 1 || $key == 2 || $key == 3 || $key == 4 || $key == 5){
-                print "<td>$val</td>";
-            } // end if
-        } // end foreach
+        print "<td><center><img src=\"uploads/$row[3]\" alt=\"Station Logo\" width=\"100\" height=\"100\"></center></td>";
+        print "<td><center><h3>$row[0]</h3></center></td>";
+        print "<td><center><h3>$row[1]</h3></center></td>";
+        print "<td><center><h3>$row[2]</h3></center></td>";
         print "</tr>";
-    } // end foreach
+    } // end while
     print "</table>";
 } // end if
 return 0;
