@@ -276,8 +276,8 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
 // test data
-$AlarmID = 21;
-cancel_alarm($db, $AlarmID);
+//$AlarmID = 21;
+//cancel_alarm($db, $AlarmID);
 
 /* check connection */
 if (mysqli_connect_errno()) {
