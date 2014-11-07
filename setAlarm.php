@@ -192,7 +192,9 @@ function cancel_alarm($db, $AlarmID){
         $datetimeFromAt = $lineArray[1] . " " . $lineArray[2] . " " . $lineArray[3] . " " . $lineArray[4];
         
         // debug
-        var_dump($datetimeFromAt);
+        // var_dump($datetimeFromAt);
+        // string(18) "Fri Nov 7 09:17:00" string(18) "Fri Nov 7 08:16:00"
+        var_dump($datetimeAtFormat);
         
         if ($datetimeAtFormat == $datetimeFromAt){
             $atJobNumber = $lineArray[0];
