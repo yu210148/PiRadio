@@ -153,6 +153,8 @@ HERE;
         print "<td><center><h3>$row[0]</h3></center></td>";
         print "<td><center><h3>$row[1]</h3></center></td>";
         print "<td><center><h3>$row[2]</h3></center></td>";
+        print "<td><center><form action=\"setAlarm.php\" method=\"post\"><INPUT type=\"hidden\" name=\"AlarmID\" value=\"$row[4]\"><INPUT class=\"myButton\" type=\"submit\" name=\"Generate\" value=\"Cancel Alarm\"></form></center></td>";
+        // AlarmID is $row[4].  Use to cancel alarm
         print "</tr>";
     } // end while
     print "</table>";
@@ -271,6 +273,7 @@ $time = $_POST["time"];
 $date = $_POST["date"];
 $stationName = $_POST["station"];
 $recurring = $_POST["recurring"];
+$AlarmID = $_POST["AlarmID"];
 
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
@@ -285,13 +288,18 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
+// see if we're cancelling a set alarm
+if ($AlarmID != NULL){
+    cancel_alarm($db, $AlarmID);
+} // end if
+
 if (empty($time)){
     print_form($db);
     show_set_alarms($db);
 } else {
     print_form($db);
     set_alarm($db, $stationName, $date, $time, $user, $pass);
-    print "<h3>DONE! Alarm Set.</h3>";
+    //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
 } // end the grand else
 
