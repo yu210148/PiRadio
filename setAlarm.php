@@ -144,7 +144,7 @@ function show_set_alarms($db){
     
 print <<<HERE
 <BR>
-The following alarms are set<BR>
+<p>The following alarms are set</p>
 <table class='mine' border='1'>
 HERE;
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
