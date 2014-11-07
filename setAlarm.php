@@ -190,19 +190,39 @@ function cancel_alarm($db, $AlarmID){
         // split line on whitespace so we can deal with the individual elements
         $lineArray = preg_split('/\s+/', $line);
         $datetimeFromAt = $lineArray[1] . " " . $lineArray[2] . " " . $lineArray[3] . " " . $lineArray[4];
+        
+        // debug
+        var_dump($datetimeFromAt);
+        
         if ($datetimeAtFormat == $datetimeFromAt){
             $atJobNumber = $lineArray[0];
         } // end if
     } // end foreach
     
     // delete the matched at job
-    $command = "atrm $atJobNumber";
-    exec($command);
+    if (NULL != $atJobNumber){
+        $command = "atrm $atJobNumber";
+        exec($command);
+    } // end if
 
     // delete the row from the database
-    $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
-    mysqli_query($db, $sql);
-    
+    if (NULL != $atJobNumber){
+        $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
+        mysqli_query($db, $sql);
+    } // end if
+    /*
+
+[Fri Nov 07 06:49:49.040356 2014] [:error] [pid 24467] [client 127.0.0.1:48628] PHP Notice:  Undefined variable: atJobNumber in /var/www/PiRadio/setAlarm.php on line 199
+Usage: at [-V] [-q x] [-f file] [-mMlbv] timespec ...
+       at [-V] [-q x] [-f file] [-mMlbv] -t time
+       at -c job ...
+       atq [-V] [-q x]
+       at [ -rd ] job ...
+       atrm [-V] job ...
+       batch
+
+
+    */
     return 0;
 }
 
