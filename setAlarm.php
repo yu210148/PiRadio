@@ -256,10 +256,6 @@ function write_crontab_file($date, $time){
     // open file for writing
     $handle = fopen('./uploads/tmp-crontab.txt', "w");
     
-    // write the hash bang line
-    $line = "#!/bin/bash\n";
-    fwrite($handle, $line);
-    
     $minute = substr($time, -5, 2);
     $hour = substr($time, 0, 2);
     
