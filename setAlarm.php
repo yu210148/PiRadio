@@ -24,6 +24,7 @@ alert(e.message);
 });
 </script>
 <?php
+// test comment to see what branch I'm on
 /*
     PiRadio Plays an assortment of radio stations on a webhost (I've got a
     Raspberry Pi on my bookshelf with a pair of speakers plugged into it.)
@@ -281,7 +282,6 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 // test data
 //$AlarmID = 21;
 //cancel_alarm($db, $AlarmID);
-// testing if I'm on the testing branch or not
 
 /* check connection */
 if (mysqli_connect_errno()) {
