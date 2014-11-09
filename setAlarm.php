@@ -281,6 +281,7 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 // test data
 //$AlarmID = 21;
 //cancel_alarm($db, $AlarmID);
+// testing if I'm on the testing branch or not
 
 /* check connection */
 if (mysqli_connect_errno()) {
