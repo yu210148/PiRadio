@@ -370,10 +370,7 @@ if (empty($time)){
     show_set_alarms($db);
 } else {
     print_form($db);
-
-    //debug
-    // disableing temporarly while I'm testing
-//    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
+    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
 
     //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
