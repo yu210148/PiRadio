@@ -279,19 +279,18 @@ function write_crontab_file($date, $time){
     fclose($handle);
     
     /*
-    Linux Crontab Format
+        Linux Crontab Format
 
-MIN HOUR DOM MON DOW CMD
-Table: Crontab Fields and Allowed Ranges (Linux Crontab Syntax)
-Field   Description     Allowed Value
-MIN     Minute field    0 to 59
-HOUR    Hour field      0 to 23
-DOM     Day of Month    1-31
-MON     Month field     1-12
-DOW     Day Of Week     0-6
-CMD     Command Any command to be executed.
+    MIN HOUR DOM MON DOW CMD
+    Table: Crontab Fields and Allowed Ranges (Linux Crontab Syntax)
+    Field   Description     Allowed Value
+    MIN     Minute field    0 to 59
+    HOUR    Hour field      0 to 23
+    DOM     Day of Month    1-31
+    MON     Month field     1-12
+    DOW     Day Of Week     0-6
+    CMD     Command Any command to be executed.
     */
-
     return 0;
 }
 
@@ -331,6 +330,12 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
     } else if (1 == $fRecurring){
         // set cron job for recurring alarm
+        write_crontab_file($date, $time);
+        $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
+        write_shell_script($command);
+        $command = "crontab ./uploads/tmp-crontab.txt";
+        shell_exec($command);
+        write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
     }
     return 0;
 }
@@ -349,9 +354,9 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 // test data
 //$AlarmID = 21;
 //cancel_alarm($db, $AlarmID);
-$time = "12:37:00";
-$date = "2014-11-09";
-write_crontab_file($date, $time);
+//$time = "12:37:00";
+//$date = "2014-11-09";
+//write_crontab_file($date, $time);
 
 /* check connection */
 if (mysqli_connect_errno()) {
