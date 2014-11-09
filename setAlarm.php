@@ -268,6 +268,28 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
     return 0;
 }
 
+function write_crontab_file($date, $time){
+    // a function to write out a file in the crontab format
+    // with the scheduling info based on the values of $date
+    // and $time
+    
+    return 0;
+}
+
+function set_recurring_alarm($db, $date, $time){
+    // in order to set a current alarm this function
+    // has to do 3 things: it has to write a shell script
+    // that runs the command to start the player and write 
+    // the meta data to the db, it has to write a file with
+    // scheduling info in a format that crontab will understand
+    // and it has to execute the crontab command with that file
+    // as the parameter to actually schedule the command
+    // I might be able to re-use the write_shell_script()
+    // function for the first part of this
+    
+    return 0;
+}
+
 // HERE'S MAIN
 $time = $_POST["time"];
 $date = $_POST["date"];
