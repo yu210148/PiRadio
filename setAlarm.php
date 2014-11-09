@@ -245,34 +245,53 @@ function write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring)
     return 0;
 }
 
-function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
-    // a function to set an at job to start the radio playing at a specificed time
-    // TODO: Implement this with a recurring option that sets a cron job rather than 
-    // an at job
-
-    // get station ID
-    $sql = "SELECT stations.StationURL, stations.StationID FROM stations WHERE stations.Name = '$stationName'";
-  
-    $q = mysqli_query($db, $sql);
-    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        $stationUrl = $row[0];
-        $stationID = $row[1];
-    } // end while
-    
-    $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$time'\"; /usr/bin/cvlc $stationUrl'";
-    write_shell_script($command);
-    $command = "./uploads/alarm_script.sh";
-    $command = escapeshellcmd($command);
-    $output = shell_exec($command);
-    write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
-    return 0;
-}
-
 function write_crontab_file($date, $time){
     // a function to write out a file in the crontab format
     // with the scheduling info based on the values of $date
     // and $time
     
+    // remove existing file if it exists
+    unlink('./uploads/tmp-crontab.txt');
+    
+    // open file for writing
+    $handle = fopen('./uploads/tmp-crontab.txt', "w");
+    
+    // write the hash bang line
+    $line = "#!/bin/bash\n";
+    fwrite($handle, $line);
+    
+    $minute = substr($time, -5, 2);
+    $hour = substr($time, 0, 2);
+    
+    //debug
+    //var_dump($minute);
+    //var_dump($hour);
+    
+    $dayOfMonth = substr($date, -2);
+    $month = substr($date, -5, 2);
+    $dayOfWeek = "*";
+    $command = "./uploads/alarm_script.sh";
+    
+    $line = $minute . " " . $hour . " " . $dayOfMonth . " " . $month . " " . $dayOfWeek . " " . $command . "\n";
+    fwrite ($handle, $line);
+    
+    // close the handle
+    fclose($handle);
+    
+    /*
+    Linux Crontab Format
+
+MIN HOUR DOM MON DOW CMD
+Table: Crontab Fields and Allowed Ranges (Linux Crontab Syntax)
+Field   Description     Allowed Value
+MIN     Minute field    0 to 59
+HOUR    Hour field      0 to 23
+DOM     Day of Month    1-31
+MON     Month field     1-12
+DOW     Day Of Week     0-6
+CMD     Command Any command to be executed.
+    */
+
     return 0;
 }
 
@@ -290,6 +309,33 @@ function set_recurring_alarm($db, $date, $time){
     return 0;
 }
 
+function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
+    // a function to set an at job to start the radio playing at a specificed time
+    // TODO: Implement this with a recurring option that sets a cron job rather than 
+    // an at job
+
+    // get station ID
+    $sql = "SELECT stations.StationURL, stations.StationID FROM stations WHERE stations.Name = '$stationName'";
+  
+    $q = mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        $stationUrl = $row[0];
+        $stationID = $row[1];
+    } // end while
+    if (0 == $fRecurring){
+        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$time'\"; /usr/bin/cvlc $stationUrl'";
+        write_shell_script($command);
+        $command = "./uploads/alarm_script.sh";
+        $command = escapeshellcmd($command);
+        $output = shell_exec($command);
+        write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
+    } else if (1 == $fRecurring){
+        // set cron job for recurring alarm
+    }
+    return 0;
+}
+
+
 // HERE'S MAIN
 $time = $_POST["time"];
 $date = $_POST["date"];
@@ -303,7 +349,9 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 // test data
 //$AlarmID = 21;
 //cancel_alarm($db, $AlarmID);
-var_dump($fRecurring);
+$time = "12:37:00";
+$date = "2014-11-09";
+write_crontab_file($date, $time);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -321,7 +369,11 @@ if (empty($time)){
     show_set_alarms($db);
 } else {
     print_form($db);
-    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
+
+    //debug
+    // disableing temporarly while I'm testing
+//    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
+
     //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
 } // end the grand else
