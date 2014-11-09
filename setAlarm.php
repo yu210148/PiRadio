@@ -231,12 +231,12 @@ Usage: at [-V] [-q x] [-f file] [-mMlbv] timespec ...
     return 0;
 }
 
-function write_alarm_meta_info_to_db($db, $stationID, $date, $time){
+function write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring){
     // a function to write info about the alarm being set to a table in the db
     // TODO: add in a db table and fill out this function
     // going to add in the values for the above variables then use this 
     // rather than the output of atq to show scheduled alarm info
-    $sql = "INSERT INTO alarms VALUES ('NULL', '$stationID', '$date', '$time')";
+    $sql = "INSERT INTO alarms VALUES ('NULL', '$stationID', '$date', '$time', '$fRecurring')";
     //$sql = mysqli_real_escape_string($db, $sql);
     mysqli_query($db, $sql);
     
@@ -245,7 +245,7 @@ function write_alarm_meta_info_to_db($db, $stationID, $date, $time){
     return 0;
 }
 
-function set_alarm($db, $stationName, $date, $time, $user, $pass){
+function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
     // a function to set an at job to start the radio playing at a specificed time
     // TODO: Implement this with a recurring option that sets a cron job rather than 
     // an at job
@@ -264,7 +264,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass){
     $command = "./uploads/alarm_script.sh";
     $command = escapeshellcmd($command);
     $output = shell_exec($command);
-    write_alarm_meta_info_to_db($db, $stationID, $date, $time);
+    write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
     return 0;
 }
 
@@ -294,7 +294,7 @@ function set_recurring_alarm($db, $date, $time){
 $time = $_POST["time"];
 $date = $_POST["date"];
 $stationName = $_POST["station"];
-$recurring = $_POST["recurring"];
+$fRecurring = $_POST["recurring"];
 $AlarmID = $_POST["AlarmID"];
 
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
@@ -303,7 +303,7 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 // test data
 //$AlarmID = 21;
 //cancel_alarm($db, $AlarmID);
-var_dump($recurring);
+var_dump($fRecurring);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -321,7 +321,7 @@ if (empty($time)){
     show_set_alarms($db);
 } else {
     print_form($db);
-    set_alarm($db, $stationName, $date, $time, $user, $pass);
+    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
     //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
 } // end the grand else
