@@ -167,78 +167,97 @@ return 0;
 
 function cancel_alarm($db, $AlarmID){
     // a function to cancell an existing alarm
-    $command = "atq";
-    exec($command, $atqOutputArray);
     
-    // sample atq output
-    //25      Fri Nov  7 09:17:00 2014 a www-data
-    //24      Fri Nov  7 08:16:00 2014 a www-data
-    
-    // get the time & date of selected alarm
-    $sql = "SELECT alarms.Date, alarms.Time FROM alarms WHERE alarms.AlarmID = $AlarmID";
+    // check if the alarm is a recurring one or not
+    $fRecurring = 0;
+    $sql = "SELECT alarms.fRecurring FROM alarms WHERE alarms.AlarmID = $AlarmID";
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        // the above query should only ever return 1 row
-        $date = $row[0];
-        $time = $row[1];
+        $fRecurring = $row[0];
     } // end while
+    if (0 == $fRecurring){    
+        $command = "atq";
+        exec($command, $atqOutputArray);
+        
+        // sample atq output
+        //25      Fri Nov  7 09:17:00 2014 a www-data
+        //24      Fri Nov  7 08:16:00 2014 a www-data
+        
+        // get the time & date of selected alarm
+        $sql = "SELECT alarms.Date, alarms.Time FROM alarms WHERE alarms.AlarmID = $AlarmID";
+        $q = mysqli_query($db, $sql);
+        while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+            // the above query should only ever return 1 row
+            $date = $row[0];
+            $time = $row[1];
+        } // end while
 
-    // okay, so now I've got the output of the aqt command and the time and date from the db
-    // need to isolate the time and date of each at job.  If it matches I'll need the at job number
-    
-    // change the date format to match the atq output
-    $unixTimestamp = strtotime("$date $time");
-    $datetimeAtFormat = date('D M j H:i:s Y', $unixTimestamp);
-    
-    // loop through the lines of atq output 
-    foreach ($atqOutputArray as $key=>$line){
-        // split line on whitespace so we can deal with the individual elements
-        $lineArray = preg_split('/\s+/', $line);
-        $datetimeFromAt = $lineArray[1] . " " . $lineArray[2] . " " . $lineArray[3] . " " . $lineArray[4] . " " . $lineArray[5];
+        // okay, so now I've got the output of the aqt command and the time and date from the db
+        // need to isolate the time and date of each at job.  If it matches I'll need the at job number
         
-        // debug
-        // var_dump($datetimeFromAt);
-        // string(18) "Fri Nov 7 09:17:00" string(18) "Fri Nov 7 08:16:00"
-        // var_dump($datetimeAtFormat);
-        // string(23) "Fri Nov 7 08:16:00 2014" string(23) "Fri Nov 7 08:16:00 2014"
+        // change the date format to match the atq output
+        $unixTimestamp = strtotime("$date $time");
+        $datetimeAtFormat = date('D M j H:i:s Y', $unixTimestamp);
         
-        if ($datetimeAtFormat == $datetimeFromAt){
-            $atJobNumber = $lineArray[0];
+        // loop through the lines of atq output 
+        foreach ($atqOutputArray as $key=>$line){
+            // split line on whitespace so we can deal with the individual elements
+            $lineArray = preg_split('/\s+/', $line);
+            $datetimeFromAt = $lineArray[1] . " " . $lineArray[2] . " " . $lineArray[3] . " " . $lineArray[4] . " " . $lineArray[5];
+            
+            // debug
+            // var_dump($datetimeFromAt);
+            // string(18) "Fri Nov 7 09:17:00" string(18) "Fri Nov 7 08:16:00"
+            // var_dump($datetimeAtFormat);
+            // string(23) "Fri Nov 7 08:16:00 2014" string(23) "Fri Nov 7 08:16:00 2014"
+            
+            if ($datetimeAtFormat == $datetimeFromAt){
+                $atJobNumber = $lineArray[0];
+            } // end if
+        } // end foreach
+        
+        // delete the matched at job
+        if (NULL != $atJobNumber){
+            $command = "atrm $atJobNumber";
+            exec($command);
         } // end if
-    } // end foreach
-    
-    // delete the matched at job
-    if (NULL != $atJobNumber){
-        $command = "atrm $atJobNumber";
-        exec($command);
-    } // end if
 
-    // delete the row from the database
-    if (NULL != $atJobNumber){
-        $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
-        mysqli_query($db, $sql);
-    } // end if
-    /*
+        // delete the row from the database
+        if (NULL != $atJobNumber){
+            $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
+            mysqli_query($db, $sql);
+        } // end if
+        /*
 
-[Fri Nov 07 06:49:49.040356 2014] [:error] [pid 24467] [client 127.0.0.1:48628] PHP Notice:  Undefined variable: atJobNumber in /var/www/PiRadio/setAlarm.php on line 199
-Usage: at [-V] [-q x] [-f file] [-mMlbv] timespec ...
-       at [-V] [-q x] [-f file] [-mMlbv] -t time
-       at -c job ...
-       atq [-V] [-q x]
-       at [ -rd ] job ...
-       atrm [-V] job ...
-       batch
+    [Fri Nov 07 06:49:49.040356 2014] [:error] [pid 24467] [client 127.0.0.1:48628] PHP Notice:  Undefined variable: atJobNumber in /var/www/PiRadio/setAlarm.php on line 199
+    Usage: at [-V] [-q x] [-f file] [-mMlbv] timespec ...
+        at [-V] [-q x] [-f file] [-mMlbv] -t time
+        at -c job ...
+        atq [-V] [-q x]
+        at [ -rd ] job ...
+        atrm [-V] job ...
+        batch
 
 
-    */
+        */
+    } else {
+        // TODO: Find a way to cancel a cron job from the command line because this alarm needs to be cancelled
+        // but it's recurring so it's in www-data's crontab file
+        print "<BR>Not Yet working.  You'll have to manually remove the job from www-data's crontab for now.<BR>";
+        
+        exec('crontab -l', $output);
+        $output = implode("\n", $output);
+        
+        // TODO: now need to search $output for the line that matches
+        // remove it, then update the crontab
+        
+    } // end else
     return 0;
 }
 
 function write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring){
     // a function to write info about the alarm being set to a table in the db
-    // TODO: add in a db table and fill out this function
-    // going to add in the values for the above variables then use this 
-    // rather than the output of atq to show scheduled alarm info
+
     $sql = "INSERT INTO alarms VALUES ('NULL', '$stationID', '$date', '$time', '$fRecurring')";
     //$sql = mysqli_real_escape_string($db, $sql);
     mysqli_query($db, $sql);
