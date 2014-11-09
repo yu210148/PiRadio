@@ -339,6 +339,7 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 //$time = "12:37:00";
 //$date = "2014-11-09";
 write_crontab_file($date, $time);
+var_dump($time);
 
 /* check connection */
 if (mysqli_connect_errno()) {
