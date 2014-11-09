@@ -260,8 +260,8 @@ function write_crontab_file($date, $time){
     $hour = substr($time, 0, 2);
     
     //debug
-    var_dump($minute);
-    var_dump($hour);
+    //var_dump($minute);
+    //var_dump($hour);
     
     $dayOfMonth = substr($date, -2);
     $month = substr($date, -5, 2);
@@ -338,8 +338,8 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 //cancel_alarm($db, $AlarmID);
 //$time = "12:37:00";
 //$date = "2014-11-09";
-write_crontab_file($date, $time);
-var_dump($time);
+//write_crontab_file($date, $time);
+//var_dump($time);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -357,7 +357,7 @@ if (empty($time)){
     show_set_alarms($db);
 } else {
     print_form($db);
-    //set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
+    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
 
     //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
