@@ -125,7 +125,7 @@ function write_shell_script($command){
 
 function show_set_alarms($db){
     // a function to retreive alamrs already set and display them on the screen
-    $sql = "SELECT stations.Name, alarms.Date, alarms.Time, stations.FileName, alarms.AlarmID FROM alarms INNER JOIN stations ON alarms.StationID = stations.StationID";
+    $sql = "SELECT stations.Name, alarms.Date, alarms.Time, stations.FileName, alarms.AlarmID, alarms.fRecurring FROM alarms INNER JOIN stations ON alarms.StationID = stations.StationID";
     $q = mysqli_query($db, $sql);
     
     //debug
@@ -153,6 +153,9 @@ HERE;
         print "<td><center><h3>$row[0]</h3></center></td>";
         print "<td><center><h3>$row[1]</h3></center></td>";
         print "<td><center><h3>$row[2]</h3></center></td>";
+        if (1 == $row[5]){
+            print "<td><center><h3>Daily</h3></center></td>";
+        } // end if
         print "<td><center><form action=\"setAlarm.php\" method=\"post\"><INPUT type=\"hidden\" name=\"AlarmID\" value=\"$row[4]\"><INPUT class=\"myButton\" type=\"submit\" name=\"Generate\" value=\"Cancel Alarm\"></form></center></td>";
         // AlarmID is $row[4].  Use to cancel alarm
         print "</tr>";
