@@ -256,7 +256,7 @@ function write_crontab_file($date, $time){
     // open file for writing
     $handle = fopen('./uploads/tmp-crontab.txt', "w");
     
-    $minute = substr($time, -5, 2);
+    $minute = substr($time, -2);
     $hour = substr($time, 0, 2);
     
     //debug
