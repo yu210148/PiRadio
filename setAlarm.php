@@ -260,8 +260,8 @@ function write_crontab_file($date, $time){
     $hour = substr($time, 0, 2);
     
     //debug
-    //var_dump($minute);
-    //var_dump($hour);
+    var_dump($minute);
+    var_dump($hour);
     
     $dayOfMonth = substr($date, -2);
     $month = substr($date, -5, 2);
@@ -287,20 +287,6 @@ function write_crontab_file($date, $time){
     DOW     Day Of Week     0-6
     CMD     Command Any command to be executed.
     */
-    return 0;
-}
-
-function set_recurring_alarm($db, $date, $time){
-    // in order to set a current alarm this function
-    // has to do 3 things: it has to write a shell script
-    // that runs the command to start the player and write 
-    // the meta data to the db, it has to write a file with
-    // scheduling info in a format that crontab will understand
-    // and it has to execute the crontab command with that file
-    // as the parameter to actually schedule the command
-    // I might be able to re-use the write_shell_script()
-    // function for the first part of this
-    
     return 0;
 }
 
@@ -352,7 +338,7 @@ $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 //cancel_alarm($db, $AlarmID);
 //$time = "12:37:00";
 //$date = "2014-11-09";
-//write_crontab_file($date, $time);
+write_crontab_file($date, $time);
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -370,7 +356,7 @@ if (empty($time)){
     show_set_alarms($db);
 } else {
     print_form($db);
-    set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
+    //set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring);
 
     //print "<h3>DONE! Alarm Set.</h3>";
     show_set_alarms($db);
