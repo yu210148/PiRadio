@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `alarms` (
   `StationID` int(11) DEFAULT NULL,
   `Date` date DEFAULT NULL,
   `Time` time DEFAULT NULL,
+  `fRecurring` int(11) DEFAULT NULL,
   PRIMARY KEY (`AlarmID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
