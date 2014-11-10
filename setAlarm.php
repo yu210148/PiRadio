@@ -103,7 +103,7 @@ function write_shell_script($command, $date, $time){
     unlink("./uploads/alarm_script-$date_$time.sh");
     
     // open file for writing
-    $handle = fopen('./uploads/alarm_script-$date_$time.sh', "w");
+    $handle = fopen("./uploads/alarm_script-$date_$time.sh", "w");
     
     // write the hash bang line
     $line = "#!/bin/bash\n";
