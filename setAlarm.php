@@ -99,6 +99,12 @@ function write_shell_script($command, $date, $time){
     // which doesn't have the <<< construct used in the
     // command
     
+    //TODO: need to figure something out here
+    // writing the shell script in the uploads 
+    // directory creates a vulunarability 
+    // because it leaks the database user name
+    // and password values if a crafted url is used.
+    
     //debug
     //var_dump($date);
     //var_dump($time);
@@ -269,9 +275,9 @@ function cancel_alarm($db, $AlarmID){
         
         //debug 
         // compare output to $date & $time
-        var_dump($output);
-        var_dump($date);
-        var_dump($time);
+        //var_dump($output);
+        //var_dump($date);
+        //var_dump($time);
         
         /*
         Not Yet working. You'll have to manually remove the job from www-data's crontab for now.
