@@ -258,12 +258,6 @@ function cancel_alarm($db, $AlarmID){
         // TODO: now need to search $output for the line that matches
         // remove it, then update the crontab
         
-        // TODO: while working on this I realised that the script that the cron job 
-        // would call is the one that's written by the last set cron job so say for
-        // example I set a recurring alarm for 8am that played the CBC then set another
-        // for 10am that played ABC when the 8am cron job called the script ABC would play.
-        // I'll need a way to diferentiate the script that cron calls to execute the alarm.
-        
         // get the time & date of selected alarm
         $sql = "SELECT alarms.Date, alarms.Time FROM alarms WHERE alarms.AlarmID = $AlarmID";
         $q = mysqli_query($db, $sql);
