@@ -248,7 +248,7 @@ function cancel_alarm($db, $AlarmID){
         print "<BR>Not Yet working.  You'll have to manually remove the job from www-data's crontab for now.<BR>";
         
         exec('crontab -l', $output);
-        $output = implode("\n", $output);
+        //$output = implode("\n", $output);
         
         // TODO: now need to search $output for the line that matches
         // remove it, then update the crontab
