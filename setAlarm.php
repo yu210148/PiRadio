@@ -262,9 +262,9 @@ function cancel_alarm($db, $AlarmID){
         
         //debug 
         // compare output to $date & $time
-        var_dump($output);
-        var_dump($date);
-        var_dump($time);
+        //var_dump($output);
+        //var_dump($date);
+        //var_dump($time);
         
         
     } // end else
@@ -288,11 +288,22 @@ function write_crontab_file($date, $time){
     // with the scheduling info based on the values of $date
     // and $time
     
+    //TODO: when setting alarms this way crontab does Notice
+    // appear to append jobs to the existing crontab list
+    // so we need to get the existing cron jobs and put them in 
+    // this file first then add in the new one
+    
     // remove existing file if it exists
     unlink('./uploads/tmp-crontab.txt');
     
     // open file for writing
     $handle = fopen('./uploads/tmp-crontab.txt', "w");
+    
+    // get existing crontab contents & write them
+    exec('crontab -l', $output);
+    $output = implode("\n", $output);
+    fwrite($handle, $output);
+    
     
     $minute = substr($time, -2);
     $hour = substr($time, 0, 2);
