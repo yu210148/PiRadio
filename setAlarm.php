@@ -328,7 +328,8 @@ function write_crontab_file($date, $time){
     $dayOfMonth = substr($date, -2);
     $month = substr($date, -5, 2);
     $dayOfWeek = "*";
-    $command = "./uploads/alarm_script-$date_$time.sh";
+    $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    $command = $filePath;
     
     $line = $minute . " " . $hour . " " . $dayOfMonth . " " . $month . " " . $dayOfWeek . " " . $command . "\n";
     fwrite ($handle, $line);
