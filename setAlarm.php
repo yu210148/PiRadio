@@ -308,7 +308,13 @@ function write_crontab_file($date, $time){
     // get existing crontab contents & write them
     exec('crontab -l', $output);
     $output = implode("\n", $output);
-    $output = $output . "\n";
+    if (empty($output){
+        // do nothing
+    } else {
+        // append a new line character
+        $output = $output . "\n";
+    } // end else
+    
     fwrite($handle, $output);
     
     
