@@ -273,10 +273,30 @@ function cancel_alarm($db, $AlarmID){
         var_dump($date);
         var_dump($time);
         
+        /*
+        Not Yet working. You'll have to manually remove the job from www-data's crontab for now.
+array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:00.sh" [1]=> string(56) "00 19 10 11 * ./uploads/alarm_script-2014-11-10_19:00.sh" } string(10) "2014-11-10" string(8) "18:00:00"
+        */
+
         $minute = substr($time, -5, 2);
         $hour = substr($time, 1);
         $dayOfMonth = substr($date, -2);
         $month = substr($date, -5, 2);
+        
+        foreach ($output as $cronJob){
+            // check if $cronJob is the one we want to cancel based on time
+            $lineArray = explode(" ", $cronJob);
+            if ($hour == $lineArray[0] && $minute == $lineArray[1] && $dayOfMonth == $lineArray[2] && $month == $lineArray[3]){
+                // if it is don't output it to the new crontab we'll have to write
+            } else {
+                $newCrontab[] = $cronJob;
+            } // end else
+        } // end foreach
+        
+        // TODO: If I've done this right the new crontab file we need to load up is in the 
+        // $newCrontab array at this point.  Write this out to a file, purge the old
+        // crontab via the exec() function and load this one (again via the exec()
+        // function.
         
     } // end else
     return 0;
