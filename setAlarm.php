@@ -92,7 +92,7 @@ HERE;
 return 0;
 } // end function definition for print_form()
 
-function write_shell_script($command){
+function write_shell_script($command, $date, $time){
     // a function to write a quick shell script 
     // this is needed because php is executing my at
     // command in /bin/sh rather than /bin/bash
@@ -100,10 +100,10 @@ function write_shell_script($command){
     // command
     
     // remove existing file if it exists
-    unlink('./uploads/alarm_script.sh');
+    unlink("./uploads/alarm_script-$date_$time.sh");
     
     // open file for writing
-    $handle = fopen('./uploads/alarm_script.sh', "w");
+    $handle = fopen('./uploads/alarm_script-$date_$time.sh', "w");
     
     // write the hash bang line
     $line = "#!/bin/bash\n";
@@ -117,7 +117,7 @@ function write_shell_script($command){
     fclose($handle);
     
     // make the file executable
-    $command = "chmod u+x ./uploads/alarm_script.sh";
+    $command = "chmod u+x ./uploads/alarm_script-$date_$time.sh";
     $command = escapeshellcmd($command);
     shell_exec($command);
     return 0;
@@ -300,11 +300,6 @@ function write_crontab_file($date, $time){
     // with the scheduling info based on the values of $date
     // and $time
     
-    //TODO: when setting alarms this way crontab does Notice
-    // appear to append jobs to the existing crontab list
-    // so we need to get the existing cron jobs and put them in 
-    // this file first then add in the new one
-    
     // remove existing file if it exists
     unlink('./uploads/tmp-crontab.txt');
     
@@ -328,7 +323,7 @@ function write_crontab_file($date, $time){
     $dayOfMonth = substr($date, -2);
     $month = substr($date, -5, 2);
     $dayOfWeek = "*";
-    $command = "./uploads/alarm_script.sh";
+    $command = "./uploads/alarm_script-$date_$time.sh";
     
     $line = $minute . " " . $hour . " " . $dayOfMonth . " " . $month . " " . $dayOfWeek . " " . $command . "\n";
     fwrite ($handle, $line);
@@ -367,7 +362,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
     } // end while
     if (0 == $fRecurring){
         $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$time'\"; /usr/bin/cvlc $stationUrl'";
-        write_shell_script($command);
+        write_shell_script($command, $date, $time);
         $command = "./uploads/alarm_script.sh";
         $command = escapeshellcmd($command);
         $output = shell_exec($command);
@@ -376,7 +371,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         // set cron job for recurring alarm
         write_crontab_file($date, $time);
         $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
-        write_shell_script($command);
+        write_shell_script($command, $date, $time);
         $command = "crontab ./uploads/tmp-crontab.txt";
         shell_exec($command);
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
