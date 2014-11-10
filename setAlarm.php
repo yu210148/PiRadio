@@ -268,6 +268,10 @@ function cancel_alarm($db, $AlarmID){
         var_dump($date);
         var_dump($time);
         
+        $minute = substr($time, -5, 2);
+        $hour = substr($time, 1);
+        $dayOfMonth = substr($date, -2);
+        $month = substr($date, -5, 2);
         
     } // end else
     return 0;
