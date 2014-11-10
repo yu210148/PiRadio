@@ -99,6 +99,10 @@ function write_shell_script($command, $date, $time){
     // which doesn't have the <<< construct used in the
     // command
     
+    //debug
+    var_dump($date);
+    var_dump($time);
+    
     // remove existing file if it exists
     unlink("./uploads/alarm_script-$date_$time.sh");
     
