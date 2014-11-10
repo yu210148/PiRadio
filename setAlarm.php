@@ -264,9 +264,9 @@ function cancel_alarm($db, $AlarmID){
         
         //debug 
         // compare output to $date & $time
-        //var_dump($output);
-        //var_dump($date);
-        //var_dump($time);
+        var_dump($output);
+        var_dump($date);
+        var_dump($time);
         
         
     } // end else
