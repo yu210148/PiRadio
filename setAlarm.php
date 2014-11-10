@@ -251,6 +251,22 @@ function cancel_alarm($db, $AlarmID){
         // TODO: now need to search $output for the line that matches
         // remove it, then update the crontab
         
+        // get the time & date of selected alarm
+        $sql = "SELECT alarms.Date, alarms.Time FROM alarms WHERE alarms.AlarmID = $AlarmID";
+        $q = mysqli_query($db, $sql);
+        while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+            // the above query should only ever return 1 row
+            $date = $row[0];
+            $time = $row[1];
+        } // end while
+        
+        //debug 
+        // compare output to $date & $time
+        var_dump($output);
+        var_dump($date);
+        var_dump($time);
+        
+        
     } // end else
     return 0;
 }
