@@ -155,7 +155,9 @@ HERE;
         print "<td><center><h3>$row[2]</h3></center></td>";
         if (1 == $row[5]){
             print "<td><center><h3>Daily</h3></center></td>";
-        } // end if
+        } else {
+            print "<td><center><h3>Once</h3></center></td>";
+        } // end else
         print "<td><center><form action=\"setAlarm.php\" method=\"post\"><INPUT type=\"hidden\" name=\"AlarmID\" value=\"$row[4]\"><INPUT class=\"myButton\" type=\"submit\" name=\"Generate\" value=\"Cancel Alarm\"></form></center></td>";
         // AlarmID is $row[4].  Use to cancel alarm
         print "</tr>";
