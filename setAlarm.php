@@ -100,14 +100,15 @@ function write_shell_script($command, $date, $time){
     // command
     
     //debug
-    var_dump($date);
-    var_dump($time);
+    //var_dump($date);
+    //var_dump($time);
     
     // remove existing file if it exists
-    unlink("./uploads/alarm_script-$date_$time.sh");
+    $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    unlink("$filePath");
     
     // open file for writing
-    $handle = fopen("./uploads/alarm_script-$date_$time.sh", "w");
+    $handle = fopen("$filePath", "w");
     
     // write the hash bang line
     $line = "#!/bin/bash\n";
@@ -121,7 +122,7 @@ function write_shell_script($command, $date, $time){
     fclose($handle);
     
     // make the file executable
-    $command = "chmod u+x ./uploads/alarm_script-$date_$time.sh";
+    $command = "chmod u+x $filePath";
     $command = escapeshellcmd($command);
     shell_exec($command);
     return 0;
