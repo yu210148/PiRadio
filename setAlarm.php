@@ -305,6 +305,7 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         // function.
         
         //debug
+        print "<br>value of newCrontab is:<br>";
         var_dump($newCrontab);
         
     } // end else
