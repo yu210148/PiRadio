@@ -304,6 +304,9 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         // crontab via the exec() function and load this one (again via the exec()
         // function.
         
+        //debug
+        var_dump($newCrontab);
+        
     } // end else
     return 0;
 }
