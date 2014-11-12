@@ -331,8 +331,8 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         shell_exec($command);
         
         // remove meta info from db
-        $sql = "DELETE FROM alarms WHERE alarms.AlarmID = '$AlarmID'";
-        mysqli_query($db, $sql);
+        //$sql = "DELETE FROM alarms WHERE alarms.AlarmID = '$AlarmID'";
+        //mysqli_query($db, $sql);
     } // end else
     return 0;
 }
