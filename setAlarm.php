@@ -296,6 +296,10 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
             //debug
             foreach ($lineArray as $val){
                 print "<br>value of lineArray element on line 298 is: $val<br>";
+                var_dump($minute);
+                var_dump($hour);
+                var_dump($dayOfMonth);
+                var_dump($month);
             } // end foreach
             
             if ($minute == $lineArray[0] && $hour == $lineArray[1] && $dayOfMonth == $lineArray[2] && $month == $lineArray[3]){ // this condition is not being met
