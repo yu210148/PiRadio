@@ -285,7 +285,7 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         */
 
         $minute = substr($time, -5, 2);
-        $hour = substr($time, 1);
+        $hour = substr($time, 0, 2);
         $dayOfMonth = substr($date, -2);
         $month = substr($date, -5, 2);
         
