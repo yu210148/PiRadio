@@ -298,7 +298,7 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
                 print "<br>value of lineArray element on line 298 is: $val<br>";
             } // end foreach
             
-            if ($hour == $lineArray[0] && $minute == $lineArray[1] && $dayOfMonth == $lineArray[2] && $month == $lineArray[3]){ // this condition is not being met
+            if ($minute == $lineArray[0] && $hour == $lineArray[1] && $dayOfMonth == $lineArray[2] && $month == $lineArray[3]){ // this condition is not being met
                 // if it is don't output it to the new crontab we'll have to write
             } else {
                 $newCrontab[] = $cronJob;
