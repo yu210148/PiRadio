@@ -326,6 +326,10 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         } // end foreach
         fclose($handle);
         
+        // purge old crontab
+        $command = "crontab -r";
+        exec($command);
+        
         // set crontab
         $command = "crontab ./uploads/tmp-crontab.txt";
         shell_exec($command);
