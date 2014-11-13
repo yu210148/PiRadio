@@ -324,6 +324,9 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         foreach ($newCrontab as $line){
             fwrite($handle, $line);
         } // end foreach
+        // crontab complaining about no new line at end of file
+        fwrite($handle, "\n";);
+        
         fclose($handle);
         
         // purge old crontab
