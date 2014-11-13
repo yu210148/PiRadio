@@ -322,10 +322,11 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         unlink('./uploads/tmp-crontab.txt');
         $handle = fopen('./uploads/tmp-crontab.txt', 'w');
         foreach ($newCrontab as $line){
+            $line = $line . "\n";
             fwrite($handle, $line);
         } // end foreach
         // crontab complaining about no new line at end of file
-        fwrite($handle, "\n";);
+        fwrite($handle, "\n");
         
         fclose($handle);
         
