@@ -313,6 +313,9 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         // $newCrontab array at this point.  Write this out to a file, purge the old
         // crontab via the exec() function and load this one (again via the exec()
         // function.
+        // 2014-11-12 Closer but I'm getting blank lines in www-data's crontab
+        // when removing lines.  Need to sort that out and add a way to remove
+        // .sh files when deleteing cron jobs.
         
         //debug
         //print "<br>value of newCrontab is:<br>";
