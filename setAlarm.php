@@ -253,6 +253,9 @@ function cancel_alarm($db, $AlarmID){
             $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
             mysqli_query($db, $sql);
         } // end if
+        
+        // delete the temporary shell script
+        unlink('/tmp/alarm_script.sh');
         /*
 
     [Fri Nov 07 06:49:49.040356 2014] [:error] [pid 24467] [client 127.0.0.1:48628] PHP Notice:  Undefined variable: atJobNumber in /var/www/PiRadio/setAlarm.php on line 199
