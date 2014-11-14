@@ -462,8 +462,9 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $stationID = $row[1];
     } // end while
     if (0 == $fRecurring){
+        write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
         $AlarmID = get_alarm_id($db, $date, $time);
-        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alamrs.AlarmID = $AlarmID\"; /usr/bin/cvlc $stationUrl'";
+        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID\"; /usr/bin/cvlc $stationUrl'";
         
         //debug
         //var_dump($command);
@@ -475,7 +476,6 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $command = "/tmp/alarm_script.sh";
         $command = escapeshellcmd($command);
         $output = shell_exec($command);
-        write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
         // remove temp file
         unlink('/tmp/alarm_script.sh');
     } else if (1 == $fRecurring){
