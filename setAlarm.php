@@ -92,7 +92,7 @@ HERE;
 return 0;
 } // end function definition for print_form()
 
-function write_shell_script($command, $date, $time){
+function write_shell_script($command, $date, $time, $fRecurring){
     // a function to write a quick shell script 
     // this is needed because php is executing my at
     // command in /bin/sh rather than /bin/bash
@@ -109,8 +109,13 @@ function write_shell_script($command, $date, $time){
     //var_dump($date);
     //var_dump($time);
     
-    // remove existing file if it exists
-    $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    if (1 == $fRecurring){
+        // remove existing file if it exists (for recurring alarm)
+        $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    } else {
+        // remove existing file if it exists (for one-off job)
+        $filePath = "./uploads/alarm_script.sh";
+    } // end else
     unlink("$filePath");
     
     // open file for writing
@@ -441,8 +446,11 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         
         //debug
         var_dump($command);
+        /*
+        string(390) "at 10:00 2014-11-14 <<< '/usr/bin/killall vlc; mysql -u klucas -p7lemon6 radio -e "DELETE FROM NowPlaying"; mysql -u klucas -p7lemon6 radio -e "INSERT INTO NowPlaying SET NowPlaying.StationID = 3"; mysql -u klucas -p7lemon6 radio -e "DELETE FROM alarms WHERE alarms.date = '2014-11-14' AND alarms.time = '10:00'"; /usr/bin/cvlc http://playerservices.streamtheworld.com/pls/CBC_R1_TOR_L.pls'"
+        */
         
-        write_shell_script($command, $date, $time);
+        write_shell_script($command, $date, $time, $fRecurring);
         $command = "./uploads/alarm_script.sh";
         $command = escapeshellcmd($command);
         $output = shell_exec($command);
@@ -451,7 +459,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         // set cron job for recurring alarm
         write_crontab_file($date, $time);
         $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
-        write_shell_script($command, $date, $time);
+        write_shell_script($command, $date, $time, $fRecurring);
         $command = "crontab ./uploads/tmp-crontab.txt";
         shell_exec($command);
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
