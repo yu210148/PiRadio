@@ -102,7 +102,7 @@ function write_shell_script($command, $date, $time, $fRecurring){
     //debug
     //var_dump($date);
     //var_dump($time);
-    var_dump($command);
+    //var_dump($command);
     
     
     if (1 == $fRecurring){
@@ -448,7 +448,8 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $stationID = $row[1];
     } // end while
     if (0 == $fRecurring){
-        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$time'\"; /usr/bin/cvlc $stationUrl'";
+        $timeWithSeconds = $time . ":00";
+        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$timeWithSeconds'\"; /usr/bin/cvlc $stationUrl'";
         
         //debug
         //var_dump($command);
