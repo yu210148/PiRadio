@@ -99,12 +99,6 @@ function write_shell_script($command, $date, $time, $fRecurring){
     // which doesn't have the <<< construct used in the
     // command
     
-    //TODO: need to figure something out here
-    // writing the shell script in the uploads 
-    // directory creates a vulunarability 
-    // because it leaks the database user name
-    // and password values if a crafted url is used.
-    
     //debug
     //var_dump($date);
     //var_dump($time);
@@ -253,9 +247,7 @@ function cancel_alarm($db, $AlarmID){
             $sql = "DELETE FROM alarms WHERE alarms.AlarmID = $AlarmID";
             mysqli_query($db, $sql);
         } // end if
-        
-        // delete the temporary shell script
-        unlink('/tmp/alarm_script.sh');
+
         /*
 
     [Fri Nov 07 06:49:49.040356 2014] [:error] [pid 24467] [client 127.0.0.1:48628] PHP Notice:  Undefined variable: atJobNumber in /var/www/PiRadio/setAlarm.php on line 199
@@ -445,10 +437,6 @@ function write_crontab_file($date, $time){
 }
 
 function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
-    // a function to set an at job to start the radio playing at a specificed time
-    // TODO: Implement this with a recurring option that sets a cron job rather than 
-    // an at job
-
     // get station ID
     $sql = "SELECT stations.StationURL, stations.StationID FROM stations WHERE stations.Name = '$stationName'";
   
@@ -471,6 +459,8 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $command = escapeshellcmd($command);
         $output = shell_exec($command);
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
+        // remove temp file
+        unlink('/tmp/alarm_script.sh');
     } else if (1 == $fRecurring){
         // set cron job for recurring alarm
         write_crontab_file($date, $time);
