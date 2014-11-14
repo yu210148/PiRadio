@@ -111,10 +111,10 @@ function write_shell_script($command, $date, $time, $fRecurring){
     
     if (1 == $fRecurring){
         // remove existing file if it exists (for recurring alarm)
-        $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+        $filePath = "/tmp/alarm_script-" . $date . "_" . $time . ".sh";
     } else {
         // remove existing file if it exists (for one-off job)
-        $filePath = "./uploads/alarm_script.sh";
+        $filePath = "/tmp/alarm_script.sh";
     } // end else
     unlink("$filePath");
     
@@ -186,7 +186,7 @@ return 0;
 function remove_old_shell_script($date, $time){
     // a function to remove the no longer needed shell script file
     // when canceling a recurring alarm
-    $fileName = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    $fileName = "/tmp/alarm_script-" . $date . "_" . $time . ".sh";
     unlink($fileName);
     return 0;
 }
@@ -293,7 +293,7 @@ function cancel_alarm($db, $AlarmID){
         
         /*
         Not Yet working. You'll have to manually remove the job from www-data's crontab for now.
-array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:00.sh" [1]=> string(56) "00 19 10 11 * ./uploads/alarm_script-2014-11-10_19:00.sh" } string(10) "2014-11-10" string(8) "18:00:00"
+array(2) { [0]=> string(56) "00 18 10 11 * /tmp/alarm_script-2014-11-10_18:00.sh" [1]=> string(56) "00 19 10 11 * /tmp/alarm_script-2014-11-10_19:00.sh" } string(10) "2014-11-10" string(8) "18:00:00"
         */
 
         $minute = substr($time, -5, 2);
@@ -335,8 +335,8 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         //var_dump($newCrontab);
         
         // write new crontab file
-        unlink('./uploads/tmp-crontab.txt');
-        $handle = fopen('./uploads/tmp-crontab.txt', 'w');
+        unlink('/tmp/tmp-crontab.txt');
+        $handle = fopen('/tmp/tmp-crontab.txt', 'w');
         foreach ($newCrontab as $line){
             if ($line == ""){
                 // pass
@@ -355,7 +355,7 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         exec($command);
         
         // set crontab
-        $command = "crontab ./uploads/tmp-crontab.txt";
+        $command = "crontab /tmp/tmp-crontab.txt";
         shell_exec($command);
         
         // remove meta info from db
@@ -388,10 +388,10 @@ function write_crontab_file($date, $time){
     // and $time
     
     // remove existing file if it exists
-    unlink('./uploads/tmp-crontab.txt');
+    unlink('/tmp/tmp-crontab.txt');
     
     // open file for writing
-    $handle = fopen('./uploads/tmp-crontab.txt', "w");
+    $handle = fopen('/tmp/tmp-crontab.txt', "w");
     
     // get existing crontab contents & write them
     exec('crontab -l', $output);
@@ -416,7 +416,7 @@ function write_crontab_file($date, $time){
     $dayOfMonth = substr($date, -2);
     $month = substr($date, -5, 2);
     $dayOfWeek = "*";
-    $filePath = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
+    $filePath = "/tmp/alarm_script-" . $date . "_" . $time . ".sh";
     $command = $filePath;
     
     $line = $minute . " " . $hour . " " . $dayOfMonth . " " . $month . " " . $dayOfWeek . " " . $command . "\n";
@@ -464,7 +464,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         */
         
         write_shell_script($command, $date, $time, $fRecurring);
-        $command = "./uploads/alarm_script.sh";
+        $command = "/tmp/alarm_script.sh";
         $command = escapeshellcmd($command);
         $output = shell_exec($command);
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
@@ -473,7 +473,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         write_crontab_file($date, $time);
         $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
         write_shell_script($command, $date, $time, $fRecurring);
-        $command = "crontab ./uploads/tmp-crontab.txt";
+        $command = "crontab /tmp/tmp-crontab.txt";
         shell_exec($command);
         write_alarm_meta_info_to_db($db, $stationID, $date, $time, $fRecurring);
     }
