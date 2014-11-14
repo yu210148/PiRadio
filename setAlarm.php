@@ -438,6 +438,20 @@ function write_crontab_file($date, $time){
     return 0;
 }
 
+function get_alarm_id($db, $date, $time){
+    // a function to return the alarm ID given the date and time
+    // I'm assuming that no two alarms are going to be set for the
+    // same date / time.
+    $timeWithSeconds = $time . ":00";
+    $sql = "SELECT AlarmID FROM alarms WHERE alarms.Date = '$date' AND alarms.Time = '$timeWithSeconds'";
+    $q = mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        // should only be one row returned
+        $AlarmID = $row[0];
+    } // while
+    return $AlarmID;
+}
+
 function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
     // get station ID
     $sql = "SELECT stations.StationURL, stations.StationID FROM stations WHERE stations.Name = '$stationName'";
@@ -448,8 +462,8 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $stationID = $row[1];
     } // end while
     if (0 == $fRecurring){
-        $timeWithSeconds = $time . ":00";
-        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.Date = '$date' AND alarms.Time = '$timeWithSeconds'\"; /usr/bin/cvlc $stationUrl'";
+        $AlarmID = get_alarm_id($db, $date, $time);
+        $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alamrs.AlarmID = $AlarmID\"; /usr/bin/cvlc $stationUrl'";
         
         //debug
         //var_dump($command);
