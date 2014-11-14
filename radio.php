@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html">
@@ -33,6 +33,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//TODO: Add a button to update the PiRadio software
+// it should just be a matter of having the button
+// run git pull if the directory permissions are set right.
 
 require_once 'settings.php';
 

@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `stations` (
 --
 
 INSERT INTO `stations` (`StationID`, `Name`, `StationURL`, `FileName`) VALUES
-(1, 'KCRW Los Angles', 'kcrwsimulcast.pls', 'kcrw.png'),
+(1, 'KCRW Los Angles', 'http://kcrw.ic.llnwd.net/stream/kcrw_live', 'kcrw.png'),
 (2, 'The Current Minnesota Public Radio', 'http://current.stream.publicradio.org/kcmp.mp3', 'the_current.png'),
 (3, 'CBC Radio One Toronto', 'http://playerservices.streamtheworld.com/pls/CBC_R1_TOR_L.pls', 'cbc.png'),
 (4, 'WRN English North America', 'http://193.42.152.215:8000/listen.pls', 'wrn.png'),
@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `alarms` (
   `StationID` int(11) DEFAULT NULL,
   `Date` date DEFAULT NULL,
   `Time` time DEFAULT NULL,
+  `fRecurring` int(11) DEFAULT NULL,
   PRIMARY KEY (`AlarmID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
