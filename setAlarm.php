@@ -78,7 +78,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
 
 print <<<HERE
     </select></td>
-    <td><center><input type="checkbox" name="recurring" value='1'> (not yet implemented)</center></td>
+    <td><center><input type="checkbox" name="recurring" value='1'></center></td>
 </tr>
 </table>
 <center><INPUT class="myButton" type="submit" name="Generate" value="Set Alarm"></center>
@@ -183,6 +183,14 @@ HERE;
 return 0;
 }
 
+function remove_old_shell_script($date, $time){
+    // a function to remove the no longer needed shell script file
+    // when canceling a recurring alarm
+    $fileName = "alarm_script-" . $date . "_" . $time . ".sh";
+    unlink($fileName);
+    return 0;
+}
+
 function cancel_alarm($db, $AlarmID){
     // a function to cancell an existing alarm
     
@@ -259,15 +267,14 @@ function cancel_alarm($db, $AlarmID){
 
         */
     } else {
-        // TODO: Find a way to cancel a cron job from the command line because this alarm needs to be cancelled
-        // but it's recurring so it's in www-data's crontab file
-        print "<BR>Not Yet working.  You'll have to manually remove the job from www-data's crontab for now.<BR>";
+        //print "<BR>Not Yet working.  You'll have to manually remove the job from www-data's crontab for now.<BR>";
         
         exec('crontab -l', $output);
         //$output = implode("\n", $output);
         
-        // TODO: now need to search $output for the line that matches
+        // now need to search $output for the line that matches
         // remove it, then update the crontab
+        // FIX: done
         
         // get the time & date of selected alarm
         $sql = "SELECT alarms.Date, alarms.Time FROM alarms WHERE alarms.AlarmID = $AlarmID";
@@ -314,13 +321,14 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
             } // end else
         } // end foreach
         
-        // TODO: If I've done this right the new crontab file we need to load up is in the 
+        // If I've done this right the new crontab file we need to load up is in the 
         // $newCrontab array at this point.  Write this out to a file, purge the old
         // crontab via the exec() function and load this one (again via the exec()
         // function.
         // 2014-11-12 Closer but I'm getting blank lines in www-data's crontab
         // when removing lines.  Need to sort that out and add a way to remove
         // .sh files when deleteing cron jobs.
+        // 2014-11-14 this is done now.
         
         //debug
         //print "<br>value of newCrontab is:<br>";
@@ -353,6 +361,11 @@ array(2) { [0]=> string(56) "00 18 10 11 * ./uploads/alarm_script-2014-11-10_18:
         // remove meta info from db
         $sql = "DELETE FROM alarms WHERE alarms.AlarmID = '$AlarmID'";
         mysqli_query($db, $sql);
+        
+        // remove associated shell script
+        $time = $hour . ":" . $minute;
+        remove_old_shell_script($date, $time);
+        
     } // end else
     return 0;
 }
@@ -445,7 +458,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
         $command = "at $time $date <<< '/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; mysql -u $user -p$pass radio -e \"DELETE FROM alarms WHERE alarms.date = '$date' AND alarms.time = '$time'\"; /usr/bin/cvlc $stationUrl'";
         
         //debug
-        var_dump($command);
+        //var_dump($command);
         /*
         string(390) "at 10:00 2014-11-14 <<< '/usr/bin/killall vlc; mysql -u klucas -p7lemon6 radio -e "DELETE FROM NowPlaying"; mysql -u klucas -p7lemon6 radio -e "INSERT INTO NowPlaying SET NowPlaying.StationID = 3"; mysql -u klucas -p7lemon6 radio -e "DELETE FROM alarms WHERE alarms.date = '2014-11-14' AND alarms.time = '10:00'"; /usr/bin/cvlc http://playerservices.streamtheworld.com/pls/CBC_R1_TOR_L.pls'"
         */
