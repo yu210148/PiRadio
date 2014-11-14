@@ -481,7 +481,7 @@ function set_alarm($db, $stationName, $date, $time, $user, $pass, $fRecurring){
     } else if (1 == $fRecurring){
         // set cron job for recurring alarm
         write_crontab_file($date, $time);
-        $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl'";
+        $command = "/usr/bin/killall vlc; mysql -u $user -p$pass radio -e \"DELETE FROM NowPlaying\"; mysql -u $user -p$pass radio -e \"INSERT INTO NowPlaying SET NowPlaying.StationID = $stationID\"; /usr/bin/cvlc $stationUrl";
         write_shell_script($command, $date, $time, $fRecurring);
         $command = "crontab /tmp/tmp-crontab.txt";
         shell_exec($command);
