@@ -186,7 +186,7 @@ return 0;
 function remove_old_shell_script($date, $time){
     // a function to remove the no longer needed shell script file
     // when canceling a recurring alarm
-    $fileName = "alarm_script-" . $date . "_" . $time . ".sh";
+    $fileName = "./uploads/alarm_script-" . $date . "_" . $time . ".sh";
     unlink($fileName);
     return 0;
 }
