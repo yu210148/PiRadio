@@ -102,6 +102,8 @@ function write_shell_script($command, $date, $time, $fRecurring){
     //debug
     //var_dump($date);
     //var_dump($time);
+    var_dump($command);
+    
     
     if (1 == $fRecurring){
         // remove existing file if it exists (for recurring alarm)
