@@ -308,18 +308,11 @@ function update_piradio(){
     // the webserver user can do this.
     $command = "git pull";
     exec($command, $outputArray);
-    
-    //debug
-    var_dump($outputArray);
-    
     return 0;
 }
 
 // HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
-
-//debug
-print "<!--- test data for dummy commit to test updater function -->";
 
 // are we updating the software
 if ($_POST["fUpdate"] == 1){
