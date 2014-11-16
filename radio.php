@@ -148,7 +148,7 @@ print <<<HERE
 <tr><td><center>
 <div class='setAlarmButton'>
 <FORM action="setAlarm.php" method="POST">
-<INPUT class="myAlarmButton" type="submit" name="Generate" value="Set Alarm">
+<INPUT class="myAlarmButton" type="submit" name="Generate" value=" Set Alarm ">
 </FORM>
 </div>
 </center></td><td></td></tr>
