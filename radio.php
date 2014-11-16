@@ -229,6 +229,12 @@ print <<<HERE
 <INPUT class="rmButton" type="submit" name="Generate" value="Remove a Station">
 </FORM>
 </div>
+<div class='updateButton'>
+<FORM action="radio.php" method="POST">
+<INPUT type="hidden" value="1" name="fUpdate">
+<INPUT class="myGreenButton" type="submit" name="Generate" value="Update PiRadio">
+</FORM>
+</div>
 </div> 
 HERE;
 return 0;
@@ -294,8 +300,29 @@ function start_player($stationUrl, $db){
     return 0;
 }
 
+function update_piradio(){
+    // a function to call git pull and update pi-radio
+    // to whatever the current state is on github
+    // NOTE: this requires the permissions to be set
+    // on the files and directories such that
+    // the webserver user can do this.
+    $command = "git pull";
+    exec($command, $outputArray);
+    
+    //debug
+    var_dump($outputArray);
+    
+    return 0;
+}
+
 // HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
+
+// are we updating the software
+if ($_POST["fUpdate"] == 1){
+    // update
+    update_piradio();
+} // end if
 
 // are we adjusting the volume?
 $volumeAdjust = $_POST["volume"];
