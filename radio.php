@@ -318,6 +318,9 @@ function update_piradio(){
 // HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
+//debug
+// test data for dummy commit to test updater function
+
 // are we updating the software
 if ($_POST["fUpdate"] == 1){
     // update
