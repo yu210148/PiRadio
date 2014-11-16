@@ -15,8 +15,8 @@
 }
 
 .setAlarmButton {
-    position:relative;
-    left:15%;
+    position:absolute;
+    left:20%;
 }
 
 h2 {
