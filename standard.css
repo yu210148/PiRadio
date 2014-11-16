@@ -191,4 +191,34 @@ p {
     position:relative;
     top:1px;
 }
+
+.myAlarmButton {
+    -moz-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+    box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b8e356), color-stop(1, #a5cc52) );
+    background:-moz-linear-gradient( center top, #b8e356 5%, #a5cc52 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b8e356', endColorstr='#a5cc52');
+    background-color:#b8e356;
+    -moz-border-radius:42px;
+    -webkit-border-radius:42px;
+    border-radius:42px;
+    border:5px solid #83c41a;
+    display:inline-block;
+    color:#000000;
+    font-family:arial;
+    font-size:20px;
+    font-weight:bold;
+    padding:8px 53px;
+    text-decoration:none;
+    text-shadow:1px 1px 0px #86ae47;
+}.myAlarmButton:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356) );
+    background:-moz-linear-gradient( center top, #a5cc52 5%, #b8e356 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356');
+    background-color:#a5cc52;
+}.myAlarmButton:active {
+    position:relative;
+    top:1px;
+}
 /* This button was generated using CSSButtonGenerator.com */
