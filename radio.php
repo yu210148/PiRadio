@@ -143,13 +143,20 @@ print <<<HERE
         </table>
     </center></td>
 </tr>
+<tr><td><center>
+<FORM action="setAlarm.php" method="POST">
+<INPUT class="myGreenButton" type="submit" name="Generate" value="Set Alarm">
+</FORM>
+</center></td><td></td></tr>
 </table>
 
+<!--
 <div class='setAlarmButton'>
 <FORM action="setAlarm.php" method="POST">
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Set Alarm">
 </FORM>
 </div>
+-->
 
 HERE;
 
