@@ -112,10 +112,12 @@ print <<<HERE
 <table border=0 width=100%>
 <tr>
     <td><center>
+        <div class='stopButton'>
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <INPUT class="myButton" type="submit" name="Generate" value="Stop Player">
         </FORM>
+        </div>
     </center></td>
     <td><center>
         <table border=0>

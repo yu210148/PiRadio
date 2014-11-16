@@ -19,6 +19,11 @@
     left:-20px;
 }
 
+.stopButton {
+    position:relative;
+    left:-20px;
+}
+
 h2 {
 font-family: 'Reenie Beanie', arial, serif;
 font-size: 48px;
