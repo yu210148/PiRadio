@@ -307,7 +307,7 @@ function update_piradio(){
     // on the files and directories such that
     // the webserver user can do this.
     $command = "git pull";
-    exec($command, $outputArray);
+    exec($command);
     return 0;
 }
 
