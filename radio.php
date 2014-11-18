@@ -33,10 +33,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//TODO: Add a button to update the PiRadio software
-// it should just be a matter of having the button
-// run git pull if the directory permissions are set right.
-
 require_once 'settings.php';
 
 function get_stations($db){
