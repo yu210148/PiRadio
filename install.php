@@ -32,6 +32,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+// not sure what the best approach for this is yet
+// I think it'd be best to package this as a .deb package 
+// but using this as an installer could be good too. 
+// especially if you want to use the update button to pull 
+// the latest from github....  --KL 2014-12-31
 ?>
 </body>
 </html>
