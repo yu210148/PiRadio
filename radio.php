@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Internet Radio Stations</title>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
@@ -32,10 +33,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-//TODO: Add a button to update the PiRadio software
-// it should just be a matter of having the button
-// run git pull if the directory permissions are set right.
 
 require_once 'settings.php';
 
@@ -229,6 +226,12 @@ print <<<HERE
 <INPUT class="rmButton" type="submit" name="Generate" value="Remove a Station">
 </FORM>
 </div>
+<div class='updateButton'>
+<FORM action="radio.php" method="POST">
+<INPUT type="hidden" value="1" name="fUpdate">
+<INPUT class="myGreenButton" type="submit" name="Generate" value="Update PiRadio">
+</FORM>
+</div>
 </div> 
 HERE;
 return 0;
@@ -294,8 +297,25 @@ function start_player($stationUrl, $db){
     return 0;
 }
 
+function update_piradio(){
+    // a function to call git pull and update pi-radio
+    // to whatever the current state is on github
+    // NOTE: this requires the permissions to be set
+    // on the files and directories such that
+    // the webserver user can do this.
+    $command = "git pull";
+    exec($command);
+    return 0;
+}
+
 // HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
+
+// are we updating the software
+if ($_POST["fUpdate"] == 1){
+    // update
+    update_piradio();
+} // end if
 
 // are we adjusting the volume?
 $volumeAdjust = $_POST["volume"];
