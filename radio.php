@@ -44,7 +44,7 @@ function get_stations($db){
         FROM
         stations
         ORDER BY
-        stations.StationID";
+        stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
     $q = mysqli_query($db, $sql);
     return $q;
 }
