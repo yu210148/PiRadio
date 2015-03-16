@@ -309,6 +309,9 @@ function update_piradio(){
 }
 
 // HERE'S MAIN
+
+// test comment 
+
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 // are we updating the software
