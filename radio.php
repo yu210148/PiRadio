@@ -191,7 +191,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         <input type="hidden" name="fTimeshift" value="0">
         <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
         <td><center><h3><center>$row[0]</center></h3></td>
-        <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play">
+        <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center>
 HERE;
     // if there's a value for the timeshiftID then show a play timeshifted button
     if ($row[3] > 0){
@@ -200,7 +200,7 @@ print <<<HERE
 <input type="hidden" name="stopPlayer" value="Yes">
 <input type="hidden" name="stationUrl" value="$row[1]">
 <input type="hidden" name="fTimeshift" value="1">
-<br><INPUT class="myGreenTimeshiftButton" type="submit" name="Generate" value="Play Timeshifted">
+<br><center><INPUT class="myGreenTimeshiftButton" type="submit" name="Generate" value="Play Timeshifted">
 HERE;
     } // end if
     
