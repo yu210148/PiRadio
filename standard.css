@@ -193,7 +193,7 @@ p {
     background-color:#a5cc52;
 }.myGreenButton:active {
     position:relative;
-    top:10px;
+    top:1px;
 }
 
 .volumeButton {
