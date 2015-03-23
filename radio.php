@@ -37,14 +37,10 @@
 require_once 'settings.php';
 
 function get_stations($db){
-    $sql="SELECT
-        stations.Name,
-        stations.StationURL,
-        stations.FileName
-        FROM
-        stations
-        ORDER BY
-        stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
+    $sql="SELECT stations.Name, stations.StationURL, stations.FileName, timeshift.timeshiftID 
+    FROM stations 
+    LEFT OUTER JOIN timeshift ON stations.StationID = timeshift.StationID 
+    ORDER BY stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
     $q = mysqli_query($db, $sql);
     return $q;
 }
@@ -192,9 +188,24 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <input type="hidden" name="stationUrl" value="$row[1]">
+        <input type="hidden" name="fTimeshift" value="0">
         <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
         <td><center><h3><center>$row[0]</center></h3></td>
-        <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center></td>
+        <td><center><INPUT class="myGreenButton" type="submit" name="Generate" value="Play"></center>
+HERE;
+    // if there's a value for the timeshiftID then show a play timeshifted button
+    if ($row[3] > 0){
+print <<<HERE
+</FROM><FORM action="radio.php" method="POST">
+<input type="hidden" name="stopPlayer" value="Yes">
+<input type="hidden" name="stationUrl" value="$row[1]">
+<input type="hidden" name="fTimeshift" value="1">
+<br><center><INPUT class="myGreenTimeshiftButton" type="submit" name="Generate" value="Play Timeshifted">
+HERE;
+    } // end if
+    
+    print <<<HERE
+        </center></td>
         </FORM>
     </tr>
 HERE;
@@ -297,6 +308,85 @@ function start_player($stationUrl, $db){
     return 0;
 }
 
+function get_timezone_offset($remote_tz, $origin_tz = null) {
+    // the following function was stolen from http://php.net/manual/en/function.timezone-offset-get.php
+    // credit to [d][a][n][at][authenticdesign][.][net]
+    
+    /**    Returns the offset from the origin timezone to the remote timezone, in seconds.
+    *    @param $remote_tz;
+    *    @param $origin_tz; If null the servers current timezone is used as the origin.
+    *    @return int;
+    */
+    if($origin_tz === null) {
+        if(!is_string($origin_tz = date_default_timezone_get())) {
+            return false; // A UTC timestamp was returned -- bail out!
+        }
+    }
+    $origin_dtz = new DateTimeZone($origin_tz);
+    $remote_dtz = new DateTimeZone($remote_tz);
+    $origin_dt = new DateTime("now", $origin_dtz);
+    $remote_dt = new DateTime("now", $remote_dtz);
+    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+    return $offset;
+}
+
+function return_seconds(){
+    // a helper function to take the system time 'now', subtract 3 hours, then
+    // return the number of seconds between 5:30am eastern and 'now' for passing
+    // in to the start_player_west_coast() function
+    // NOTE: the use case for this is time shifting the Toronto morning
+    // radio show for the west coast of North America so although this should
+    // work for any time zone where the file that you want to play was recorded 
+    // server side already (I've got a cron job that records the show to a webserver
+    // on my lan) the variable names suggest the 3 hour difference between Eastern
+    // and Pacific time.
+
+    $systemTimeZone = date_default_timezone_get();
+    $timezoneOffsetSeconds = get_timezone_offset('America/New_York', $systemTimeZone);
+    
+    // the the unix time 'now' using the system's time zone
+    $unixTimeNow = time();
+    $unixTimeThreeHoursAgo = strtotime($timezoneOffsetSeconds . ' seconds', $unixTimeNow); 
+    $unixTimeFiveThirtyEastern = strtotime(date('Y-m-d') . " 05:30");
+    $fiveThirty = date('Y-m-d H:i:s', $unixTimeFiveThirtyEastern);
+    
+    // seconds between now -3 hours and 5:30am
+    $secondsIntoFileToStart = $unixTimeThreeHoursAgo - $unixTimeFiveThirtyEastern;
+    return $secondsIntoFileToStart;
+}
+
+function start_player_west_coast($stationUrl, $db, $secondsIntoFile){
+    // a function to start playing a station on a 3 hour delay 
+    // note this only works when a recording of the station exists somewhere
+    // it doesn't do the recording itself. --KL 2015-03-22
+    
+    // sanity check: if the secondsIntoFile value is negative we cannot proceed
+    if ($secondsIntoFile < 0){
+        // start playing at the beginning
+        print "<br>I can't start playing $secondsIntoFile into the program.  I'll start at the beginning.<br>";
+        $secondsIntoFile = 0;
+    } // end if
+    
+    // stop the player in case it's running
+    stop_player($db);
+    $stationUrl = urldecode($stationUrl);
+    $command = "cvlc --start-time $secondsIntoFile $stationUrl";
+    $command = escapeshellcmd($command);
+    exec($command . " > /dev/null &");
+    
+    // check if it's a temp stream and if so write station id 0 to now playing
+    $isTempStream = check_if_temp_stream($db, $stationUrl);
+
+    if ('false' == $isTempStream){ 
+        $sql = "INSERT INTO NowPlaying VALUES ((SELECT stations.StationID FROM stations WHERE stations.StationURL = '$stationUrl'))";
+        mysqli_query($db, $sql);
+    } else {
+        $sql = "INSERT INTO NowPlaying Values (0)";
+        mysqli_query($db, $sql);
+    }
+    return 0;
+}
+
 function update_piradio(){
     // a function to call git pull and update pi-radio
     // to whatever the current state is on github
@@ -347,7 +437,13 @@ if ("down" == $volumeAdjust){
         if ('Yes' == $stopPlayer){
             stop_player($db);
         } // end if
-        start_player($stationUrl, $db);
+        // check if timeshifted
+        if ($_POST["fTimeshift"] == 1){
+            $seconds = return_seconds();
+            start_player_west_coast($stationUrl, $db, $seconds);
+        } else {
+            start_player($stationUrl, $db);
+        }
         print_form($db);
     } // end else
 }
