@@ -200,7 +200,7 @@ print <<<HERE
 <input type="hidden" name="stopPlayer" value="Yes">
 <input type="hidden" name="stationUrl" value="$row[1]">
 <input type="hidden" name="fTimeshift" value="1">
-<br><INPUT class="myGreenTimeshiftButton" type="submit" name="Generate" value="Play Timeshifted">
+<br><INPUT class="myGreenButton" type="submit" name="Generate" value="Play Timeshifted">
 HERE;
     } // end if
     
