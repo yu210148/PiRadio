@@ -181,9 +181,9 @@ p {
     display:inline-block;
     color:#000000;
     font-family:arial;
-    font-size:10px;
+    font-size:12px;
     font-weight:bold;
-    padding:8px 43px;
+    padding:8px 33px;
     text-decoration:none;
     text-shadow:1px 1px 0px #86ae47;
 }.myGreenButton:hover {
