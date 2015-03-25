@@ -162,6 +162,7 @@ if (NULL == $nowPlayingArray[0]){
 } else {
     // print a centered table showing what's currently playing
     // TODO: add in a onClick pop-out remote control pointed at 127.0.0.1:9090 (VLC Controls)
+    // http://127.0.0.1:9090/mobile.html may be helpful :)
     print <<<HERE
 <center>
 <table border=0>
