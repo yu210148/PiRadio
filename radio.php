@@ -161,6 +161,7 @@ if (NULL == $nowPlayingArray[0]){
     // do nothing
 } else {
     // print a centered table showing what's currently playing
+    // TODO: add in a onClick pop-out remote control pointed at 127.0.0.1:9090 (VLC Controls)
     print <<<HERE
 <center>
 <table border=0>
@@ -291,7 +292,7 @@ function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
-    $command = "cvlc $stationUrl";
+    $command = "cvlc --intf http --http-host 127.0.0.1 --http-password foo --http-port 9090 $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
@@ -370,7 +371,8 @@ function start_player_west_coast($stationUrl, $db, $secondsIntoFile){
     // stop the player in case it's running
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
-    $command = "cvlc --start-time $secondsIntoFile $stationUrl";
+    // starting vlc with a web interface to control it from
+    $command = "cvlc --intf http --http-host 127.0.0.1 --http-password foo --http-port 9090 --start-time $secondsIntoFile $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
