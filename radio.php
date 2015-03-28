@@ -176,7 +176,7 @@ if (NULL == $nowPlayingArray[0]){
 <center>
 <table border=0>
     <tr>
-        <td><center><a href="http://:foo@$ipaddress/mobile.html><p>Now Playing:</p></center></td>
+        <td><center><a href="http://:foo@$ipaddress/mobile.html"><p>Now Playing:</p></center></td>
         <td><center><p>$nowPlayingArray[0]</p></center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></a></center></td>
     </tr>
