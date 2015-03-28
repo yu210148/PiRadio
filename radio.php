@@ -84,6 +84,12 @@ function get_now_playing($db){
     return $NowPlayingArray;
 } // end function definition for get_now_playing()
 
+function get_ip_address(){
+    // a function that get's the player's IP address on the LAN
+    $serverAddress = $_SERVER['SERVER_ADDR'];
+    return $serverAddress;
+}
+
 function print_form($db){
 //        $divFirstTime = "<div class='hideForm'>";
 //        $endDivFirstTime = "</div>";
@@ -163,13 +169,16 @@ if (NULL == $nowPlayingArray[0]){
     // print a centered table showing what's currently playing
     // TODO: add in a onClick pop-out remote control pointed at 127.0.0.1:9090 (VLC Controls)
     // http://127.0.0.1:9090/mobile.html may be helpful :)
+    
+    $ipaddress = get_ip_address();
+    
     print <<<HERE
 <center>
 <table border=0>
     <tr>
-        <td><center><p>Now Playing:</p></center></td>
+        <td><center><a href="http://:foo@$ipaddress/mobile.html><p>Now Playing:</p></center></td>
         <td><center><p>$nowPlayingArray[0]</p></center></td>
-        <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
+        <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></a></center></td>
     </tr>
     </table>
 </center>
@@ -293,7 +302,7 @@ function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
-    $command = "cvlc --intf http --http-host 127.0.0.1 --http-password foo --http-port 9090 $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 --http-password foo $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
@@ -373,7 +382,7 @@ function start_player_west_coast($stationUrl, $db, $secondsIntoFile){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     // starting vlc with a web interface to control it from
-    $command = "cvlc --intf http --http-host 127.0.0.1 --http-password foo --http-port 9090 --start-time $secondsIntoFile $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 --start-time --http-password foo $secondsIntoFile $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
