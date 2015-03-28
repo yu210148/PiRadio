@@ -178,7 +178,7 @@ if (NULL == $nowPlayingArray[0]){
 <table border=0>
     <tr>
         <td><center><p>Now Playing:</p></center></td>
-        <td><center><p><a href="http://:foo@$ipaddress:9090/mobile.html" target="_blank">$nowPlayingArray[0]</p></center></td>
+        <td><center><p><a href="http://$ipaddress:9090/mobile.html" target="_blank">$nowPlayingArray[0]</p></center></td>
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
 </table>
@@ -304,7 +304,7 @@ function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
-    $command = "cvlc --intf http --http-port 9090 --http-password foo $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
@@ -384,7 +384,7 @@ function start_player_west_coast($stationUrl, $db, $secondsIntoFile){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     // starting vlc with a web interface to control it from
-    $command = "cvlc --intf http --http-port 9090 --start-time --http-password foo $secondsIntoFile $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 --start-time $secondsIntoFile $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
