@@ -174,13 +174,15 @@ if (NULL == $nowPlayingArray[0]){
     
     print <<<HERE
 <center>
+<a href="http://:foo@$ipaddress:9090/mobile.html">
 <table border=0>
     <tr>
-        <td><center><a href="http://:foo@$ipaddress/mobile.html"><p>Now Playing:</p></center></td>
+        <td><center><p>Now Playing:</p></center></td>
         <td><center><p>$nowPlayingArray[0]</p></center></td>
-        <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></a></center></td>
+        <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
-    </table>
+</table>
+</a>    
 </center>
 HERE;
 }
