@@ -10,12 +10,20 @@
 // };
 
 function raise_volume(volUp){
-    var textInput = document.getElementByID(volUp).value;
     $.ajax({
-        type: "POST",
         url: "raise_volume.php",
-        data: "volUp="+textInput,
-    }).done(function( textInput ) {
-        alert( textInput );
-    });
-};
+        type: "POST",
+        success: function(output) {
+            alert(output);
+        }
+
+
+});
+/*
+$.ajax({ url: '/my/site',
+    data: {action: 'test'},
+    type: 'post',
+    success: function(output) {
+        alert(output);
+    }
+});*/
