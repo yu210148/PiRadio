@@ -128,18 +128,10 @@ print <<<HERE
         </tr>
         <tr>
             <td><center>
-                <!--- <FORM action="radio.php" method="POST">
-                <input type="hidden" name="volume" value="down">
-                <input type="hidden" name="stopPlayer" value="No"> --->
                 <INPUT class="volumeButton" id="volDown" type="submit" name="Generate" value="-" onClick="lower_volume()">
-                <!--- </FORM> --->
             </center></td>
             <td><center>
-                <!--- <FORM action="radio.php" method="POST">
-                <input type="hidden" name="volume" value="up">
-                <input type="hidden" name="stopPlayer" value="No"> --->
                 <INPUT class="volumeButton" id="volUp" type="submit" name="Generate" value="+" onClick="raise_volume()">
-                <!--- </FORM> --->
             </center></td>
         </tr>
         </table>
@@ -261,20 +253,6 @@ print <<<HERE
 HERE;
 return 0;
 } // end function print_form()
-
-function raise_volume(){
-    $command = "amixer set PCM 2dB+";
-    $command = escapeshellcmd($command);
-    exec($command);
-    return 0;
-}
-
-function lower_volume(){
-    $command = "amixer set PCM 2dB-";
-    $command = escapeshellcmd($command);
-    exec($command);
-    return 0;
-}
 
 function stop_player($db){
     $command = "killall vlc";
