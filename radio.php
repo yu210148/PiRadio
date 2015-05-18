@@ -138,7 +138,7 @@ print <<<HERE
                 <!--- <FORM action="radio.php" method="POST">
                 <input type="hidden" name="volume" value="up">
                 <input type="hidden" name="stopPlayer" value="No"> --->
-                <INPUT class="volumeButton" id="volUp" type="submit" name="Generate" value="+">
+                <INPUT class="volumeButton" id="volUp" type="submit" name="Generate" value="+" onClick="raise_volume()">
                 <!--- </FORM> --->
             </center></td>
         </tr>

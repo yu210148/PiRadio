@@ -9,16 +9,16 @@
 //     }); 
 // };
 
-function raise_volume(volUp){
+function raise_volume(){
     $.ajax({
         url: "raise_volume.php",
         type: "POST",
         success: function(output) {
             alert(output);
         }
+    });
+};
 
-
-});
 /*
 $.ajax({ url: '/my/site',
     data: {action: 'test'},
