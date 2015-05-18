@@ -6,8 +6,9 @@
 <title>Internet Radio Stations</title>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="./js/radio/radio.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -134,11 +135,11 @@ print <<<HERE
                 </FORM>
             </center></td>
             <td><center>
-                <FORM action="radio.php" method="POST">
+                <!--- <FORM action="radio.php" method="POST">
                 <input type="hidden" name="volume" value="up">
-                <input type="hidden" name="stopPlayer" value="No">
-                <INPUT class="volumeButton" type="submit" name="Generate" value="+">
-                </FORM>
+                <input type="hidden" name="stopPlayer" value="No"> --->
+                <INPUT class="volumeButton" id="volUp" type="submit" name="Generate" value="+">
+                <!--- </FORM> --->
             </center></td>
         </tr>
         </table>
