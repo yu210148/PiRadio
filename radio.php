@@ -392,6 +392,9 @@ function update_piradio(){
 }
 
 // HERE'S MAIN
+//TODO; figure out how to get stop player button to update the screen when clicked to remove the now playing station
+// now that it's an ajax call and doesn't refresh the page
+
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 // are we updating the software
