@@ -10,11 +10,12 @@
 // };
 
 function raise_volume(volUp){
+    var textInput = document.getElementByID(volUp).value;
     $.ajax({
         type: "POST",
         url: "raise_volume.php",
-        data: "volUp="+true,
-    }).done(function( true ) {
-        alert( true );
+        data: "volUp="+textInput,
+    }).done(function( textInput ) {
+        alert( textInput );
     });
 };
