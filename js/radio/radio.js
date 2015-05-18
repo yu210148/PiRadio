@@ -22,6 +22,14 @@ function lower_volume(){
         type: "POST",
     });
 };
+
+function stop_player(){
+    $.ajax({
+        url: "stop_player.php",
+        type: "POST",
+    });
+};
+
 /*
 $.ajax({ url: '/my/site',
     data: {action: 'test'},

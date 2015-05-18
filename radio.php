@@ -113,10 +113,10 @@ print <<<HERE
 <tr>
     <td><center>
         <div class='stopButton'>
-        <FORM action="radio.php" method="POST">
-        <input type="hidden" name="stopPlayer" value="Yes">
-        <INPUT class="myButton" type="submit" name="Generate" value="Stop Player">
-        </FORM>
+        <!--- <FORM action="radio.php" method="POST">
+        <input type="hidden" name="stopPlayer" value="Yes"> --->
+        <INPUT class="myButton" id="stopButton" type="submit" name="Generate" value="Stop Player" onClick="stop_player()">
+        <!--- </FORM> --->
         </div>
     </center></td>
     <td><center>
@@ -400,11 +400,11 @@ if ($_POST["fUpdate"] == 1){
     update_piradio();
 } // end if
 
-if (NULL == $_POST["stopPlayer"]){
-    $stopPlayer = "No";
-} else {
-    $stopPlayer = $_POST["stopPlayer"];
-} // end else
+// if (NULL == $_POST["stopPlayer"]){
+//     $stopPlayer = "No";
+// } else {
+//     $stopPlayer = $_POST["stopPlayer"];
+// } // end else
 
 $stationUrl = urlencode($_POST["stationUrl"]);
 
@@ -412,14 +412,14 @@ $stationUrl = urlencode($_POST["stationUrl"]);
 //var_dump($_REQUEST["stationUrl"]);
 
 if (empty($stationUrl)) {
-    if ('Yes' == $stopPlayer){
-        stop_player($db);
-    } // end if
+//     if ('Yes' == $stopPlayer){
+//         stop_player($db);
+//     } // end if
     print_form($db);
 } else {
-    if ('Yes' == $stopPlayer){
-        stop_player($db);
-    } // end if
+//     if ('Yes' == $stopPlayer){
+//         stop_player($db);
+//     } // end if
     // check if timeshifted
     if ($_POST["fTimeshift"] == 1){
         $seconds = return_seconds();
