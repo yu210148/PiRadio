@@ -13,9 +13,6 @@ function raise_volume(){
     $.ajax({
         url: "raise_volume.php",
         type: "POST",
-        success: function(output) {
-            alert(output);
-        }
     });
 };
 
