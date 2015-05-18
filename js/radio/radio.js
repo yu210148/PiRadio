@@ -16,6 +16,12 @@ function raise_volume(){
     });
 };
 
+function lower_volume(){
+    $.ajax({
+        url: "lower_volume.php",
+        type: "POST",
+    });
+};
 /*
 $.ajax({ url: '/my/site',
     data: {action: 'test'},

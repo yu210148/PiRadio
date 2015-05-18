@@ -128,11 +128,11 @@ print <<<HERE
         </tr>
         <tr>
             <td><center>
-                <FORM action="radio.php" method="POST">
+                <!--- <FORM action="radio.php" method="POST">
                 <input type="hidden" name="volume" value="down">
-                <input type="hidden" name="stopPlayer" value="No">
-                <INPUT class="volumeButton" type="submit" name="Generate" value="-">
-                </FORM>
+                <input type="hidden" name="stopPlayer" value="No"> --->
+                <INPUT class="volumeButton" id="volDown" type="submit" name="Generate" value="-" onClick="lower_volume()">
+                <!--- </FORM> --->
             </center></td>
             <td><center>
                 <!--- <FORM action="radio.php" method="POST">
@@ -422,46 +422,35 @@ if ($_POST["fUpdate"] == 1){
     update_piradio();
 } // end if
 
-// are we adjusting the volume?
-$volumeAdjust = $_POST["volume"];
-if ("down" == $volumeAdjust){
-    lower_volume();
-    print_form($db);
-} else if ("up" == $volumeAdjust){
-    raise_volume();
+if (NULL == $_POST["stopPlayer"]){
+    $stopPlayer = "No";
+} else {
+    $stopPlayer = $_POST["stopPlayer"];
+} // end else
+
+$stationUrl = urlencode($_POST["stationUrl"]);
+
+//debug
+//var_dump($_REQUEST["stationUrl"]);
+
+if (empty($stationUrl)) {
+    if ('Yes' == $stopPlayer){
+        stop_player($db);
+    } // end if
     print_form($db);
 } else {
-    // we're not adjusting the volume so move on
-    if (NULL == $_POST["stopPlayer"]){
-        $stopPlayer = "No";
+    if ('Yes' == $stopPlayer){
+        stop_player($db);
+    } // end if
+    // check if timeshifted
+    if ($_POST["fTimeshift"] == 1){
+        $seconds = return_seconds();
+        start_player_west_coast($stationUrl, $db, $seconds);
     } else {
-        $stopPlayer = $_POST["stopPlayer"];
-    } // end else
-    
-    $stationUrl = urlencode($_POST["stationUrl"]);
-    
-    //debug
-    //var_dump($_REQUEST["stationUrl"]);
-    
-    if (empty($stationUrl)) {
-        if ('Yes' == $stopPlayer){
-            stop_player($db);
-        } // end if
-        print_form($db);
-    } else {
-        if ('Yes' == $stopPlayer){
-            stop_player($db);
-        } // end if
-        // check if timeshifted
-        if ($_POST["fTimeshift"] == 1){
-            $seconds = return_seconds();
-            start_player_west_coast($stationUrl, $db, $seconds);
-        } else {
-            start_player($stationUrl, $db);
-        }
-        print_form($db);
-    } // end else
-}
+        start_player($stationUrl, $db);
+    }
+    print_form($db);
+} // end else
 
 mysqli_close($db);
 ?>
