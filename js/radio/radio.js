@@ -28,6 +28,7 @@ function stop_player(){
         url: "stop_player.php",
         type: "POST",
     });
+    $(".NowPlaying").hide("slow");
 };
 
 /*

@@ -167,7 +167,7 @@ if (NULL == $nowPlayingArray[0]){
     
     print <<<HERE
 <center>
-
+<div class='NowPlaying'>
 <table border=0>
     <tr>
         <td><center><p>Now Playing:</p></center></td>
@@ -175,6 +175,7 @@ if (NULL == $nowPlayingArray[0]){
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
 </table>
+</div>
 </a>    
 </center>
 HERE;
