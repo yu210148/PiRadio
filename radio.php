@@ -4,10 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Internet Radio Stations</title>
-<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="./js/radio/radio.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -112,10 +113,10 @@ print <<<HERE
 <tr>
     <td><center>
         <div class='stopButton'>
-        <FORM action="radio.php" method="POST">
-        <input type="hidden" name="stopPlayer" value="Yes">
-        <INPUT class="myButton" type="submit" name="Generate" value="Stop Player">
-        </FORM>
+        <!--- <FORM action="radio.php" method="POST">
+        <input type="hidden" name="stopPlayer" value="Yes"> --->
+        <INPUT class="myButton" id="stopButton" type="submit" name="Generate" value="Stop Player" onClick="stop_player()">
+        <!--- </FORM> --->
         </div>
     </center></td>
     <td><center>
@@ -127,18 +128,10 @@ print <<<HERE
         </tr>
         <tr>
             <td><center>
-                <FORM action="radio.php" method="POST">
-                <input type="hidden" name="volume" value="down">
-                <input type="hidden" name="stopPlayer" value="No">
-                <INPUT class="volumeButton" type="submit" name="Generate" value="-">
-                </FORM>
+                <INPUT class="volumeButton" id="volDown" type="submit" name="Generate" value="-" onClick="lower_volume()">
             </center></td>
             <td><center>
-                <FORM action="radio.php" method="POST">
-                <input type="hidden" name="volume" value="up">
-                <input type="hidden" name="stopPlayer" value="No">
-                <INPUT class="volumeButton" type="submit" name="Generate" value="+">
-                </FORM>
+                <INPUT class="volumeButton" id="volUp" type="submit" name="Generate" value="+" onClick="raise_volume()">
             </center></td>
         </tr>
         </table>
@@ -174,7 +167,7 @@ if (NULL == $nowPlayingArray[0]){
     
     print <<<HERE
 <center>
-
+<div class='NowPlaying'>
 <table border=0>
     <tr>
         <td><center><p>Now Playing:</p></center></td>
@@ -182,6 +175,7 @@ if (NULL == $nowPlayingArray[0]){
         <td><center><img src="uploads/$nowPlayingArray[1]" alt="Now Playing Logo" width="25" height="25"></center></td>
     </tr>
 </table>
+</div>
 </a>    
 </center>
 HERE;
@@ -260,20 +254,6 @@ print <<<HERE
 HERE;
 return 0;
 } // end function print_form()
-
-function raise_volume(){
-    $command = "amixer set PCM 2dB+";
-    $command = escapeshellcmd($command);
-    exec($command);
-    return 0;
-}
-
-function lower_volume(){
-    $command = "amixer set PCM 2dB-";
-    $command = escapeshellcmd($command);
-    exec($command);
-    return 0;
-}
 
 function stop_player($db){
     $command = "killall vlc";
@@ -413,6 +393,9 @@ function update_piradio(){
 }
 
 // HERE'S MAIN
+//TODO; figure out how to get stop player button to update the screen when clicked to remove the now playing station
+// now that it's an ajax call and doesn't refresh the page
+
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 // are we updating the software
@@ -421,46 +404,35 @@ if ($_POST["fUpdate"] == 1){
     update_piradio();
 } // end if
 
-// are we adjusting the volume?
-$volumeAdjust = $_POST["volume"];
-if ("down" == $volumeAdjust){
-    lower_volume();
-    print_form($db);
-} else if ("up" == $volumeAdjust){
-    raise_volume();
+// if (NULL == $_POST["stopPlayer"]){
+//     $stopPlayer = "No";
+// } else {
+//     $stopPlayer = $_POST["stopPlayer"];
+// } // end else
+
+$stationUrl = urlencode($_POST["stationUrl"]);
+
+//debug
+//var_dump($_REQUEST["stationUrl"]);
+
+if (empty($stationUrl)) {
+//     if ('Yes' == $stopPlayer){
+//         stop_player($db);
+//     } // end if
     print_form($db);
 } else {
-    // we're not adjusting the volume so move on
-    if (NULL == $_POST["stopPlayer"]){
-        $stopPlayer = "No";
+//     if ('Yes' == $stopPlayer){
+//         stop_player($db);
+//     } // end if
+    // check if timeshifted
+    if ($_POST["fTimeshift"] == 1){
+        $seconds = return_seconds();
+        start_player_west_coast($stationUrl, $db, $seconds);
     } else {
-        $stopPlayer = $_POST["stopPlayer"];
-    } // end else
-    
-    $stationUrl = urlencode($_POST["stationUrl"]);
-    
-    //debug
-    //var_dump($_REQUEST["stationUrl"]);
-    
-    if (empty($stationUrl)) {
-        if ('Yes' == $stopPlayer){
-            stop_player($db);
-        } // end if
-        print_form($db);
-    } else {
-        if ('Yes' == $stopPlayer){
-            stop_player($db);
-        } // end if
-        // check if timeshifted
-        if ($_POST["fTimeshift"] == 1){
-            $seconds = return_seconds();
-            start_player_west_coast($stationUrl, $db, $seconds);
-        } else {
-            start_player($stationUrl, $db);
-        }
-        print_form($db);
-    } // end else
-}
+        start_player($stationUrl, $db);
+    }
+    print_form($db);
+} // end else
 
 mysqli_close($db);
 ?>
