@@ -341,10 +341,11 @@ function return_seconds(){
     $unixTimeNow = time();
     $unixTimeThreeHoursAgo = strtotime($timezoneOffsetSeconds . ' seconds', $unixTimeNow); 
     $unixTimeFiveThirtyEastern = strtotime(date('Y-m-d') . " 05:30");
+    $unixTimeFiveThirtyEastern = $unixTimeFiveThirtyEastern - $timezoneOffsetSeconds;
     $fiveThirty = date('Y-m-d H:i:s', $unixTimeFiveThirtyEastern);
     
     // seconds between now -3 hours and 5:30am
-    $secondsIntoFileToStart = $unixTimeThreeHoursAgo - $unixTimeFiveThirtyEastern;
+    $secondsIntoFileToStart = $unixTimeFiveThirtyEastern - $unixTimeThreeHoursAgo;
     return $secondsIntoFileToStart;
 }
 
