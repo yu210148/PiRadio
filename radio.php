@@ -334,18 +334,24 @@ function return_seconds(){
     // on my lan) the variable names suggest the 3 hour difference between Eastern
     // and Pacific time.
 
-    $systemTimeZone = date_default_timezone_get();
-    $timezoneOffsetSeconds = get_timezone_offset('America/New_York', $systemTimeZone);
+    //$systemTimeZone = date_default_timezone_get();
+    //$timezoneOffsetSeconds = get_timezone_offset('America/New_York', $systemTimeZone);
     
     // the the unix time 'now' using the system's time zone
     $unixTimeNow = time();
-    $unixTimeThreeHoursAgo = strtotime($timezoneOffsetSeconds . ' seconds', $unixTimeNow); 
+    //$unixTimeThreeHoursAgo = strtotime($timezoneOffsetSeconds . ' seconds', $unixTimeNow); 
     $unixTimeFiveThirtyEastern = strtotime(date('Y-m-d') . " 05:30");
-    $unixTimeFiveThirtyEastern = $unixTimeFiveThirtyEastern - $timezoneOffsetSeconds;
-    $fiveThirty = date('Y-m-d H:i:s', $unixTimeFiveThirtyEastern);
+    //$unixTimeFiveThirtyEastern = $unixTimeFiveThirtyEastern - $timezoneOffsetSeconds;
+    //$fiveThirty = date('Y-m-d H:i:s', $unixTimeFiveThirtyEastern);
     
     // seconds between now -3 hours and 5:30am
-    $secondsIntoFileToStart = $unixTimeFiveThirtyEastern - $unixTimeThreeHoursAgo;
+    //$secondsIntoFileToStart = $unixTimeFiveThirtyEastern - $unixTimeThreeHoursAgo;
+    //return $secondsIntoFileToStart;
+    
+    // I seem to be making this more complicated than it needs to be.
+    // Take the unix time now and subtract the unix time at 5:30am from it
+    // to get the number of seconds in to the file to start
+    $secondsIntoFileToStart = $unixTimeNow - $unixTimeFiveThirtyEastern;    
     return $secondsIntoFileToStart;
 }
 
