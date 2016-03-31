@@ -432,6 +432,10 @@ if (empty($stationUrl)) {
 //         stop_player($db);
 //     } // end if
     // check if timeshifted
+    
+    //bugfix
+    var_dump($_POST["fTimeshift"]);
+    
     if ($_POST["fTimeshift"] == 1){
         $seconds = return_seconds();
         start_player_west_coast($stationUrl, $db, $seconds);
