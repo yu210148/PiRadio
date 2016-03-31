@@ -189,7 +189,7 @@ HERE;
 
 while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     // debug
-    var_dump($row);
+    //var_dump($row);
     print <<<HERE
     <tr>
         <FORM action="radio.php" method="POST">
@@ -434,7 +434,7 @@ if (empty($stationUrl)) {
     // check if timeshifted
     
     //bugfix
-    var_dump($_POST["fTimeshift"]);
+    //var_dump($_POST["fTimeshift"]);
     
     if ($_POST["fTimeshift"] == 1){
         $seconds = return_seconds();
