@@ -203,7 +203,7 @@ HERE;
     // if there's a value for the timeshiftID then show a play timeshifted button
     if ($row[3] > 0){
 print <<<HERE
-</FROM><FORM action="radio.php" method="POST">
+</FORM><FORM action="radio.php" method="POST">
 <input type="hidden" name="stopPlayer" value="Yes">
 <input type="hidden" name="stationUrl" value="$row[1]">
 <input type="hidden" name="fTimeshift" value="1">
