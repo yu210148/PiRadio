@@ -341,6 +341,10 @@ function return_seconds(){
     $unixTimeNow = time();
     //$unixTimeThreeHoursAgo = strtotime($timezoneOffsetSeconds . ' seconds', $unixTimeNow); 
     $unixTimeFiveThirtyEastern = strtotime(date('Y-m-d') . " 05:30");
+    
+    // we're getting up a bit later than we used to so I'm going to start this an hour earlier so we get more of the show --KL
+    $unixTimeFiveThirtyEastern = strtotime(date('Y-m-d') . " 04:30");
+    
     //$unixTimeFiveThirtyEastern = $unixTimeFiveThirtyEastern - $timezoneOffsetSeconds;
     //$fiveThirty = date('Y-m-d H:i:s', $unixTimeFiveThirtyEastern);
     
