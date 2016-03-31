@@ -189,7 +189,7 @@ HERE;
 
 while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     // debug
-    //var_dump($row);
+    var_dump($row);
     print <<<HERE
     <tr>
         <FORM action="radio.php" method="POST">
