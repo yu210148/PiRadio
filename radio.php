@@ -284,7 +284,7 @@ function start_player($stationUrl, $db){
     // stop the player in case it's running
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
-    $command = "cvlc --intf http --http-port 9090 $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 --http-password foo $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
@@ -375,7 +375,7 @@ function start_player_west_coast($stationUrl, $db, $secondsIntoFile){
     stop_player($db);
     $stationUrl = urldecode($stationUrl);
     // starting vlc with a web interface to control it from
-    $command = "cvlc --intf http --http-port 9090 --start-time $secondsIntoFile $stationUrl";
+    $command = "cvlc --intf http --http-port 9090 --http-password foo --start-time $secondsIntoFile $stationUrl";
     $command = escapeshellcmd($command);
     exec($command . " > /dev/null &");
     
