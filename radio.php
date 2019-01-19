@@ -107,7 +107,7 @@ $nowPlayingArray = get_now_playing($db);
 //var_dump($nowPlayingArray);
 
 print <<<HERE
-$divFirstTime
+
 <div class='grandparent'>
 <h2>Internet Radio Stations</h2>
 
@@ -184,7 +184,7 @@ HERE;
 }
 
 print <<<HERE
-
+$divFirstTime
 <table class='mine' border = '1'>
 
 HERE;
@@ -236,7 +236,8 @@ HERE;
 
 print <<<HERE
 </table>
-
+$endDivFirstTime
+$hideButton
 
 <div class='addStationButton'>
 <FORM action="addStation.php" method="POST">
@@ -253,8 +254,7 @@ print <<<HERE
 </FORM>
 </div>
 </div>
-$endDivFirstTime
-$hideButton
+
 HERE;
 return 0;
 } // end function print_form()
