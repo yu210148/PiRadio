@@ -45,11 +45,13 @@ print <<<HERE
     <th><center>Station Name</center></th>
     <th><center>Media Stream URL<br><small><small>Test with <i>vlc &#060;url&#062;</i> on a computer first.</small></small></center></th>
     <th><center>Station Logo Image</center></th>
+    <th><center>Format</center></th>
 </tr>
 <tr>
     <td><center><input type='text' size='25' maxlength='100' name='stationName' autofocus></center></td>
     <td><center><input type='text' size='35' maxlength='400' name='stationUrl'></center></td>
     <td><center><input name="uploadedfile" type="file" /></center></td>
+    <td><center><input type='radio' name='format' checked>Talk<br><input type='radio' name='format'>Music</center></td>
 </tr>
 
 </table>
