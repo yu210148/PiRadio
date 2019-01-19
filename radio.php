@@ -9,6 +9,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./js/radio/radio.js"></script>
+<script language="javascript" src="./js/radio/show_hide_form.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -92,10 +93,10 @@ function get_ip_address(){
 }
 
 function print_form($db){
-//        $divFirstTime = "<div class='hideForm'>";
-//        $endDivFirstTime = "</div>";
+        $divFirstTime = "<div class='hideForm'>";
+        $endDivFirstTime = "</div>";
 
-//        $hideButton = "<div align=\"right\"><a href =\"#\" id=\"show\">Show </a>/ <a href=\"#\" id=\"hide\">Hide </a>Form</div>";
+        $hideButton = "<div align=\"right\"><a href =\"#\" id=\"show\">Show </a>/ <a href=\"#\" id=\"hide\">Hide </a>Form</div>";
 
 // database stuff here
 $q = get_stations($db);
@@ -106,6 +107,7 @@ $nowPlayingArray = get_now_playing($db);
 //var_dump($nowPlayingArray);
 
 print <<<HERE
+$divFirstTime
 <div class='grandparent'>
 <h2>Internet Radio Stations</h2>
 
@@ -250,7 +252,9 @@ print <<<HERE
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Update PiRadio">
 </FORM>
 </div>
-</div> 
+</div>
+$endDivFirstTime
+$hideButton
 HERE;
 return 0;
 } // end function print_form()
