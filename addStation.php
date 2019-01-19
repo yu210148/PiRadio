@@ -101,7 +101,33 @@ function create_thumbnail($filename){
     return 0;
 }
 
-function add_station($db, $stationName, $stationUrl, $files){
+function get_station_id($db, $stationName){
+    // a function to get the station id so when the format is inserted into the format table it matches what's in 
+    // the station table. Returns the stationID value
+    
+    // set a default value that won't be in the DB
+    $stationID = 0;
+    
+    $sql = "SELECT stations.StationID FROM stations WHERE stations.Name = '$stationName'";
+    
+    //debug
+    //var_dump($sql);
+    
+    $q = mysqli_query($db, $sql);
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        $stationID = $row[0];
+    } // end while
+    return $stationID;
+}
+
+function add_format($db, $stationID, $fFormat){
+    //a function to write the specified station format (talk or music) to the format table in the db
+    $sql = "INSERT INTO format VALUES ('', '$stationID', '$fFormat')";
+    mysqli_query($db, $sql);
+    return 0;
+}
+
+function add_station($db, $stationName, $stationUrl, $files, $fFormat){
     // a function to add the entered station info to the database
     $filename = deal_with_logo_file($files);
     create_thumbnail($filename);
@@ -116,12 +142,17 @@ function add_station($db, $stationName, $stationUrl, $files){
     if (mysqli_query($db, $sql)) {
     //    printf("%d Row inserted.\n", mysqli_affected_rows($db));
     } // end if
+    
+    // get station ID then add format to format table
+    $stationID = get_station_id($db, $stationName);
+    add_format($db, $stationID, $fFormat);
     return 0;
 }
 
 // HERE'S MAIN
 $stationName = $_POST["stationName"];
 $stationUrl = $_POST["stationUrl"];
+$fFormat = $_POST["fFormat"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
 //debug
@@ -137,7 +168,7 @@ if (empty($stationUrl)){
     print_form();
 } else {
     print_form();
-    add_station($db, $stationName, $stationUrl, $_FILES);
+    add_station($db, $stationName, $stationUrl, $_FILES, $fFormat);
     print "<h3>DONE! Station Added.</h3>";
 } // end the grand else
 
