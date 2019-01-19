@@ -8,13 +8,13 @@ $(document).ready(function(){
         });
 
 $(function() {
-	function hide() {
+	function music() {
 		//$('div.hideForm').effect("drop", { direction: "up" });
         $('tr.Music').effect("fade");
 	}
-	function show() {
+	function talk() {
 		//$('div.hideForm').effect("slide", { direction: "up" });
-        $('tr.Music').effect("fade");
+        $('tr.Talk').effect("fade");
 	}
 $( "#hide" ).click(function() {
 	hide();
