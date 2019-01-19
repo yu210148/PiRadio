@@ -1,8 +1,8 @@
 $(document).ready(function(){
-        $('h2').fadeIn(2000);
-        $('table').fadeIn(2000);
-        $('input').fadeIn(2000);
-        $('b').fadeIn(2000);
+        //$('h2').fadeIn(2000);
+        //$('table').fadeIn(2000);
+        //$('input').fadeIn(2000);
+        //$('b').fadeIn(2000);
         $('div.hideForm').fadeIn(2000);
 
         });
