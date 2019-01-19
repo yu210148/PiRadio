@@ -185,7 +185,7 @@ HERE;
 }
 
 print <<<HERE
-
+$hideButton
 <table class='mine' border = '1'>
 
 HERE;
@@ -238,7 +238,7 @@ HERE;
 print <<<HERE
 </table>
 
-$hideButton
+
 
 <div class='addStationButton'>
 <FORM action="addStation.php" method="POST">

@@ -3,7 +3,7 @@ $(document).ready(function(){
         //$('table').fadeIn(2000);
         //$('input').fadeIn(2000);
         //$('b').fadeIn(2000);
-        $('tr.Music').fadeIn(2000);
+        //$('tr.Music').fadeIn(2000);
 
         });
 
