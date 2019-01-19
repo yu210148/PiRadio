@@ -82,6 +82,8 @@ HERE;
 function delete_station($db, $StationID){
     $sql = "DELETE FROM stations WHERE stations.StationID = $StationID";
     mysqli_query($db, $sql);
+    $sql = "DELETE FROM format WHERE StationID = $StationID";
+    mysqli_query($db, $sql);
     return 0;
 } // end delete_station() functino definition
 
