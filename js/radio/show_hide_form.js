@@ -10,7 +10,7 @@ $(document).ready(function(){
 $(function() {
 	function hide() {
 		//$('div.hideForm').effect("drop", { direction: "up" });
-        $('div.hideForm').effect("explode");
+        $('div.hideForm').effect("fade");
 	}
 	function show() {
 		$('div.hideForm').effect("slide", { direction: "up" });
