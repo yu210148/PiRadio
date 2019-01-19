@@ -11,11 +11,12 @@ $(function() {
 	function music() {
 		//$('div.hideForm').effect("drop", { direction: "up" });
         $('tr.Music').effect("fade");
-        
+        $('tr.Talk').hide();
 	}
 	function talk() {
 		//$('div.hideForm').effect("slide", { direction: "up" });
         $('tr.Talk').effect("fade");
+        $('tr.Music').hide();
         
 	}
 $( "#talk" ).click(function() {
