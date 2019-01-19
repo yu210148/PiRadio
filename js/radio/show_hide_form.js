@@ -13,7 +13,8 @@ $(function() {
         $('div.hideForm').effect("fade");
 	}
 	function show() {
-		$('div.hideForm').effect("slide", { direction: "up" });
+		//$('div.hideForm').effect("slide", { direction: "up" });
+        $('div.hideForm').effect("fade");
 	}
 $( "#hide" ).click(function() {
 	hide();
