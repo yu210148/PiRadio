@@ -184,7 +184,7 @@ HERE;
 }
 
 print <<<HERE
-$divFirstTime
+
 <table class='mine' border = '1'>
 
 HERE;
@@ -193,7 +193,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     // debug
     //var_dump($row);
     print <<<HERE
-    <tr>
+    <tr class='music'>
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <input type="hidden" name="stationUrl" value="$row[1]">
@@ -236,7 +236,7 @@ HERE;
 
 print <<<HERE
 </table>
-$endDivFirstTime
+
 $hideButton
 
 <div class='addStationButton'>
