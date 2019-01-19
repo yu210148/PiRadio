@@ -39,8 +39,9 @@
 require_once 'settings.php';
 
 function get_stations($db){
-    $sql="SELECT stations.Name, stations.StationURL, stations.FileName, timeshift.timeshiftID 
+    $sql="SELECT stations.Name, stations.StationURL, stations.FileName, timeshift.timeshiftID, format.fFormat 
     FROM stations 
+    INNER JOIN format on stations.StationID = format.StationID
     LEFT OUTER JOIN timeshift ON stations.StationID = timeshift.StationID 
     ORDER BY stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
     $q = mysqli_query($db, $sql);
@@ -193,7 +194,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     // debug
     //var_dump($row);
     print <<<HERE
-    <tr class='music'>
+    <tr class='$row[4]'>
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <input type="hidden" name="stationUrl" value="$row[1]">

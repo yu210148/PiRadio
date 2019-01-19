@@ -3,18 +3,18 @@ $(document).ready(function(){
         //$('table').fadeIn(2000);
         //$('input').fadeIn(2000);
         //$('b').fadeIn(2000);
-        $('tr.music').fadeIn(2000);
+        $('tr.Music').fadeIn(2000);
 
         });
 
 $(function() {
 	function hide() {
 		//$('div.hideForm').effect("drop", { direction: "up" });
-        $('tr.music').effect("fade");
+        $('tr.Music').effect("fade");
 	}
 	function show() {
 		//$('div.hideForm').effect("slide", { direction: "up" });
-        $('tr.music').effect("fade");
+        $('tr.Music').effect("fade");
 	}
 $( "#hide" ).click(function() {
 	hide();
