@@ -51,7 +51,7 @@ print <<<HERE
     <td><center><input type='text' size='25' maxlength='100' name='stationName' autofocus></center></td>
     <td><center><input type='text' size='35' maxlength='400' name='stationUrl'></center></td>
     <td><center><input name="uploadedfile" type="file" /></center></td>
-    <td><center><input type='radio' name='format' checked>Talk<br><input type='radio' name='format'>Music</center></td>
+    <td>input type='radio' name='format' checked>Talk<br><input type='radio' name='format'>Music</td>
 </tr>
 
 </table>
