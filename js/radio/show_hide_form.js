@@ -16,12 +16,12 @@ $(function() {
 		//$('div.hideForm').effect("slide", { direction: "up" });
         $('tr.Talk').effect("fade");
 	}
-$( "#hide" ).click(function() {
-	hide();
+$( "#talk" ).click(function() {
+	talk();
 	return false;
 	});
-$( "#show" ).click(function() {
-	show();
+$( "#music" ).click(function() {
+	music();
 	return false;
 	});
 });
