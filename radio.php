@@ -97,7 +97,7 @@ function print_form($db){
         $divFirstTime = "<div class='hideForm'>";
         $endDivFirstTime = "</div>";
 
-        $hideButton = "<div align=\"right\"><a href =\"#\" id=\"talk\">Talk </a> / <a href =\"#\" id=\"music\"> Music</a></div>";
+        $hideButton = "<div align=\"right\"><div class='talkButton'><a href =\"#\" id=\"talk\">Talk </a></div> <div class='musicButton'><a href =\"#\" id=\"music\"> Music</a></div></div>";
 
 // database stuff here
 $q = get_stations($db);
