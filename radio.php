@@ -186,12 +186,7 @@ HERE;
 // if number of rows > 30 show talk/music button
 $row_cnt = mysqli_num_rows($q);
 
-//debug
-//var_dump($row_cnt);
-
-//TODO: FIGURE OUT HOW TO ONLY HIDE THE MUSIC STAITONS WHEN THERE ARE MORE THAN 30
-
-if (25 <= $row_cnt){
+if (30 <= $row_cnt){
   print "<script language=\"javascript\" src=\"./js/radio/show_hide_form.js\"></script>";
   print "$hideButton";
 } // end if
