@@ -12,15 +12,15 @@ $(function() {
 		//$('div.hideForm').effect("drop", { direction: "up" });
         $('tr.Music').effect("fade");
         $('tr.Talk').hide();
-        $('a.music').hide();
-        $('a.talk').show();
+        $("#music").hide();
+        $("#talk").show();
 	}
 	function talk() {
 		//$('div.hideForm').effect("slide", { direction: "up" });
         $('tr.Talk').effect("fade");
         $('tr.Music').hide();
-        $('a.talk').hide();
-        $('a.music').show();
+        $("#talk").hide();
+        $("#music").show();
 	}
 $( "#talk" ).click(function() {
 	talk();
