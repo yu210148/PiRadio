@@ -191,7 +191,7 @@ $row_cnt = mysqli_num_rows($q);
 
 //TODO: FIGURE OUT HOW TO ONLY HIDE THE MUSIC STAITONS WHEN THERE ARE MORE THAN 30
 
-if (30 <= $row_cnt){
+if (25 <= $row_cnt){
   print "<script language=\"javascript\" src=\"./js/radio/show_hide_form.js\"></script>";
   print "$hideButton";
 } // end if
