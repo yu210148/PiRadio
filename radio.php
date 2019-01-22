@@ -190,7 +190,7 @@ $row_cnt = mysqli_num_rows($q);
 //debug
 var_dump($row_cnt);
 
-if ($row_cnt <= 25){
+if (25 <= $row_cnt){
   print "$hideButton";
 } // end if
 
