@@ -38,8 +38,9 @@
 require_once 'settings.php';
 
 function get_stations($db){
-    $sql="SELECT stations.Name, stations.StationURL, stations.FileName, timeshift.timeshiftID 
+    $sql="SELECT stations.Name, stations.StationURL, stations.FileName, timeshift.timeshiftID, format.fFormat 
     FROM stations 
+    INNER JOIN format on stations.StationID = format.StationID
     LEFT OUTER JOIN timeshift ON stations.StationID = timeshift.StationID 
     ORDER BY stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
     $q = mysqli_query($db, $sql);
@@ -92,10 +93,10 @@ function get_ip_address(){
 }
 
 function print_form($db){
-//        $divFirstTime = "<div class='hideForm'>";
-//        $endDivFirstTime = "</div>";
+        $divFirstTime = "<div class='hideForm'>";
+        $endDivFirstTime = "</div>";
 
-//        $hideButton = "<div align=\"right\"><a href =\"#\" id=\"show\">Show </a>/ <a href=\"#\" id=\"hide\">Hide </a>Form</div>";
+        $hideButton = "<div align=\"right\"><a href =\"#\" id=\"talk\">Talk</a><a href =\"#\" id=\"music\">Music</a></div>";
 
 // database stuff here
 $q = get_stations($db);
@@ -106,6 +107,7 @@ $nowPlayingArray = get_now_playing($db);
 //var_dump($nowPlayingArray);
 
 print <<<HERE
+
 <div class='grandparent'>
 <h2>Internet Radio Stations</h2>
 
@@ -181,6 +183,14 @@ if (NULL == $nowPlayingArray[0]){
 HERE;
 }
 
+// if number of rows > 30 show talk/music button
+$row_cnt = mysqli_num_rows($q);
+
+if (30 <= $row_cnt){
+  print "<script language=\"javascript\" src=\"./js/radio/show_hide_form.js\"></script>";
+  print "$hideButton";
+} // end if
+
 print <<<HERE
 
 <table class='mine' border = '1'>
@@ -191,7 +201,7 @@ while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
     // debug
     //var_dump($row);
     print <<<HERE
-    <tr>
+    <tr class='$row[4]'>
         <FORM action="radio.php" method="POST">
         <input type="hidden" name="stopPlayer" value="Yes">
         <input type="hidden" name="stationUrl" value="$row[1]">
@@ -236,6 +246,7 @@ print <<<HERE
 </table>
 
 
+
 <div class='addStationButton'>
 <FORM action="addStation.php" method="POST">
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Add a Station">
@@ -250,7 +261,8 @@ print <<<HERE
 <INPUT class="myGreenButton" type="submit" name="Generate" value="Update PiRadio">
 </FORM>
 </div>
-</div> 
+</div>
+
 HERE;
 return 0;
 } // end function print_form()
