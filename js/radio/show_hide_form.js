@@ -4,6 +4,7 @@ $(document).ready(function(){
         //$('input').fadeIn(2000);
         //$('b').fadeIn(2000);
         $('tr.Music').hide();
+        $("#talk").hide();
 
         });
 
