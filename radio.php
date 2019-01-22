@@ -9,7 +9,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./js/radio/radio.js"></script>
-<script language="javascript" src="./js/radio/show_hide_form.js"></script>
 <link rel=StyleSheet href="standard.css" type="text/css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -193,6 +192,7 @@ $row_cnt = mysqli_num_rows($q);
 //TODO: FIGURE OUT HOW TO ONLY HIDE THE MUSIC STAITONS WHEN THERE ARE MORE THAN 30
 
 if (30 <= $row_cnt){
+  print "<script language=\"javascript\" src=\"./js/radio/show_hide_form.js\"></script>";
   print "$hideButton";
 } // end if
 
