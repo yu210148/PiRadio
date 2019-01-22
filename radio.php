@@ -184,8 +184,18 @@ if (NULL == $nowPlayingArray[0]){
 HERE;
 }
 
+// if number of rows > 30 show talk/music button
+$row_cnt = mysqli_num_rows($q);
+
+//debug
+var_dump($row_cnt);
+
+if ($row_cnt <= 25){
+  print "$hideButton";
+} // end if
+
 print <<<HERE
-$hideButton
+
 <table class='mine' border = '1'>
 
 HERE;
