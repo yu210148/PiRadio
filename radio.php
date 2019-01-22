@@ -188,9 +188,11 @@ HERE;
 $row_cnt = mysqli_num_rows($q);
 
 //debug
-var_dump($row_cnt);
+//var_dump($row_cnt);
 
-if (25 <= $row_cnt){
+//TODO: FIGURE OUT HOW TO ONLY HIDE THE MUSIC STAITONS WHEN THERE ARE MORE THAN 30
+
+if (30 <= $row_cnt){
   print "$hideButton";
 } // end if
 
