@@ -45,7 +45,7 @@ function get_stations($db){
     FROM stations 
     INNER JOIN format on stations.StationID = format.StationID
     LEFT OUTER JOIN timeshift ON stations.StationID = timeshift.StationID 
-    ORDER BY stations.StationID=3 desc, stations.StationID=1 desc, stations.StationID=4 desc, stations.Name";
+    ORDER BY stations.StationID=3 desc, stations.StationID=37 desc, stations.StationID=2 desc, stations.Name";
     $q = mysqli_query($db, $sql);
     return $q;
 }
