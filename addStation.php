@@ -125,11 +125,7 @@ function get_station_id($db, $stationName){
 
 function add_format($db, $stationID, $fFormat){
     //a function to write the specified station format (talk or music) to the format table in the db
-    $sql = "INSERT INTO format VALUES ('', '$stationID', '$fFormat')";
-    
-    //debug
-    var_dump($sql);
-    
+    $sql = "INSERT INTO format VALUES (NULL, '$stationID', '$fFormat')";
     mysqli_query($db, $sql);
     return 0;
 }
