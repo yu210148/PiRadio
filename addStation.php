@@ -148,6 +148,10 @@ function add_station($db, $stationName, $stationUrl, $files, $fFormat){
     
     // get station ID then add format to format table
     $stationID = get_station_id($db, $stationName);
+    
+    //debug
+    var_dump($stationID);
+    
     add_format($db, $stationID, $fFormat);
     return 0;
 }
