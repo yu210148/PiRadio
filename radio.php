@@ -47,7 +47,12 @@ function get_stations($db){
     LEFT OUTER JOIN timeshift ON stations.StationID = timeshift.StationID 
     ORDER BY stations.StationID=3 desc, stations.StationID=37 desc, stations.StationID=2 desc, stations.Name";
     $q = mysqli_query($db, $sql);
-    return $q;
+    if ($q) {
+        return $q;
+    } else {
+        echo "Error: " . mysqli_error($db);
+        die();
+    }
 }
 
 function check_if_now_playing_temp($db){
