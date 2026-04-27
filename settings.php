@@ -25,7 +25,7 @@ $dbServer = "localhost";
 // change this to the database username
 $user = "klucas";
 
-// change this to the database password
+// change this to the real database password
 $pass = "7lemon6";
 
 // this shouldn't need changing unless the database name changes
