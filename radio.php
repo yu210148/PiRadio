@@ -1,22 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="mobile-web-app-capable" content="yes">
-<title>Internet Radio Stations</title>
-<link href='https://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="./js/radio/radio.js"></script>
-<link rel="stylesheet" href="standard.css" type="text/css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-<div class="container">
 <?php
 /*
     PiRadio Plays an assortment of radio stations on a webhost
@@ -74,95 +55,6 @@ function get_now_playing($db){
 function get_ip_address(){
     $serverAddress = $_SERVER['SERVER_ADDR'];
     return $serverAddress;
-}
-
-function print_form($db){
-    $q = get_stations($db);
-    $nowPlayingArray = get_now_playing($db);
-    $ipaddress = get_ip_address();
-
-    print "<h2>Internet Radio Stations</h2>";
-
-    // Controls Section
-    print "<div class='controls-section'>";
-    print "<div class='stop-btn-container'>";
-    print "<input class='myButton' id='stopButton' type='submit' name='Generate' value='Stop Player' onClick='stop_player()'>";
-    print "</div>";
-    
-    print "<div class='volume-controls'>";
-    print "<span class='volume-label'>Volume</span>";
-    print "<input class='volumeButton' id='volDown' type='submit' name='Generate' value='-' onClick='lower_volume()'>";
-    print "<input class='volumeButton' id='volUp' type='submit' name='Generate' value='+' onClick='raise_volume()'>";
-    print "</div>";
-
-    print "<div class='alarm-btn-container'>";
-    print "<form action='setAlarm.php' method='POST'>";
-    print "<input class='myAlarmButton' type='submit' name='Generate' value='  Set Alarm '>";
-    print "</form>";
-    print "</div>";
-    print "</div>";
-
-    // Now Playing Section
-    if (NULL != $nowPlayingArray[0]){
-        print "<div class='NowPlaying'>";
-        print "<p>Now Playing: <a href='http://$ipaddress:9090/mobile.html' target='_blank'>$nowPlayingArray[0]</a></p>";
-        print "<img src='uploads/$nowPlayingArray[1]' alt='Now Playing Logo' width='40' height='40'>";
-        print "</div>";
-    }
-
-    // Category Toggle
-    $row_cnt = mysqli_num_rows($q);
-    if (30 <= $row_cnt){
-        print "<script language='javascript' src='./js/radio/show_hide_form.js'></script>";
-        print "<div align='right' style='margin-bottom:10px'><a href='#' id='talk'>Talk</a><a href='#' id='music'>Music</a></div>";
-    }
-
-    // Station Grid
-    print "<div class='station-grid'>";
-    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        print "<div class='station-card $row[4]'>";
-        print "<form action='radio.php' method='POST'>";
-        print "<input type='hidden' name='stopPlayer' value='Yes'>";
-        print "<input type='hidden' name='stationUrl' value='$row[1]'>";
-        print "<input type='hidden' name='fTimeshift' value='0'>";
-        print "<img src='uploads/$row[2]' alt='Station Logo' width='120' height='120'>";
-        print "<h3>$row[0]</h3>";
-        print "<input class='myGreenButton' type='submit' name='Generate' value='Play'>";
-        print "</form>";
-        
-        if ($row[3] > 0){
-            print "<form action='radio.php' method='POST'>";
-            print "<input type='hidden' name='stopPlayer' value='Yes'>";
-            print "<input type='hidden' name='stationUrl' value='$row[1]'>";
-            print "<input type='hidden' name='fTimeshift' value='1'>";
-            print "<input class='myGreenTimeshiftButton' type='submit' name='Generate' value='Play Timeshifted'>";
-            print "</form>";
-        }
-        print "</div>";
-    }
-    print "</div>";
-
-    // Quick URL Section
-    print "<div class='quick-url-section'>";
-    print "<form action='radio.php' method='POST'>";
-    print "<input type='hidden' name='stopPlayer' value='Yes'>";
-    print "<h3>Play Quick URL</h3>";
-    print "<input class='input-text' type='text' maxlength='300' name='stationUrl' placeholder='Enter stream URL...'>";
-    print "<br><input class='myGreenButton' type='submit' name='Generate' value='Play'>";
-    print "</form>";
-    print "</div>";
-
-    // Admin Actions
-    print "<div class='admin-actions'>";
-    print "<form action='addStation.php' method='POST'>";
-    print "<input class='myGreenButton' type='submit' name='Generate' value='Add a Station'>";
-    print "</form>";
-    print "<form action='rmStation.php' method='POST'>";
-    print "<input class='rmButton' type='submit' name='Generate' value='Remove a Station'>";
-    print "</form>";
-    print "</div>";
-
-    return 0;
 }
 
 function stop_player($db){
@@ -237,24 +129,132 @@ function update_piradio(){
 
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
 
-if ($_POST["fUpdate"] == 1) update_piradio();
-
-$stationUrl = urlencode($_POST["stationUrl"]);
-
-if (empty($stationUrl)) {
-    print_form($db);
-} else {
-    if ($_POST["fTimeshift"] == 1){
-        $seconds = return_seconds();
-        start_player_west_coast($stationUrl, $db, $seconds);
-    } else {
-        start_player($stationUrl, $db);
+// Catch ALL POST requests and redirect to GET version of the same page
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST["fUpdate"]) && $_POST["fUpdate"] == 1) {
+        update_piradio();
     }
-    print_form($db);
+
+    if (!empty($_POST["stationUrl"])) {
+        $stationUrl = urlencode($_POST["stationUrl"]);
+        if (isset($_POST["fTimeshift"]) && $_POST["fTimeshift"] == 1){
+            $seconds = return_seconds();
+            start_player_west_coast($stationUrl, $db, $seconds);
+        } else {
+            start_player($stationUrl, $db);
+        }
+    }
+    
+    // Always redirect after ANY post to radio.php
+    header("Location: radio.php");
+    exit;
 }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Internet Radio Stations</title>
+<link href='https://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="./js/radio/radio.js"></script>
+<link rel="stylesheet" href="standard.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div class="container">
+<?php
+    $q = get_stations($db);
+    $nowPlayingArray = get_now_playing($db);
+    $ipaddress = get_ip_address();
+
+    print "<h2>Internet Radio Stations</h2>";
+
+    // Controls Section
+    print "<div class='controls-section'>";
+    print "<div class='stop-btn-container'>";
+    print "<button type='button' class='myButton' id='stopButton' onClick='stop_player()'>Stop Player</button>";
+    print "</div>";
+    
+    print "<div class='volume-controls'>";
+    print "<span class='volume-label'>Volume</span>";
+    print "<button type='button' class='volumeButton' id='volDown' onClick='lower_volume()'>-</button>";
+    print "<button type='button' class='volumeButton' id='volUp' onClick='raise_volume()'>+</button>";
+    print "</div>";
+    print "</div>";
+
+    // Now Playing Section
+    if (isset($nowPlayingArray[0]) && NULL != $nowPlayingArray[0]){
+        print "<div class='NowPlaying'>";
+        print "<p>Now Playing: <a href='http://$ipaddress:9090/mobile.html' target='_blank'>$nowPlayingArray[0]</a></p>";
+        print "<img src='uploads/$nowPlayingArray[1]' alt='Now Playing Logo' width='40' height='40'>";
+        print "</div>";
+    }
+
+    // Category Toggle
+    $row_cnt = mysqli_num_rows($q);
+    if (30 <= $row_cnt){
+        print "<script language='javascript' src='./js/radio/show_hide_form.js'></script>";
+        print "<div align='right' style='margin-bottom:10px'><a href='#' id='talk'>Talk</a><a href='#' id='music'>Music</a></div>";
+    }
+
+    // Station Grid
+    print "<div class='station-grid'>";
+    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
+        print "<div class='station-card $row[4]'>";
+        print "<form action='radio.php' method='POST'>";
+        print "<input type='hidden' name='stationUrl' value='$row[1]'>";
+        print "<input type='hidden' name='fTimeshift' value='0'>";
+        print "<img src='uploads/$row[2]' alt='Station Logo' width='120' height='120'>";
+        print "<h3>$row[0]</h3>";
+        print "<input class='myGreenButton' type='submit' name='Generate' value='Play'>";
+        print "</form>";
+        
+        if ($row[3] > 0){
+            print "<form action='radio.php' method='POST'>";
+            print "<input type='hidden' name='stationUrl' value='$row[1]'>";
+            print "<input type='hidden' name='fTimeshift' value='1'>";
+            print "<input class='myGreenTimeshiftButton' type='submit' name='Generate' value='Play Timeshifted'>";
+            print "</form>";
+        }
+        print "</div>";
+    }
+    print "</div>";
+
+    // Quick URL Section
+    print "<div class='quick-url-section'>";
+    print "<form action='radio.php' method='POST'>";
+    print "<h3>Play Quick URL</h3>";
+    print "<input class='input-text' type='text' maxlength='300' name='stationUrl' placeholder='Enter stream URL...'>";
+    print "<br><input class='myGreenButton' type='submit' name='Generate' value='Play'>";
+    print "</form>";
+    print "</div>";
+
+    // System Controls Card
+    print "<div class='quick-url-section' style='margin-top: 40px;'>";
+    print "<h3>System Controls</h3>";
+    
+    // Set Alarm Row (Full Width Link)
+    print "<div style='margin-bottom: 20px;'>";
+    print "<a href='setAlarm.php' class='myAlarmButton' style='width: 100%; display: block;'>Set Alarm</a>";
+    print "</div>";
+    
+    // Add/Remove Row (Side by Side Links)
+    print "<div style='display: flex; gap: 20px; flex-wrap: nowrap; justify-content: center;'>";
+    print "<a href='addStation.php' class='myGreenButton' style='flex: 1; white-space: nowrap;'>Add a Station</a>";
+    print "<a href='rmStation.php' class='rmButton' style='flex: 1; white-space: nowrap;'>Remove a Station</a>";
+    print "</div>";
+    print "</div>";
 
 mysqli_close($db);
 ?>
 </div>
+<br><br>
 </body>
 </html>

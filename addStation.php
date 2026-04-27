@@ -1,180 +1,160 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Add an Internet Radio Station</title>
-<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script> -->
-<link rel=StyleSheet href="standard.css" type="text/css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
 <?php
 /*
-    PiRadio Plays an assortment of radio stations on a webhost (I've got a
-    Raspberry Pi on my bookshelf with a pair of speakers plugged into it.)
-    
+    PiRadio - Add Station
     Copyright (C) 2014  Kevin Lucas
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    GPLv3
 */
 
 require_once 'settings.php';
 
-function print_form(){
-print <<<HERE
-<center><h2>Add an Internet Radio Station</h2>
-<form enctype="multipart/form-data" action="addStation.php" method="POST">
-<input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
-<table class='mine' border = '1'>
-<tr>
-    <th><center>Station Name</center></th>
-    <th><center>Media Stream URL<br><small><small>Test with <i>vlc &#060;url&#062;</i> on a computer first.</small></small></center></th>
-    <th><center>Station Logo Image</center></th>
-    <th><center>Format</center></th>
-</tr>
-<tr>
-    <td><center><input type='text' size='25' maxlength='100' name='stationName' autofocus></center></td>
-    <td><center><input type='text' size='35' maxlength='400' name='stationUrl'></center></td>
-    <td><center><input name="uploadedfile" type="file" /></center></td>
-    <td>
-        <input type='radio' name='fFormat' value='Talk' checked>Talk<br>
-        <input type='radio' name='fFormat' value='Music'>Music
-    </td>
-</tr>
-
-</table>
-<center><INPUT class="myButton" type="submit" name="Generate" value="Add Station"></center>
-</form>
-<div align='right'>
-<FORM action="radio.php" method="POST">
-<INPUT class="myGreenButton" type="submit" name="Generate" value="Back to Main Menu">
-</FORM>
-</div>
-HERE;
-return 0;
-} // end function definition for print_form()
-
 function sanitize_filename($filename){
-    // a function to get rid of spaces and replace them with underscores in the filename
     $newfilename = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $filename);
     $command = "mv \"./uploads/$filename\" ./uploads/$newfilename";
     exec($command);
     return $newfilename;
-} // end function definition sanitize_file_name()
+}
 
 function deal_with_logo_file($files){
-    // a function to take the file uploaded and move it to the right directory 
     $target_path = "uploads/";
     $target_path = $target_path . basename($files['uploadedfile']['name']); 
     if(move_uploaded_file($files['uploadedfile']['tmp_name'], $target_path)) {
-        //echo "The file " . basename( $_FILES['uploadedfile']['name']) . " has been uploaded";
         $filename = $files['uploadedfile']['name'];
     } else {
-        echo "Something's not right I didn't get a logo file.  I'll use a generic one.";
         $filename = 'generic_radio.png';
-    } // end else
-    
-    
+    }
     $filename = sanitize_filename($filename);
     return $filename;
 }
 
 function create_thumbnail($filename){
-    // a function to create a 25px x 25px thumbnail of the logo file for display in the setAlarm drop-down
     $command = "convert uploads/$filename -resize 25x25! uploads/25x25_$filename";
     exec($command);
     return 0;
 }
 
 function get_station_id($db, $stationName){
-    // a function to get the station id so when the format is inserted into the format table it matches what's in 
-    // the station table. Returns the stationID value
-    
-    // set a default value that won't be in the DB
     $stationID = 0;
-    
+    $stationName = mysqli_real_escape_string($db, $stationName);
     $sql = "SELECT stations.StationID FROM stations WHERE stations.Name = '$stationName'";
-    
-    //debug
-    //var_dump($sql);
-    
     $q = mysqli_query($db, $sql);
     while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
         $stationID = $row[0];
-    } // end while
+    }
     return $stationID;
 }
 
 function add_format($db, $stationID, $fFormat){
-    //a function to write the specified station format (talk or music) to the format table in the db
+    $fFormat = mysqli_real_escape_string($db, $fFormat);
     $sql = "INSERT INTO format VALUES (NULL, '$stationID', '$fFormat')";
     mysqli_query($db, $sql);
     return 0;
 }
 
 function add_station($db, $stationName, $stationUrl, $files, $fFormat){
-    // a function to add the entered station info to the database
     $filename = deal_with_logo_file($files);
     create_thumbnail($filename);
     $stationName = mysqli_real_escape_string($db, $stationName);
     $stationUrl = mysqli_real_escape_string($db, $stationUrl);
     $filename = mysqli_real_escape_string($db, $filename);
-    $sql = "INSERT INTO stations VALUES ( NULL, '$stationName', '$stationUrl', '$filename' )";
-    
-    //debug
-    //var_dump($sql);
+    $sql = "INSERT INTO stations VALUES ( NULL, '$stationName', '$stationUrl', '$filename', 1 )";
     
     if (mysqli_query($db, $sql)) {
-    //    printf("%d Row inserted.\n", mysqli_affected_rows($db));
-    } // end if
-    
-    // get station ID then add format to format table
-    $stationID = get_station_id($db, $stationName);
-    
-    add_format($db, $stationID, $fFormat);
+        $stationID = get_station_id($db, $stationName);
+        add_format($db, $stationID, $fFormat);
+    }
     return 0;
 }
 
-// HERE'S MAIN
-$stationName = $_POST["stationName"];
-$stationUrl = $_POST["stationUrl"];
-$fFormat = $_POST["fFormat"];
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
-
-//debug
-//var_dump($_FILES);
-
-/* check connection */
 if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
+    exit("Connect failed: " . mysqli_connect_error());
 }
 
-if (empty($stationUrl)){
-    print_form();
-} else {
-    print_form();
-    add_station($db, $stationName, $stationUrl, $_FILES, $fFormat);
-    print "<h3>DONE! Station Added.</h3>";
-} // end the grand else
+// Handle Form Submission
+if (!empty($_POST["stationUrl"])) {
+    add_station($db, $_POST["stationName"], $_POST["stationUrl"], $_FILES, $_POST["fFormat"]);
+    // Redirect to self with success parameter to prevent form resubmission dialog
+    header("Location: addStation.php?success=1");
+    exit;
+}
 
-mysqli_close($db);
+// Check for success message in URL
+$message = "";
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    $message = "DONE! Station Added.";
+}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add an Internet Radio Station</title>
+<link href='https://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="standard.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <h2>Add an Internet Radio Station</h2>
+    
+    <div class="admin-actions" style="margin-top: 0; margin-bottom: 30px;">
+        <a href="radio.php" class="myGreenButton">Back to Main Menu</a>
+    </div>
+
+    <?php if ($message): ?>
+        <div class="NowPlaying" style="background:#d4edda; border-color:#c3e6cb;">
+            <p style="color:#155724;"><?php echo $message; ?></p>
+        </div>
+    <?php endif; ?>
+
+    <div class="quick-url-section">
+        <form enctype="multipart/form-data" action="addStation.php" method="POST">
+            <input type="hidden" name="MAX_FILE_SIZE" value="4194304" />
+            
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:5px; font-weight:bold;">Station Name</label>
+                <input class="input-text" type='text' maxlength='100' name='stationName' autofocus required>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:5px; font-weight:bold;">Media Stream URL</label>
+                <input class="input-text" type='text' maxlength='400' name='stationUrl' placeholder="http://..." required>
+                <div style="margin-top: 5px; font-size: 0.85rem; color: var(--secondary-color);">Test with <code>vlc &lt;url&gt;</code> first.</div>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:10px; font-weight:bold;">Station Logo Image</label>
+                <div class="file-upload-wrapper">
+                    <input name="uploadedfile" id="uploadedfile" type="file" class="file-upload-input" onchange="updateFileName()" />
+                    <label for="uploadedfile" class="btn myPurpleButton file-upload-label" id="file-label">
+                        Choose Image File
+                    </label>
+                </div>
+            </div>
+
+            <div style="margin-bottom:30px; background:#f8f9fa; padding:15px; border-radius:10px;">
+                <label style="font-weight:bold; margin-right:20px;">Format:</label>
+                <label style="margin-right:15px;"><input type='radio' name='fFormat' value='Talk' checked> Talk</label>
+                <label><input type='radio' name='fFormat' value='Music'> Music</label>
+            </div>
+
+            <input class="myButton" type="submit" name="Generate" value="Add Station">
+        </form>
+    </div>
+</div>
+
+<script>
+function updateFileName() {
+    var input = document.getElementById('uploadedfile');
+    var label = document.getElementById('file-label');
+    if (input.files.length > 0) {
+        label.innerHTML = 'Selected: ' + input.files[0].name;
+    }
+}
+</script>
+</body>
+</html>
+<?php mysqli_close($db); ?>

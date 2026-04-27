@@ -1,39 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Remove an Internet Radio Station</title>
-<link href='http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script> -->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script> -->
-<link rel=StyleSheet href="standard.css" type="text/css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
 <?php
 /*
-    PiRadio Plays an assortment of radio stations on a webhost (I've got a
-    Raspberry Pi on my bookshelf with a pair of speakers plugged into it.)
-    
+    PiRadio - Remove Station
     Copyright (C) 2014  Kevin Lucas
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    GPLv3
 */
 
 require_once 'settings.php';
@@ -52,52 +21,60 @@ $sql="SELECT
     return $q;
 }
 
-function print_form($db){
-    $q = get_stations($db);
-print <<<HERE
-    <center><h2>Remove an Internet Radio Station</h2>
-    <table class='mine' border = '1'>
-HERE;
-    while ($row = mysqli_fetch_array($q, MYSQLI_NUM)){
-        print <<<HERE
-        <tr>
-            <FORM action="rmStation.php" method="POST">
-            <input type="hidden" name="StationID" value="$row[3]">
-            <td><center><img src="uploads/$row[2]" alt="Station Logo" width="100" height="100"></center></td>
-            <td><center><h3><center>$row[0]</center></h3></td>
-            <td><center><INPUT class="myButton" type="submit" name="Generate" value="Delete Station"></center></td>
-            </FORM>
-        </tr>
-HERE;
-    } // end while
-    mysqli_free_result($q);
-print <<<HERE
-    </table>
-    <div align='right'>
-    <FORM action="radio.php" method="POST">
-    <INPUT class="myGreenButton" type="submit" name="Generate" value="Back to Main Menu">
-    </FORM>
-    </div>
-HERE;
-    return 0;
-} // end print_form() function definition
-
 function delete_station($db, $StationID){
+    $StationID = (int)$StationID;
     $sql = "DELETE FROM stations WHERE stations.StationID = $StationID";
     mysqli_query($db, $sql);
     $sql = "DELETE FROM format WHERE StationID = $StationID";
     mysqli_query($db, $sql);
     return 0;
-} // end delete_station() functino definition
+}
 
-// HERE'S MAIN
 $db = mysqli_connect($dbServer, $user, $pass, $databaseName);
-$StationID = $_POST["StationID"];
 
-if (NULL == $StationID){
-    print_form($db);
-} else {
-    delete_station($db, $StationID);
-    print_form($db);
-} // end else
-mysqli_close($db);
+if (!empty($_POST["StationID"])){
+    delete_station($db, $_POST["StationID"]);
+    header("Location: rmStation.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remove an Internet Radio Station</title>
+<link href='https://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Eagle+Lake' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="standard.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div class="container">
+    <h2>Remove an Internet Radio Station</h2>
+
+    <div class="admin-actions" style="margin-top: 0; margin-bottom: 30px;">
+        <a href="radio.php" class="myGreenButton">Back to Main Menu</a>
+    </div>
+
+    <div class="station-grid">
+        <?php
+        $q = get_stations($db);
+        while ($row = mysqli_fetch_array($q, MYSQLI_NUM)):
+        ?>
+            <div class="station-card">
+                <form action="rmStation.php" method="POST" onsubmit="return confirm('Are you sure you want to delete <?php echo addslashes($row[0]); ?>?');">
+                    <input type="hidden" name="StationID" value="<?php echo $row[3]; ?>">
+                    <img src="uploads/<?php echo $row[2]; ?>" alt="Station Logo" width="120" height="120">
+                    <h3><?php echo $row[0]; ?></h3>
+                    <input class="myButton" type="submit" name="Generate" value="Delete Station">
+                </form>
+            </div>
+        <?php endwhile; ?>
+        <?php mysqli_free_result($q); ?>
+    </div>
+</div>
+</body>
+</html>
+<?php mysqli_close($db); ?>
