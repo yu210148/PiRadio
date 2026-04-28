@@ -23,10 +23,10 @@
 $dbServer = "localhost";
 
 // change this to the database username
-$user = "klucas";
+$user = "foo";
 
 // change this to the real database password
-$pass = "7lemon6";
+$pass = "bar";
 
 // this shouldn't need changing unless the database name changes
 $databaseName = "radio";
